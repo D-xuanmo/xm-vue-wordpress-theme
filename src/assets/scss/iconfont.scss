@@ -1,0 +1,46 @@
+@font-face {
+  font-family: 'iconfont';  /* project id 552040 */
+  src: url('//at.alicdn.com/t/font_552040_8znkxgfwd71ll3di.eot');
+  src: url('//at.alicdn.com/t/font_552040_8znkxgfwd71ll3di.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_552040_8znkxgfwd71ll3di.woff') format('woff'),
+  url('//at.alicdn.com/t/font_552040_8znkxgfwd71ll3di.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_552040_8znkxgfwd71ll3di.svg#iconfont') format('svg');
+}
+.iconfont{
+  font-family: "iconfont" !important;
+  font-size: 14px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-stroke-width: 0.2px;
+  -moz-osx-font-smoothing: grayscale;
+}
+// 时间
+.icon-about:before{
+  content: "\e63c";
+}
+.icon-about1:before{
+  content: "\e645";
+}
+// 信息
+.icon-message:before{
+  content: "\e619";
+}
+// 链接
+.icon-link:before{
+  content: "\e6af";
+}
+// 时间
+.icon-time:before{
+  content: "\e6c1";
+}
+.icon-time1:before{
+  content: "\e62a";
+}
+// 赞
+.icon-zan:before{
+  content: "\e681";
+}
+// hot
+.icon-hot:before{
+  content: "\e688";
+}

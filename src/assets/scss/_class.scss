@@ -1,0 +1,96 @@
+@import "./_common.scss";
+.fr {
+  float: right;
+}
+
+.fl {
+  float: left;
+}
+
+// 清除浮动
+.clearfix:after {
+  content: "";
+  display: block;
+  height: 0;
+  clear: both;
+}
+
+// 文本对齐
+.text-left {
+  text-align: left;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-justify {
+  text-align: justify;
+}
+
+.vertical-middle {
+  vertical-align: middle;
+}
+
+// 状态显示
+.inline-block {
+  display: inline-block;
+}
+
+.block {
+  display: block;
+}
+
+.hide {
+  display: none;
+}
+
+.o-hide {
+  overflow: hidden;
+}
+
+// 文字大小
+.f-s-14px {
+  font-size: 14px;
+}
+
+.f-s-16px {
+  font-size: 16px;
+}
+
+.f-s-18px {
+  font-size: 18px;
+}
+
+.f-s-20px {
+  font-size: 20px;
+}
+
+.wrap {
+  width: $wrap;
+  margin: 0 auto;
+}
+
+.container-fluid {
+  width: 100%;
+}
+
+.m-t-10px{
+  margin-top: 10px;
+}
+
+.m-t-20px{
+  margin-top: 20px;
+}
+
+.m-t-30px{
+  margin-top: 30px;
+}
+
+.m-t-50px{
+  margin-top: 50px;
+}

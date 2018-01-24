@@ -1,0 +1,46 @@
+@import "./_common.scss";
+// 清除默认样式
+body, h1, h2, h3, h4, h5, h6, p, ul, ol, input{
+  margin: 0;
+  padding: 0;
+}
+
+input,
+button,
+select,
+textarea {
+  outline: 0;
+  border: 0;
+  background: none;
+}
+
+li {
+  list-style: none;
+}
+
+em,
+i {
+  font-style: normal;
+}
+
+blockquote,
+q {
+  quotes: none;
+}
+
+img {
+  vertical-align: top;
+  border: 0;
+  -ms-interpolation-mode: bicubic;
+  -webkit-touch-callout: none;
+}
+
+a {
+  text-decoration: none;
+  color: $colorTextMain;
+  transition: .5s;
+
+  &:hover {
+    color: $colorBlue;
+  }
+}

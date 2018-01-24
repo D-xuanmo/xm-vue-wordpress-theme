@@ -1,0 +1,51 @@
+// 公用颜色
+$colorTextMain: #333;
+$colorBlue: #06aaff;
+$colorGay: #eef0f3;
+$colorGay1: #c8d1d8;
+$colorGay2: #e9eaed;
+
+// 页面宽度
+$wrap: 1200px;
+
+// 添加前缀
+@mixin css3Attr($attr, $value: 1s, $bMark : d) {
+  @if $bMark == d{
+    -webkit-#{$attr}: $value;
+    -moz-#{$attr}: $value;
+    -ms-#{$attr}: $value;
+    -o-#{$attr}: $value;
+    #{$attr}: $value;
+  }
+  @else if $bMark == m {
+    -webkit-#{$attr}: $value;
+    #{$attr}: $value;
+  }
+}
+
+// 透明兼容写法
+@mixin opacity($number) {
+  opacity: $number;
+  filter: alpha(opacity=#{$number * 100});
+}
+
+// border
+@function border-1($color) {
+  @return 1px solid $color;
+}
+@function border-2($color) {
+  @return 2px solid $color;
+}
+@function border-3($color) {
+  @return 3px solid $color;
+}
+
+%navJustify{
+  text-align: justify;
+
+  &:after{
+    content: "";
+    display: inline-block;
+    width: 100%;
+  }
+}
