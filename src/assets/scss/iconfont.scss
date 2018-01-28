@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'iconfont';  /* project id 552040 */
-  src: url('//at.alicdn.com/t/font_552040_8znkxgfwd71ll3di.eot');
-  src: url('//at.alicdn.com/t/font_552040_8znkxgfwd71ll3di.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_552040_8znkxgfwd71ll3di.woff') format('woff'),
-  url('//at.alicdn.com/t/font_552040_8znkxgfwd71ll3di.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_552040_8znkxgfwd71ll3di.svg#iconfont') format('svg');
+  src: url('//at.alicdn.com/t/font_552040_q811lqlqyd9m5cdi.eot');
+  src: url('//at.alicdn.com/t/font_552040_q811lqlqyd9m5cdi.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_552040_q811lqlqyd9m5cdi.woff') format('woff'),
+  url('//at.alicdn.com/t/font_552040_q811lqlqyd9m5cdi.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_552040_q811lqlqyd9m5cdi.svg#iconfont') format('svg');
 }
 .iconfont{
   font-family: "iconfont" !important;
@@ -43,4 +43,8 @@
 // hot
 .icon-hot:before{
   content: "\e688";
+}
+// 标签
+.icon-tag:before{
+  content: "\e636";
 }

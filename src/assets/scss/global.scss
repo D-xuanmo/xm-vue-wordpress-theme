@@ -8,6 +8,14 @@
   color: #fff;
 }
 
+.iconfont-colour {
+  width: 30px;
+  height: 30px;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
+}
+
 body {
   overflow-x: hidden;
   background: $colorGay2;
@@ -15,4 +23,8 @@ body {
   font-family: "PingFangSC-Regular", Microsoft Yahe;
   font-weight: lighter;
   color: $colorTextMain;
+}
+
+.main-wrap{
+  margin: 50px auto 0;
 }

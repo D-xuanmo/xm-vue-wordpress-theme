@@ -1,0 +1,80 @@
+<template>
+  <div class="fr sidebar-wrap">
+    <div class="sidebar-list">
+      <h2 class="title">公告</h2>
+      <div class="content">最新公告</div>
+    </div>
+    <div class="sidebar-list">
+      <h2 class="title">浏览排行</h2>
+      <ul class="list-wrap">
+        <li class="list" v-for="item in sidebarHotArticle" :key="item.key">
+          <a :href="item.link" class="clearfix">
+            <span class="fl ellipsis"># {{ item.title }}</span>
+            <span class="fr"><i class="iconfont icon-hot"></i> {{ item.viewCount }}</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</template>
+<script>
+export default {
+  name: 'sidebar',
+  data: () => ({
+    sidebarHotArticle: [
+      {
+        title: 'before伪类与阿里图标做的图标库before伪类与阿里图标做的图标库',
+        link: 'https://www.xuanmo.xin',
+        viewCount: 10
+      },
+      {
+        title: 'before伪类与阿里图标做的图标库before伪类与阿里图标做的图标库',
+        link: 'https://www.xuanmo.xin',
+        viewCount: 10
+      },
+      {
+        title: 'before伪类与阿里图标做的图标库before伪类与阿里图标做的图标库',
+        link: 'https://www.xuanmo.xin',
+        viewCount: 10
+      },
+      {
+        title: 'before伪类与阿里图标做的图标库before伪类与阿里图标做的图标库',
+        link: 'https://www.xuanmo.xin',
+        viewCount: 10
+      }
+    ]
+  })
+}
+</script>
+<style lang="scss" scoped>
+@import "../../assets/scss/_common.scss";
+.sidebar-wrap{
+  width: 300px;
+
+  .sidebar-list{
+    margin-top: 15px;
+    padding: 0 15px 15px;
+    border-radius: 5px;
+    background: #fff;
+    color: $colorGay3;
+    &:first-of-type{
+      margin-top: 0;
+    }
+
+    .list{
+      margin-top: 10px;
+    }
+
+    .title{
+      margin-bottom: 5px;
+      border-bottom: border-1($colorGay1);
+      font-size: 16px;
+      line-height: 40px;
+    }
+
+    .ellipsis{
+      width: 80%;
+    }
+  }
+}
+</style>

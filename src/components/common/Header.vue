@@ -2,7 +2,7 @@
   <header class="header-wrap">
     <div class="wrap clearfix">
       <div class="fl logo">
-        <h1>Xuanmo Blog</h1>
+        <h1><router-link :to="{ name: 'index' }">{{ $store.state.blogInfo.blogName }}</router-link></h1>
       </div>
       <ul class="fl other-link">
         <li class="list">
@@ -37,8 +37,10 @@
 </template>
 
 <script>
+import store from '@/vuex/store'
 export default {
-  name: 'MyHeader'
+  name: 'myHeader',
+  store
 }
 </script>
 

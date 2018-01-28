@@ -34,7 +34,7 @@ export default {
 @import "../../assets/scss/_common.scss";
 .nav-wrap{
   margin-bottom: 20px;
-  box-shadow: 0 5px 10px #e2e2e2;
+  box-shadow: 0 5px 10px $colorMainBoxShadow;
   background: #fff;
 
   .wrap{

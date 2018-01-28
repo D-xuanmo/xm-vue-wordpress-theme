@@ -36,6 +36,10 @@
   vertical-align: middle;
 }
 
+.ellipsis{
+  @extend %ellipsis;
+}
+
 // 状态显示
 .inline-block {
   display: inline-block;
