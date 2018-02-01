@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'iconfont';  /* project id 552040 */
-  src: url('//at.alicdn.com/t/font_552040_q811lqlqyd9m5cdi.eot');
-  src: url('//at.alicdn.com/t/font_552040_q811lqlqyd9m5cdi.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_552040_q811lqlqyd9m5cdi.woff') format('woff'),
-  url('//at.alicdn.com/t/font_552040_q811lqlqyd9m5cdi.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_552040_q811lqlqyd9m5cdi.svg#iconfont') format('svg');
+  src: url('//at.alicdn.com/t/font_552040_wyp55aqpeux9wwmi.eot');
+  src: url('//at.alicdn.com/t/font_552040_wyp55aqpeux9wwmi.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_552040_wyp55aqpeux9wwmi.woff') format('woff'),
+  url('//at.alicdn.com/t/font_552040_wyp55aqpeux9wwmi.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_552040_wyp55aqpeux9wwmi.svg#iconfont') format('svg');
 }
 .iconfont{
   font-family: "iconfont" !important;
@@ -14,12 +14,15 @@
   -webkit-text-stroke-width: 0.2px;
   -moz-osx-font-smoothing: grayscale;
 }
-// 时间
+// 关于
 .icon-about:before{
   content: "\e63c";
 }
 .icon-about1:before{
   content: "\e645";
+}
+.icon-about2:before{
+  content: "\e61f";
 }
 // 信息
 .icon-message:before{

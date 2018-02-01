@@ -12,15 +12,30 @@ add_action('init', 'remove_redirects');
 // Load scripts
 function load_vue_scripts()
 {
-  wp_enqueue_style('app.css', get_template_directory_uri() . '/static/css/app.a58d5e0df9f4911645af675f1aa59356.css', false, null);
+  wp_enqueue_style('app.css', get_template_directory_uri() . '/static/css/app.9645853892bffdb51a75bce727c4ce2b.css', false, null);
 
-  wp_enqueue_script('manifest.js', get_template_directory_uri() . '/static/js/manifest.5b92d05d6834221e9e86.js', null, null, true);
+  wp_enqueue_script('manifest.js', get_template_directory_uri() . '/static/js/manifest.d90c3a3816b135f91176.js', null, null, true);
 
-  wp_enqueue_script('vendor.js', get_template_directory_uri() . '/static/js/vendor.1f5796b063a100971b87.js', null, null, true);
+  wp_enqueue_script('vendor.js', get_template_directory_uri() . '/static/js/vendor.3cd46fe4b4d5eff9fb44.js', null, null, true);
 
-  wp_enqueue_script('app.js', get_template_directory_uri() . '/static/js/app.e5ef98eb7698ab5d2e81.js', null, null, true);
+  wp_enqueue_script('app.js', get_template_directory_uri() . '/static/js/app.a4a30f08b27f2d712078.js', null, null, true);
 }
 add_action('wp_enqueue_scripts', 'load_vue_scripts', 100);
+
+/**
+ * 自定义上传头像
+ */
+require_once(TEMPLATEPATH . '/include/author-avatars.php');
+
+/**
+ * 主题扩展设置
+ */
+require_once(TEMPLATEPATH . '/include/xm-theme-options.php');
+
+/**
+ * 添加自定义接口
+ */
+require_once(TEMPLATEPATH . '/include/xm-api.php');
 
 /**
  * 关闭自动更新
@@ -46,73 +61,270 @@ function xm_get_post_excerpt($length, $str)
   return wp_trim_words($post_content, $length, $str);
 }
 
-/**
- * 获取文章阅读量
+/*
+ * 自定义登录页面的LOGO链接为首页链接,LOGO提示为网站名称
  */
-function getPostViews($postID)
-{
-  $count_key = 'post_views_count';
-  $count = get_post_meta($postID, $count_key, true);
-  if ($count == '') {
-    delete_post_meta($postID, $count_key);
-    add_post_meta($postID, $count_key, '0');
-    return '0';
-  }
-  return $count . '';
+add_filter('login_headerurl', create_function(false, "return get_bloginfo('url');"));
+add_filter('login_headertitle', create_function(false, "return get_bloginfo('name');"));
+
+/*
+ * 自定义登录页面的LOGO图片
+ */
+function my_custom_login_logo() {
+  echo '
+    <style>
+    .login h1 a {
+      background-image:url("' . get_option('xm_options')['login_logo'] . '");
+      border-radius: 50%;
+    }
+    ' . get_option('xm_options')['login_css'] . '
+    </style>
+  ';
 }
-function setPostViews($postID)
-{
-  $count_key = 'post_views_count';
-  $count = get_post_meta($postID, $count_key, true);
-  if ($count == '') {
-    $count = 0;
-    delete_post_meta($postID, $count_key);
-    add_post_meta($postID, $count_key, '0');
-  } else {
-    $count++;
-    update_post_meta($postID, $count_key, $count);
-  }
-}
+add_action('login_head', 'my_custom_login_logo');
 
 /**
- * 文章发表意见
+ * 给用户添加自定义字段
  */
-function xm_set_post_link($id)
-{
-  $count_key = 'xm_post_link';
-  $count = get_post_meta($id, $count_key, true);
-  if ($count == '') {
-    delete_post_meta($id, $count_key);
-    add_post_meta($id, $count_key, array(
-      'very_good' => 0,
-      'good'      => 0,
-      'commonly'  => 0,
-      'bad'       => 0,
-      'very_bad'  => 0
-    ));
+function xm_user_contact($user_contactmethods){
+  unset($user_contactmethods['aim']);
+  unset($user_contactmethods['yim']);
+  unset($user_contactmethods['jabber']);
+  $user_contactmethods['qq'] = 'QQ链接';
+  $user_contactmethods['github_url'] = 'GitHub';
+  $user_contactmethods['wechat_num'] = '微信号';
+  $user_contactmethods['wechat_img'] = '微信二维码链接';
+  $user_contactmethods['sina_url'] = '新浪微博';
+  return $user_contactmethods;
+}
+add_filter('user_contactmethods', 'xm_user_contact');
+
+/*
+ * 解决php添加分号斜杠问题
+ */
+if (get_magic_quotes_gpc()) {
+  function stripslashes_deep($value)
+  {
+    $value = is_array($value) ?
+      array_map('stripslashes_deep', $value) :
+      stripslashes($value);
+    return $value;
   }
+  $_POST = array_map('stripslashes_deep', $_POST);
+  $_GET = array_map('stripslashes_deep', $_GET);
+  $_COOKIE = array_map('stripslashes_deep', $_COOKIE);
 }
-function xm_post_link()
+
+/*
+ * 添加自定义编辑器按钮
+ */
+function add_my_media_button()
 {
-  $count_key = 'xm_post_link';
-  $id = $_POST['post_id'];
-  $key = $_POST['post_key'];
-  $count = get_post_meta($id, $count_key, true);
-  update_post_meta($id, $count_key, array_merge($count, array($key => $count[$key] + 1)));
-  echo $count[$key] + 1;
-  die();
+ echo '<a href="javascript:;" id="html-transform" class="button">html尖括号转义</a>';
 }
-add_action( 'wp_ajax_xm_post_link', 'xm_post_link' );
-add_action( 'wp_ajax_nopriv_xm_post_link', 'xm_post_link' );
+function appthemes_add_quicktags()
+{
+?>
+  <script>
+    var aLanguage = ['html', 'css', 'sass', 'scss', 'less', 'javascript', 'php', 'json', 'git'];
+    for( var i = 0, length = aLanguage.length; i < length; i++ ) {
+      QTags.addButton(aLanguage[i], aLanguage[i], '\n<pre class="line-numbers language-' + aLanguage[i] + '"><code class="language-' + aLanguage[i] + '">\n', '\n</code></pre>\n');
+    }
+    QTags.addButton('c-code', 'c-code', '<span class="code">', '</span>');
+    // 添加html转换容器
+    jQuery(function() {
+      jQuery('#html-transform').click(function() {
+        jQuery('body').append(
+          '<div id="xm-transform">'
+          + '<textarea name="name" rows="15" cols="100"></textarea>'
+          + '<span id="xm-transfom-btn">转换</span>'
+          + '<span id="xm-copy-btn">复制</span>'
+          + '</div>'
+        );
+        jQuery('#xm-transform')
+          .css({
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            zIndex: 99999,
+            width: '100%',
+            height: '100%',
+            background: 'rgba(255,255,255,0.7)'
+          })
+          .children('textarea').css({
+            resize: 'none',
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            width: '60%',
+            height: '300px',
+            transform: 'translate(-50%, -50%)'
+          })
+          .siblings('span').css({
+            position: 'absolute',
+            top: '90%',
+            left: '50%',
+            width: '100px',
+            height: '40px',
+            borderRadius: '5px',
+            background: '#2196F3',
+            textAlign: 'center',
+            lineHeight: '40px',
+            color: '#fff',
+            cursor: 'pointer'
+          });
+        jQuery('textarea').click(function(e) { e.stopPropagation(); });
+        jQuery('#xm-transfom-btn')
+          .css('transform', 'translateX(-115%)')
+          .click(function(e) {
+            e.stopPropagation();
+            jQuery(this).siblings('textarea').val(function() {
+              return jQuery(this).val().replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            });
+          });
+        jQuery('#xm-copy-btn').click(function(e) {
+          e.stopPropagation();
+          jQuery(this).siblings('textarea')[0].select();
+          if (document.execCommand('Copy')) {
+            jQuery(this).text('复制成功');
+          }
+        });
+        jQuery('#xm-transform').click(function() {
+          jQuery(this).remove();
+        });
+      });
+    });
+  </script>
+<?php
+}
+add_action('media_buttons', 'add_my_media_button');
+add_action('admin_print_footer_scripts', 'appthemes_add_quicktags');
 
-/**
- * 添加自定义接口
+/*
+ * 自定义表情路径和名称
  */
-require get_template_directory() . '/include/xm-api.php';
-
-/**
- * 自定义上传头像
- */
-require get_template_directory() . '/include/author-avatars.php';
+function custom_smilies_src($src, $img)
+{
+  return get_bloginfo('template_directory') . '/images/smilies/' . $img;
+}
+add_filter('smilies_src', 'custom_smilies_src', 10, 2);
+if (!isset($wpsmiliestrans)) {
+  $wpsmiliestrans = array(
+    "/weixiao"     => "weixiao.gif",
+    "/nanguo"      => "nanguo.gif",
+    "/qiudale"     => "qiudale.gif",
+    "/penxue"      => "penxue.gif",
+    "/piezui"      => "piezui.gif",
+    "/aoman"       => "aoman.gif",
+    "/baiyan"      => "baiyan.gif",
+    "/bishi"       => "bishi.gif",
+    "/bizui"       => "bizui.gif",
+    "/cahan"       => "cahan.gif",
+    "/ciya"        => "ciya.gif",
+    "/dabing"      => "dabing.gif",
+    "/daku"        => "daku.gif",
+    "/deyi"        => "deyi.gif",
+    "/doge"        => "doge.gif",
+    "/fadai"       => "fadai.gif",
+    "/fanu"        => "fanu.gif",
+    "/fendou"      => "fendou.gif",
+    "/ganga"       => "ganga.gif",
+    "/guzhang"     => "guzhang.gif",
+    "/haixiu"      => "haixiu.gif",
+    "/hanxiao"     => "hanxiao.gif",
+    "/haqian"      => "haqian.gif",
+    "/huaixiao"    => "huaixiao.gif",
+    "/jie"         => "jie.gif",
+    "/jingkong"    => "jingkong.gif",
+    "/jingxi"      => "jingxi.gif",
+    "/jingya"      => "jingya.gif",
+    "/keai"        => "keai.gif",
+    "/kelian"      => "kelian.gif",
+    "/koubi"       => "koubi.gif",
+    "/ku"          => "ku.gif",
+    "/kuaikule"    => "kuaikule.gif",
+    "/kulou"       => "kulou.gif",
+    "/kun"         => "kun.gif",
+    "/leiben"      => "leiben.gif",
+    "/lenghan"     => "lenghan.gif",
+    "/liuhan"      => "liuhan.gif",
+    "/liulei"      => "liulei.gif",
+    "/qiaoda"      => "qiaoda.gif",
+    "/qinqin"      => "qinqin.gif",
+    "/saorao"      => "saorao.gif",
+    "/se"          => "se.gif",
+    "/shuai"       => "shuai.gif",
+    "/shui"        => "shui.gif",
+    "/tiaopi"      => "tiaopi.gif",
+    "/touxiao"     => "touxiao.gif",
+    "/tu"          => "tu.gif",
+    "/tuosai"      => "tuosai.gif",
+    "/weiqu"       => "weiqu.gif",
+    "/wozuimei"    => "wozuimei.gif",
+    "/wunai"       => "wunai.gif",
+    "/xia"         => "xia.gif",
+    "/xiaojiujie"  => "xiaojiujie.gif",
+    "/xiaoku"      => "xiaoku.gif",
+    "/xieyanxiao"  => "xieyanxiao.gif",
+    "/xu"          => "xu.gif",
+    "/yinxian"     => "yinxian.gif",
+    "/yiwen"       => "yiwen.gif",
+    "/zuohengheng" => "zuohengheng.gif",
+    "/youhengheng" => "youhengheng.gif",
+    "/yun"         => "yun.gif",
+    "/zaijian"     => "zaijian.gif",
+    "/zhayanjian"  => "zhayanjian.gif",
+    "/zhemo"       => "zhemo.gif",
+    "/zhouma"      => "zhouma.gif",
+    "/zhuakuang"   => "zhuakuang.gif",
+    "/aini"        => "aini.gif",
+    "/baoquan"     => "baoquan.gif",
+    "/gouyin"      => "gouyin.gif",
+    "/qiang"       => "qiang.gif",
+    "OK"           => "OK.gif",
+    "/woshou"      => "woshou.gif",
+    "/quantou"     => "quantou.gif",
+    "/shengli"     => "shengli.gif",
+    "/aixin"       => "aixin.gif",
+    "/bangbangtang"=> "bangbangtang.gif",
+    "/baojin"      => "baojin.gif",
+    "/caidao"      => "caidao.gif",
+    "/lanqiu"      => "lanqiu.gif",
+    "/chi"         => "chi.gif",
+    "/dan"         => "dan.gif",
+    "/haobang"     => "haobang.gif",
+    "/hecai"       => "hecai.gif",
+    "/hexie"       => "hexie.gif",
+    "/juhua"       => "juhua.gif",
+    "/pijiu"       => "pijiu.gif",
+    "/shouqiang"   => "shouqiang.gif",
+    "/xiaoyanger"  => "xiaoyanger.gif",
+    "/xigua"       => "xigua.gif",
+    "/yangtuo"     => "yangtuo.gif",
+    "/youling"     => "youling.gif",
+    '/色'           => 'icon_razz.gif',
+    '/难过'         => 'icon_sad.gif',
+    '/闭嘴'         => 'icon_evil.gif',
+    '/吐舌头'       => 'icon_exclaim.gif',
+    '/微笑'         => 'icon_smile.gif',
+    '/可爱'         => 'icon_redface.gif',
+    '/kiss'        => 'icon_biggrin.gif',
+    '/惊讶'         => 'icon_surprised.gif',
+    '/饥饿'         => 'icon_eek.gif',
+    '/晕'           => 'icon_confused.gif',
+    '/酷'           => 'icon_cool.gif',
+    '/坏笑'         => 'icon_lol.gif',
+    '/发怒'         => 'icon_mad.gif',
+    '/憨笑'         => 'icon_twisted.gif',
+    '/萌萌哒'       => 'icon_rolleyes.gif',
+    '/吃东西'       => 'icon_wink.gif',
+    '/色咪咪'       => 'icon_idea.gif',
+    '/囧'          => 'icon_arrow.gif',
+    '/害羞'        => 'icon_neutral.gif',
+    '/流泪'        => 'icon_cry.gif',
+    '/流汗'        => 'icon_question.gif',
+    '/你懂的'      => 'icon_mrgreen.gif'
+  );
+}
 
 ?>

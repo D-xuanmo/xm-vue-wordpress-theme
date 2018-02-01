@@ -1,8 +1,8 @@
 <template>
   <div class="fr sidebar-wrap">
-    <div class="sidebar-list">
+    <div class="sidebar-list" v-if="blogInfo.sidebarNoti">
       <h2 class="title">公告</h2>
-      <div class="content">最新公告</div>
+      <div class="content">{{ blogInfo.sidebarNoti }}</div>
     </div>
     <div class="sidebar-list">
       <h2 class="title">浏览排行</h2>
@@ -18,8 +18,11 @@
   </div>
 </template>
 <script>
+import store from '@/vuex/store'
+import { mapState } from 'vuex'
 export default {
   name: 'sidebar',
+  store,
   data: () => ({
     sidebarHotArticle: [
       {
@@ -43,7 +46,10 @@ export default {
         viewCount: 10
       }
     ]
-  })
+  }),
+  computed: {
+    ...mapState(['blogInfo'])
+  }
 }
 </script>
 <style lang="scss" scoped>

@@ -3,8 +3,8 @@
     <div class="wrap">
       <div class="footer-top clearfix">
         <div class="fl logo">
-          <div class="footer-logo">Xuanmo Blog</div>
-          <div class="introduct">-生命不息，折腾不止，年轻就要多折腾！<br>-努力不一定有好的结果，不努力肯定没有结果，年轻就是奋斗的资本，别让以后的自己后悔。</div>
+          <div class="footer-logo">{{ blogInfo.blogName }}</div>
+          <div class="introduct" v-html="blogInfo.footerText"></div>
         </div>
         <div class="fr link-logo">
           <a href="http://cn.wordpress.org">
@@ -25,18 +25,21 @@
       </div>
       <!-- 版权 -->
       <div class="copyright clearfix">
-        <div class="fl">Copyright © Xuanmo Blog All Rights Reserved. 京ICP备15011150号-2 站点地图</div>
+        <div class="fl" v-html="blogInfo.copyright"></div>
         <div class="fr">Theme by <a href="https://www.xuanmo.xin">Xuanmo</a></div>
       </div>
     </div>
   </div>
 </template>
 <script>
+import store from '@/vuex/store'
+import { mapState } from 'vuex'
 export default {
   name: 'myFooter',
-  data: () => ({
-
-  })
+  store,
+  computed: {
+    ...mapState(['blogInfo'])
+  }
 }
 </script>
 <style lang="scss" scoped>

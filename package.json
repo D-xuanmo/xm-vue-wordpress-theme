@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "axios": "^0.17.1",
+    "html2canvas-proxy": "^1.0.0",
     "node-sass": "^4.7.2",
     "sass-loader": "^6.0.6",
     "vue": "^2.5.2",

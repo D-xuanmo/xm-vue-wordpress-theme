@@ -1,5 +1,6 @@
 <template lang="html">
-  <section class="wrap main-wrap clearfix">
+  <loading v-if="!bGlobalRequest"></loading>
+  <section class="wrap main-wrap clearfix" v-else>
     <!-- 左边文章区域 -->
     <div class="fl content-wrap">
       <header class="main-header">最新文章</header>
@@ -27,6 +28,10 @@
           <p class="summary">{{ item.articleInfor.summary }}</p>
         </div>
       </article>
+      <div class="more-btn">
+        <img v-if="bMoreList" src="../../../static/images/bars.svg" alt="" width="40">
+        <span v-else @click="bClick && getMoreList()">{{ sMoreBtnText }}</span>
+      </div>
     </div>
     <!-- 侧边栏 -->
     <sidebar></sidebar>
@@ -35,25 +40,58 @@
 
 <script>
 import sidebar from '@/components/common/Sidebar'
+import loading from '@/components/common/Loading'
 import axios from 'axios'
 export default {
   name: 'index',
   components: {
-    sidebar
+    sidebar,
+    loading
   },
   data: () => ({
-    articleList: []
+    articleList: [],
+    currentNum: 1,
+    bGlobalRequest: false,
+    bMoreList: false,
+    bClick: true,
+    sMoreBtnText: '加载更多...'
   }),
-  mounted () {
+  created () {
     axios.get('/wordpress-4.7.4/wp-json/wp/v2/posts', {
       params: {
-        page: 1,
-        per_page: 3,
+        page: this.currentNum,
+        per_page: 5,
         _embed: true
       }
     }).then((res) => {
-      this.articleList = res.data
+      this.articleList = [...this.articleList, ...res.data]
+      this.bGlobalRequest = true
+      if (this.articleList[0].totalArticle === this.currentNum) {
+        this.bClick = false
+        this.sMoreBtnText = '我是有底线的^_^'
+      }
     }).catch((err) => console.log(err))
+  },
+  methods: {
+    // 加载更多
+    getMoreList () {
+      this.bMoreList = true
+      this.currentNum++
+      axios.get('/wordpress-4.7.4/wp-json/wp/v2/posts', {
+        params: {
+          page: this.currentNum,
+          per_page: 5,
+          _embed: true
+        }
+      }).then((res) => {
+        if (this.articleList[0].totalArticle === this.currentNum) {
+          this.bClick = false
+          this.sMoreBtnText = '我是有底线的^_^'
+        }
+        this.articleList = [...this.articleList, ...res.data]
+        this.bMoreList = false
+      }).catch((err) => console.log(err))
+    }
   }
 }
 </script>
@@ -69,6 +107,21 @@ export default {
     border-radius: 5px 5px 0 0;
     background: #fff;
     line-height: 40px;
+  }
+
+  // 加载更多按钮
+  .more-btn{
+    margin-top: 30px;
+    text-align: center;
+    color: #fff;
+
+    span{
+      display: inline-block;
+      padding: 10px 30px;
+      border-radius: 5px;
+      background: $colorBlue;
+      cursor: pointer;
+    }
   }
 
   // 文章列表
@@ -90,6 +143,10 @@ export default {
     .thumbnail{
       float: left;
       margin-right: 10px;
+    }
+
+    .title{
+      font-size: 16px;
     }
 
     .summary{

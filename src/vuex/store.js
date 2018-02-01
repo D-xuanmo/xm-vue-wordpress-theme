@@ -4,14 +4,21 @@ import axios from 'axios'
 
 Vue.use(Vuex)
 
-let state = {
+const state = {
   blogInfo: {}
 }
 
-axios.get('/wordpress-4.7.4/wp-json/xm-blog/v1/info')
-  .then((res) => (state.blogInfo = res.data))
-  .catch((res) => (state.blogInfo = { msg: '请求出错' }))
+const mutations = {
+  getInfo (state) {
+    axios.get('/wordpress-4.7.4/wp-json/xm-blog/v1/info')
+      .then((res) => {
+        state.blogInfo = res.data
+        console.log(state.blogInfo)
+      }).catch((res) => (state.blogInfo = { msg: '请求出错' }))
+  }
+}
 
 export default new Vuex.Store({
-  state
+  state,
+  mutations
 })
