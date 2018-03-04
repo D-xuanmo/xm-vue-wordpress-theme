@@ -1,10 +1,10 @@
 <template>
   <div class="fr sidebar-wrap">
-    <div class="sidebar-list" v-if="blogInfo.sidebarNoti">
+    <div class="sidebar-list" v-if="blogInfo.setExtend.sidebar_notice">
       <h2 class="title">公告</h2>
-      <div class="content">{{ blogInfo.sidebarNoti }}</div>
+      <div class="content">{{ blogInfo.setExtend.sidebar_notice }}</div>
     </div>
-    <div class="sidebar-list">
+    <!-- <div class="sidebar-list">
       <h2 class="title">浏览排行</h2>
       <ul class="list-wrap">
         <li class="list" v-for="item in sidebarHotArticle" :key="item.key">
@@ -14,7 +14,7 @@
           </a>
         </li>
       </ul>
-    </div>
+    </div> -->
   </div>
 </template>
 <script>
@@ -48,7 +48,9 @@ export default {
     ]
   }),
   computed: {
-    ...mapState(['blogInfo'])
+    ...mapState({
+      blogInfo: state => state.info.blogInfo
+    })
   }
 }
 </script>

@@ -5,23 +5,12 @@
         <h1><router-link :to="{ name: 'index' }">{{ blogInfo.blogName }}</router-link></h1>
       </div>
       <ul class="fl other-link">
-        <li class="list">
-          <a href="#"><i class="iconfont icon-about"></i>关于我</a>
-        </li>
-        <li class="list">
-          <a href="#"><i class="iconfont icon-message"></i>留言板</a>
-        </li>
-        <li class="list">
-          <a href="#"><i class="iconfont icon-about1"></i>邻居</a>
-        </li>
-        <li class="list">
-          <a href="#"><i class="iconfont icon-link"></i>友链申请</a>
+        <li class="list" v-for="item in topNavList" :key="item.key">
+          <router-link :to="{ name: 'page', params: { id: item.object_id }}"><i :class="`iconfont ${item.attr_title}`"></i>{{ item.title }}</router-link>
         </li>
       </ul>
       <div class="fl search-wrap">
-        <form action="#">
-          <input type="text" name="" value="" placeholder="搜索...">
-        </form>
+        <input type="text" name="" v-model="searchRes" placeholder="搜索..." @keyup.prevent.enter="search()">
       </div>
       <div class="fr contact-wrap">
         <div class="contact-btn"><i class="iconfont icon-github1"></i> 联系我</div>
@@ -36,7 +25,7 @@
 
     <!-- banner -->
     <div class="banner-wrap">
-      <img :src="blogInfo.banner" height="300" alt="">
+      <img :src="blogInfo.setExtend.big_banner" alt="banner">
     </div>
 
     <!-- 导航容器 -->
@@ -44,7 +33,7 @@
       <div class="wrap">
         <!-- 头像 -->
         <div class="head-portrait">
-          <img :src="JSON.stringify(blogInfo) !== '{}' ? blogInfo.adminPic['full'] : ''" width="150" alt="">
+          <img :src="blogInfo.adminPic.full" width="150" alt="">
         </div>
         <!-- 导航 -->
         <nav class="nav-list-wrap">
@@ -53,10 +42,12 @@
               <router-link :to="{ name: 'index' }">首页</router-link>
             </li>
             <li class="nav-list" v-for="item in navList" :key="item.key">
-              <router-link :to="{ name: 'list', params: { id: item.ID } }">{{ item.title }}</router-link>
+              <router-link v-if="item.type === 'page'" :to="{ name: 'page', params: { id: item.ID } }">{{ item.title }}</router-link>
+              <router-link v-else :to="{ name: 'category', params: { id: item.ID, title: item.title } }">{{ item.title }}</router-link>
               <ul class="sub-nav-wrap" v-if="item.children.length !== 0">
                 <li class="sub-nav-list" v-for="subNav in item.children" :key="subNav.key">
-                  <router-link :to="{ name: 'list', params: { id: subNav.ID } }">{{ subNav.title }}</router-link>
+                  <router-link v-if="subNav.type === 'page'" :to="{ name: 'page', params: { id: subNav.ID } }">{{ subNav.title }}</router-link>
+                  <router-link v-else :to="{ name: 'category', params: { id: subNav.ID, title: subNav.title } }">{{ subNav.title }}</router-link>
                 </li>
               </ul>
             </li>
@@ -68,31 +59,45 @@
 </template>
 
 <script>
-import axios from 'axios'
 import store from '@/vuex/store'
-import { mapState, mapMutations } from 'vuex'
+import { mapState } from 'vuex'
 export default {
   name: 'myHeader',
   store,
   data: () => ({
-    navList: {}
+    searchRes: ''
   }),
   created () {
-    // 获取导航菜单
-    axios.get(`/wordpress-4.7.4/wp-json/xm-blog/v1/menu`).then((res) => (this.navList = res.data)).catch((err) => console.log(err))
-    this.getInfo()
-  },
-  computed: {
-    ...mapState(['blogInfo'])
   },
   methods: {
-    ...mapMutations(['getInfo'])
+    // 搜索
+    search () {
+      this.$router.push({
+        name: 'category',
+        query: {
+          s: this.searchRes,
+          type: 'search'
+        }
+      })
+      this.searchRes = ''
+    }
+  },
+  computed: {
+    ...mapState({
+      blogInfo: state => state.info.blogInfo,
+      navList: state => state.info.navList,
+      topNavList: state => state.info.topNavList
+    })
   }
 }
 </script>
 
 <style lang="scss">
 @import "../../assets/scss/_common.scss";
+.router-link-exact-active{
+  color: $colorBlue;
+}
+
 .header-wrap{
   background: #fff;
 
@@ -203,17 +208,30 @@ export default {
     }
 
     .nav-list{
+      position: relative;
+
+      &:hover{
+        .sub-nav-wrap{
+          display: block;
+        }
+      }
+
       > a{
         line-height: 60px;
-
-        &.router-link-exact-active{
-          color: $colorBlue;
-        }
       }
     }
 
     .sub-nav-wrap{
       display: none;
+      position: absolute;
+      z-index: 99999;
+      top: 60px;
+      left: 50%;
+      width: 200px;
+      background: #fff;
+      text-align: center;
+      line-height: 40px;
+      transform: translateX(-50%);
     }
   }
 }

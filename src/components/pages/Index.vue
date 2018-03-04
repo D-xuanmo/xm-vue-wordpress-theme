@@ -1,5 +1,5 @@
 <template lang="html">
-  <loading v-if="!bGlobalRequest"></loading>
+  <loading v-if="bGlobalRequest"></loading>
   <section class="wrap main-wrap clearfix" v-else>
     <!-- 左边文章区域 -->
     <div class="fl content-wrap">
@@ -25,7 +25,7 @@
             <span><i class="iconfont icon-message"></i>{{ item.articleInfor.commentCount }}</span>
             <span><i class="iconfont icon-zan"></i>{{ item.articleInfor.xmLink.very_good }}</span>
           </div>
-          <p class="summary">{{ item.articleInfor.summary }}</p>
+          <p class="summary">{{ item.articleInfor.summary }} <router-link :to="{ name: 'single', params: { id: item.id } }" class="c-blue">阅读详情&gt;&gt;</router-link></p>
         </div>
       </article>
       <div class="more-btn">
@@ -41,56 +41,48 @@
 <script>
 import sidebar from '@/components/common/Sidebar'
 import loading from '@/components/common/Loading'
-import axios from 'axios'
+import store from '@/vuex/store'
+import { mapState } from 'vuex'
 export default {
   name: 'index',
   components: {
     sidebar,
     loading
   },
-  data: () => ({
-    articleList: [],
-    currentNum: 1,
-    bGlobalRequest: false,
-    bMoreList: false,
-    bClick: true,
-    sMoreBtnText: '加载更多...'
-  }),
+  store,
   created () {
-    axios.get('/wordpress-4.7.4/wp-json/wp/v2/posts', {
-      params: {
-        page: this.currentNum,
-        per_page: 5,
-        _embed: true
-      }
-    }).then((res) => {
-      this.articleList = [...this.articleList, ...res.data]
-      this.bGlobalRequest = true
-      if (this.articleList[0].totalArticle === this.currentNum) {
-        this.bClick = false
-        this.sMoreBtnText = '我是有底线的^_^'
-      }
-    }).catch((err) => console.log(err))
+    store.dispatch('getList', {
+      key: '',
+      val: '',
+      currentNum: 1
+    })
+    store.commit('getList', {
+      articleList: [],
+      bGlobalRequest: true
+    })
+  },
+  computed: {
+    ...mapState({
+      articleList: state => state.category.articleList,
+      bGlobalRequest: state => state.category.bGlobalRequest,
+      currentNum: state => state.category.currentNum,
+      bMoreList: state => state.category.bMoreList,
+      bClick: state => state.category.bClick,
+      sMoreBtnText: state => state.category.sMoreBtnText,
+      key: state => state.category.key
+    })
   },
   methods: {
     // 加载更多
     getMoreList () {
-      this.bMoreList = true
-      this.currentNum++
-      axios.get('/wordpress-4.7.4/wp-json/wp/v2/posts', {
-        params: {
-          page: this.currentNum,
-          per_page: 5,
-          _embed: true
-        }
-      }).then((res) => {
-        if (this.articleList[0].totalArticle === this.currentNum) {
-          this.bClick = false
-          this.sMoreBtnText = '我是有底线的^_^'
-        }
-        this.articleList = [...this.articleList, ...res.data]
-        this.bMoreList = false
-      }).catch((err) => console.log(err))
+      store.dispatch('getList', {
+        key: '',
+        val: '',
+        currentNum: ++store.state.category.currentNum
+      })
+      store.commit('getList', {
+        bMoreList: true
+      })
     }
   }
 }
@@ -150,6 +142,7 @@ export default {
     }
 
     .summary{
+      line-height: 1.8;
       word-break: break-all;
     }
 

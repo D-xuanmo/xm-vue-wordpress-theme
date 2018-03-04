@@ -4,7 +4,13 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import Prism from '../static/js/prism'
+import VeeValidate, { Validator } from 'vee-validate'
+import zh from 'vee-validate/dist/locale/zh_CN'
+
 import '../static/css/prism.css'
+
+Validator.localize('zh_CN', zh)
+Vue.use(VeeValidate)
 
 Vue.config.productionTip = false
 
@@ -15,6 +21,9 @@ Vue.directive('highlight', (el) => {
     Prism.highlightElement(block)
   })
 })
+
+// router切换每次滚动条到顶部
+router.afterEach(() => window.scrollTo(0, 0))
 
 /* eslint-disable no-new */
 new Vue({

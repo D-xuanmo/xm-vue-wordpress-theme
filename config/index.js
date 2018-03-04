@@ -11,11 +11,11 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/wordpress-4.7.4': {
-        target: 'http://localhost:8888',
+      '/wp-json': {
+        target: 'http://blog:5300',
         changeOrigin: true,
         pathRewrite: {
-          '^/wordpress-4.7.4': 'http://localhost:8888/wordpress-4.7.4'
+          '^/wp-json': 'http://blog:5300/wp-json'
         }
       }
     },

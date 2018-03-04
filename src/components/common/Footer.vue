@@ -4,7 +4,7 @@
       <div class="footer-top clearfix">
         <div class="fl logo">
           <div class="footer-logo">{{ blogInfo.blogName }}</div>
-          <div class="introduct" v-html="blogInfo.footerText"></div>
+          <div class="introduct" v-html="blogInfo.setExtend.footer_text"></div>
         </div>
         <div class="fr link-logo">
           <a href="http://cn.wordpress.org">
@@ -25,20 +25,20 @@
       </div>
       <!-- 版权 -->
       <div class="copyright clearfix">
-        <div class="fl" v-html="blogInfo.copyright"></div>
+        <div class="fl" v-html="blogInfo.setExtend.footer_copyright"></div>
         <div class="fr">Theme by <a href="https://www.xuanmo.xin">Xuanmo</a></div>
       </div>
     </div>
   </div>
 </template>
 <script>
-import store from '@/vuex/store'
 import { mapState } from 'vuex'
 export default {
   name: 'myFooter',
-  store,
   computed: {
-    ...mapState(['blogInfo'])
+    ...mapState({
+      blogInfo: state => state.info.blogInfo
+    })
   }
 }
 </script>
