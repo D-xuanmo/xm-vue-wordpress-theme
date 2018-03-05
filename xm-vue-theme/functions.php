@@ -12,13 +12,13 @@ add_action('init', 'remove_redirects');
 // Load scripts
 function load_vue_scripts()
 {
-  wp_enqueue_style('app.css', get_template_directory_uri() . '/static/css/app.9645853892bffdb51a75bce727c4ce2b.css', false, null);
+  wp_enqueue_style('app.css', get_template_directory_uri() . '/static/css/app.bee8604e28d1c74876f17f5fa70a863b.css', false, null);
 
-  wp_enqueue_script('manifest.js', get_template_directory_uri() . '/static/js/manifest.d90c3a3816b135f91176.js', null, null, true);
+  wp_enqueue_script('manifest.js', get_template_directory_uri() . '/static/js/manifest.65ce285847e160df6608.js', null, null, true);
 
-  wp_enqueue_script('vendor.js', get_template_directory_uri() . '/static/js/vendor.3cd46fe4b4d5eff9fb44.js', null, null, true);
+  wp_enqueue_script('vendor.js', get_template_directory_uri() . '/static/js/vendor.fcab0834f307368f720c.js', null, null, true);
 
-  wp_enqueue_script('app.js', get_template_directory_uri() . '/static/js/app.a4a30f08b27f2d712078.js', null, null, true);
+  wp_enqueue_script('app.js', get_template_directory_uri() . '/static/js/app.d9729705b453c19f0db4.js', null, null, true);
 }
 add_action('wp_enqueue_scripts', 'load_vue_scripts', 100);
 
@@ -74,10 +74,10 @@ function my_custom_login_logo() {
   echo '
     <style>
     .login h1 a {
-      background-image:url("' . get_option('xm_options')['login_logo'] . '");
+      background-image:url("' . get_option('xm_vue_options')['login_logo'] . '");
       border-radius: 50%;
     }
-    ' . get_option('xm_options')['login_css'] . '
+    ' . get_option('xm_vue_options')['login_css'] . '
     </style>
   ';
 }
@@ -114,6 +114,11 @@ if (get_magic_quotes_gpc()) {
   $_GET = array_map('stripslashes_deep', $_GET);
   $_COOKIE = array_map('stripslashes_deep', $_COOKIE);
 }
+
+/**
+ * 允许未登录评论
+ */
+add_filter( 'rest_allow_anonymous_comments', '__return_true' );
 
 /*
  * 添加自定义编辑器按钮
@@ -205,7 +210,7 @@ add_action('admin_print_footer_scripts', 'appthemes_add_quicktags');
  */
 function custom_smilies_src($src, $img)
 {
-  return get_bloginfo('template_directory') . '/images/smilies/' . $img;
+  return get_bloginfo('template_directory') . '/static/images/smilies/' . $img;
 }
 add_filter('smilies_src', 'custom_smilies_src', 10, 2);
 if (!isset($wpsmiliestrans)) {
@@ -327,4 +332,38 @@ if (!isset($wpsmiliestrans)) {
   );
 }
 
+/*
+ * 评论区@功能
+ */
+function comment_add_at( $comment_text, $comment = '') {
+  if( $comment->comment_parent > 0) {
+    $comment_text = '@<a href="#comment-' . $comment->comment_parent . '" style="color: #16C0F8;">' . get_comment_author( $comment->comment_parent ) . '</a> ' . $comment_text;
+  }
+  return $comment_text;
+}
+add_filter( 'comment_text' , 'comment_add_at', 20, 2);
+
+/**
+ * 禁止emoji表情
+ */
+function disable_emojis()
+{
+  remove_action('wp_head', 'print_emoji_detection_script', 7);
+  remove_action('admin_print_scripts', 'print_emoji_detection_script');
+  remove_action('wp_print_styles', 'print_emoji_styles');
+  remove_action('admin_print_styles', 'print_emoji_styles');
+  remove_filter('the_content_feed', 'wp_staticize_emoji');
+  remove_filter('comment_text_rss', 'wp_staticize_emoji');
+  remove_filter('wp_mail', 'wp_staticize_emoji_for_email');
+  add_filter('tiny_mce_plugins', 'disable_emojis_tinymce');
+}
+function disable_emojis_tinymce($plugins)
+{
+  if (is_array($plugins)) {
+    return array_diff($plugins, array( 'wpemoji' ));
+  } else {
+    return array();
+  }
+}
+add_action('init', 'disable_emojis');
 ?>

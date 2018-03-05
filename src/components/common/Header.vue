@@ -1,16 +1,16 @@
 <template>
   <header class="header-wrap">
-    <div class="wrap clearfix">
+    <div class="hd-top wrap clearfix">
       <div class="fl logo">
         <h1><router-link :to="{ name: 'index' }">{{ blogInfo.blogName }}</router-link></h1>
       </div>
-      <ul class="fl other-link">
+      <ul class="fl other-link hide-1023px">
         <li class="list" v-for="item in topNavList" :key="item.key">
           <router-link :to="{ name: 'page', params: { id: item.object_id }}"><i :class="`iconfont ${item.attr_title}`"></i>{{ item.title }}</router-link>
         </li>
       </ul>
-      <div class="fl search-wrap">
-        <input type="text" name="" v-model="searchRes" placeholder="搜索..." @keyup.prevent.enter="search()">
+      <div class="fl search-wrap" :class="{ show: bShowSearch }" @click="closeSearch()">
+        <input type="text" name="" v-model="searchRes" placeholder="搜索..." @keyup.prevent.enter="search()" @click.stop>
       </div>
       <div class="fr contact-wrap">
         <div class="contact-btn"><i class="iconfont icon-github1"></i> 联系我</div>
@@ -21,6 +21,10 @@
         <a href="#"><i class="iconfont icon-sina"></i></a>
         <a href="#"><i class="iconfont icon-email2"></i></a> -->
       </div>
+      <div class="icon-wrap clearfix">
+        <i class="fl iconfont icon-search hide" @click="showSearch()"></i>
+        <i class="fl iconfont icon-menu hide" @click="showMenu()"></i>
+      </div>
     </div>
 
     <!-- banner -->
@@ -29,23 +33,26 @@
     </div>
 
     <!-- 导航容器 -->
-    <div class="nav-wrap">
+    <div class="nav-wrap" :class="{ active: bFloatHead }">
       <div class="wrap">
         <!-- 头像 -->
         <div class="head-portrait">
-          <img :src="blogInfo.adminPic.full" width="150" alt="">
+          <img v-show="!bFloatHead" :src="blogInfo.adminPic.full" width="150" alt="">
+          <router-link v-show="bFloatHead" class="float-title" :to="{ name: 'index' }">{{ blogInfo.blogName }}</router-link>
         </div>
         <!-- 导航 -->
         <nav class="nav-list-wrap">
+          <i class="hide block iconfont icon-close" @click="closeMenu()"></i>
           <ul class="list-wrap">
             <li class="nav-list">
               <router-link :to="{ name: 'index' }">首页</router-link>
             </li>
-            <li class="nav-list" v-for="item in navList" :key="item.key">
-              <router-link v-if="item.type === 'page'" :to="{ name: 'page', params: { id: item.ID } }">{{ item.title }}</router-link>
-              <router-link v-else :to="{ name: 'category', params: { id: item.ID, title: item.title } }">{{ item.title }}</router-link>
+            <li class="nav-list" v-for="item in navList" :key="item.key" @click="showSubMenu($event)">
+              <router-link v-if="item.type === 'page'" :to="{ name: 'page', params: { id: item.ID } }" @click.native.stop="closeMenu()">{{ item.title }}</router-link>
+              <router-link v-else-if="item.children.length === 0" :to="{ name: 'category', params: { id: item.ID, title: item.title } }" @click.native.stop="closeMenu()">{{ item.title }}</router-link>
+              <a v-else href="javascript:;">{{ item.title }}</a>
               <ul class="sub-nav-wrap" v-if="item.children.length !== 0">
-                <li class="sub-nav-list" v-for="subNav in item.children" :key="subNav.key">
+                <li class="sub-nav-list" v-for="subNav in item.children" :key="subNav.key" @click.stop="closeMenu()">
                   <router-link v-if="subNav.type === 'page'" :to="{ name: 'page', params: { id: subNav.ID } }">{{ subNav.title }}</router-link>
                   <router-link v-else :to="{ name: 'category', params: { id: subNav.ID, title: subNav.title } }">{{ subNav.title }}</router-link>
                 </li>
@@ -65,10 +72,10 @@ export default {
   name: 'myHeader',
   store,
   data: () => ({
-    searchRes: ''
+    searchRes: '',
+    bFloatHead: false,
+    bShowSearch: false
   }),
-  created () {
-  },
   methods: {
     // 搜索
     search () {
@@ -80,6 +87,25 @@ export default {
         }
       })
       this.searchRes = ''
+      this.bShowSearch = false
+    },
+    // 移动端显示菜单
+    showMenu () {
+      window.XM.addClass(document.querySelector('.nav-wrap'), 'show')
+    },
+    // 移动端关闭菜单
+    closeMenu () {
+      window.XM.removeClass(document.querySelector('.nav-wrap'), 'show')
+    },
+    // 移动端显示二级菜单
+    showSubMenu (event) {
+      if (event.currentTarget.querySelector('ul')) event.currentTarget.querySelector('ul').style.display = 'block'
+    },
+    showSearch () {
+      this.bShowSearch = true
+    },
+    closeSearch () {
+      this.bShowSearch = false
     }
   },
   computed: {
@@ -88,13 +114,35 @@ export default {
       navList: state => state.info.navList,
       topNavList: state => state.info.topNavList
     })
+  },
+  mounted () {
+    let _this = this
+    let oHeadTop = document.querySelector('.hd-top')
+    let oBackTop = document.querySelector('.icon-back-top')
+    window.addEventListener('scroll', function () {
+      if (this.scrollY > 500) {
+        if (this.innerWidth > 767) {
+          _this.bFloatHead = true
+        } else {
+          window.XM.addClass(oHeadTop, 'active')
+        }
+        window.XM.addClass(oBackTop, 'active')
+      } else {
+        if (this.innerWidth > 767) {
+          _this.bFloatHead = false
+        } else {
+          window.XM.removeClass(oHeadTop, 'active')
+        }
+        window.XM.removeClass(oBackTop, 'active')
+      }
+    }, false)
   }
 }
 </script>
 
 <style lang="scss">
 @import "../../assets/scss/_common.scss";
-.router-link-exact-active{
+.router-link-exact-active:not(.float-title){
   color: $colorBlue;
 }
 
@@ -179,6 +227,24 @@ export default {
   margin-bottom: 20px;
   box-shadow: 0 5px 10px $colorMainBoxShadow;
   background: #fff;
+  &.active{
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    width: 100%;
+
+    .head-portrait{
+      top: 0;
+      bottom: 0;
+      margin: auto;
+      line-height: 60px;
+    }
+
+    .float-title{
+      font-size: 24px;
+    }
+  }
 
   .wrap{
     position: relative;
@@ -232,6 +298,134 @@ export default {
       text-align: center;
       line-height: 40px;
       transform: translateX(-50%);
+    }
+  }
+}
+@media screen and (max-width: 1023px) {
+  .header-wrap{
+    .hd-top{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      &:after{
+        display: none;
+      }
+
+      .logo,
+      .search-wrap,
+      .contact-wrap{
+        float: none;
+      }
+
+      .search-wrap{
+        margin: 0;
+      }
+    }
+  }
+  .nav-wrap{
+    .head-portrait{
+      display: none;
+    }
+
+    .nav-list-wrap{
+      margin-left: 0;
+    }
+  }
+}
+@media screen and (max-width: 767px) {
+  .header-wrap{
+    .hd-top{
+      &.active{
+        box-sizing: border-box;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 99;
+        width: 100%;
+        padding: 0 5%;
+        box-shadow: 0 2px 5px 0 rgba(0,0,0,.12);
+        background: #fff;
+      }
+      .logo{
+        margin: 0;
+      }
+      .contact-wrap{
+        display: none;
+      }
+      .search-wrap{
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 999;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,.4);
+        transition: .7s;
+        transform: translateX(-100%);
+
+        input{
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          width: 80%;
+          transition: .7s .5s;
+          transform: translate(-50%, -50%);
+        }
+
+        &.show{
+          transform: translateX(0px);
+        }
+      }
+    }
+    .banner-wrap{
+      display: none;
+    }
+    .icon-menu,
+    .icon-search{
+      display: block;
+      font-size: 24px;
+    }
+    .icon-menu{
+      margin-left: 20px;
+    }
+  }
+  .nav-wrap{
+    overflow-y: scroll;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    width: 100%;
+    height: 100%;
+    transition: .7s;
+    transform: translateX(-100%);
+    &.show{
+      transform: translateX(0px);
+    }
+    .wrap{
+      height: 100%;
+    }
+    .icon-close{
+      display: block;
+      margin-top: 15px;
+      text-align: right;
+    }
+    .nav-list-wrap{
+      width: 100%;
+      height: 100%;
+      // 一级菜单容器
+      .list-wrap{
+        display: block;
+        height: 100%;
+      }
+      // 二级菜单容器
+      .sub-nav-wrap{
+        position: static;
+        width: 100%;
+        text-align: left;
+        text-indent: 28px;
+        transform: translateX(0px);
+      }
     }
   }
 }

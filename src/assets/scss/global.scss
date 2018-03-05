@@ -28,3 +28,27 @@ body {
 .main-wrap{
   margin: 50px auto 0;
 }
+
+@media screen and (max-width: 1200px) {
+  .hide-1200px{
+    display: none;
+  }
+  .width-full{
+    width: 100% !important;
+  }
+  .wrap{
+    width: 90%;
+  }
+}
+
+@media screen and (max-width: 1023px) {
+  .hide-1023px{
+    display: none;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .main-wrap{
+    margin-top: 20px;
+  }
+}

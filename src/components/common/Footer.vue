@@ -29,6 +29,7 @@
         <div class="fr">Theme by <a href="https://www.xuanmo.xin">Xuanmo</a></div>
       </div>
     </div>
+    <div class="iconfont icon-back-top" @click="backTop()"></div>
   </div>
 </template>
 <script>
@@ -39,6 +40,11 @@ export default {
     ...mapState({
       blogInfo: state => state.info.blogInfo
     })
+  },
+  methods: {
+    backTop () {
+      window.scrollTo(0, 0)
+    }
   }
 }
 </script>
@@ -77,6 +83,38 @@ export default {
   .copyright{
     margin-top: 30px;
     color: $colorGay3;
+  }
+
+  .icon-back-top{
+    position: fixed;
+    right: -100px;
+    bottom: 30px;
+    z-index: 999;
+    font-size: 50px;
+    color: $colorBlue;
+    cursor: pointer;
+    transition: .7s;
+    &.active{
+      right: 30px;
+    }
+  }
+}
+@media screen and (max-width: 1200px) {
+  .footer-wrap{
+    .logo{
+      width: 60%;
+    }
+  }
+}
+@media screen and (max-width: 1023px) {
+  .footer-wrap{
+    .logo{
+      width: 100%;
+    }
+    .link-logo{
+      float: left;
+      margin-top: 10px;
+    }
   }
 }
 </style>

@@ -57,7 +57,7 @@
             <canvas width="120" height="30" class="canvas-img-code" @click="imgCode"></canvas>
           </div>
         </div>
-        <input type="submit" class="submit-btn" @click.prevent="postComment()" value="提交评论">
+        <input type="submit" class="submit-btn" @click.prevent="bSubmit && postComment()" :value="submitText">
       </div>
     </form>
     <!-- 评论列表 -->
@@ -65,11 +65,11 @@
       <li class="comment-list" v-for="item in commentList" :key="item.key">
         <img :src="item.author_avatar_urls[96]" class="list-gravatar" width="60" height="60" alt="">
         <p class="list-header">
-          <a :href="item.author_url" class="author">{{ item.author_name }}</a>
+          <a :href="item.author_url" target="_blank" class="author">{{ item.author_name }}</a>
           <time>{{ item.date.replace('T', ' ') }}</time>
           <span v-if="item.status === 'hold'">您的评论正在审核中...</span>
         </p>
-        <div class="list-content" v-html="item.content.rendered"></div>
+        <div class="list-content" v-html="item.content.rendered" v-img-style></div>
         <!-- <div class="list-btn-wrap">
           <a href="#">回复</a>
         </div> -->
@@ -94,7 +94,9 @@ export default {
     currentNum: 1,
     bClick: true,
     bMoreList: false,
-    sMoreBtnText: '下一页'
+    bSubmit: true,
+    sMoreBtnText: '下一页',
+    submitText: '提交评论'
   }),
   props: ['commentCount'],
   created () {
@@ -121,6 +123,8 @@ export default {
   methods: {
     // 提交评论
     postComment () {
+      this.bSubmit = false
+      this.submitText = '提交中...'
       let data = new URLSearchParams()
       // 保存评论者信息
       localStorage.setItem('authorInfo', JSON.stringify({
@@ -135,8 +139,16 @@ export default {
       data.append('post', this.$route.params.id)
       data.append('author_user_agent', navigator.userAgent)
       axios.post(`/wp-json/wp/v2/comments`, data).then((res) => {
+        this.bSubmit = true
+        this.submitText = '提交评论'
         this.commentList.unshift(res.data)
-      }).catch((err) => console.log(1, err))
+      }).catch((err) => {
+        this.submitText = err.response.data.message
+        setTimeout(() => {
+          this.bSubmit = true
+          this.submitText = '提交评论'
+        }, 1000)
+      })
     },
     // 验证码
     imgCode () {
@@ -266,6 +278,7 @@ export default {
     }
 
     .submit-btn{
+      -webkit-appearance: none;
       display: block;
       width: 250px;
       margin: 20px auto;
@@ -318,6 +331,29 @@ export default {
         padding: 5px 15px;
         border-radius: 5px;
         background: #fff;
+      }
+    }
+  }
+}
+@media screen and (max-width: 767px) {
+  .comments-wrap{
+    .comment-from{
+      .box{
+        display: block;
+      }
+      .comment-inp{
+        width: 100%;
+      }
+      .comment-from-url{
+        margin-bottom: 20px;
+      }
+      .submit-btn{
+        width: 100%;
+      }
+    }
+    .comment-list{
+      .list-gravatar{
+        left: -15px;
       }
     }
   }

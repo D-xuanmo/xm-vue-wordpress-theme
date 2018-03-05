@@ -2,7 +2,7 @@
   <loading v-if="bGlobalRequest"></loading>
   <section class="wrap main-wrap clearfix" v-else>
     <!-- 左边文章区域 -->
-    <div class="fl content-wrap">
+    <div class="fl content-wrap width-full">
       <header class="main-header">{{ $route.query.type === undefined ? `当前频道：${$route.params.title}` : `关于“${$route.query.s}”的搜索结果` }}</header>
       <article class="" v-if="typeof articleList == 'string'">{{ articleList }}</article>
       <article class="article-list clearfix" v-else v-for="item in articleList" :key="item.key">
@@ -84,11 +84,19 @@ export default {
   methods: {
     // 加载更多
     getMoreList () {
-      store.dispatch('getList', {
-        key: this.key,
-        val: this.$route.params.id,
-        currentNum: ++store.state.category.currentNum
-      })
+      if (this.$route.query.type === undefined) {
+        store.dispatch('getList', {
+          key: 'categories',
+          val: this.$route.params.id,
+          currentNum: ++store.state.category.currentNum
+        })
+      } else {
+        store.dispatch('getList', {
+          key: 'search',
+          val: this.$route.query.s,
+          currentNum: ++store.state.category.currentNum
+        })
+      }
       store.commit('getList', {
         bMoreList: true
       })
@@ -170,6 +178,7 @@ export default {
     }
 
     .title{
+      margin-top: 10px;
       font-size: 16px;
     }
 
@@ -188,6 +197,18 @@ export default {
 
       .iconfont{
         margin-right: 3px;
+      }
+    }
+  }
+}
+@media screen and (max-width: 767px) {
+  .main-wrap{
+    .article-list{
+      .thumbnail{
+        float: none;
+      }
+      img{
+        width: 100%;
       }
     }
   }

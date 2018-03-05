@@ -1,8 +1,17 @@
 <template>
-  <div class="fr sidebar-wrap">
-    <div class="sidebar-list" v-if="blogInfo.setExtend.sidebar_notice">
+  <div class="fr sidebar-wrap hide-1200px">
+    <div class="sidebar-list" v-show="blogInfo.setExtend.sidebar_notice">
       <h2 class="title">公告</h2>
-      <div class="content">{{ blogInfo.setExtend.sidebar_notice }}</div>
+      <div class="list content">{{ blogInfo.setExtend.sidebar_notice }}</div>
+    </div>
+    <div class="sidebar-list" v-show="blogInfo.getSidebarCount === 'on'">
+      <h2 class="title">站点统计</h2>
+      <ul class="sidebar-count">
+        <li class="list">文章：{{ blogInfo.getAllCountArticle }}篇</li>
+        <li class="list">页面：{{ blogInfo.getAllCountPage }}个</li>
+        <li class="list">标签：{{ blogInfo.getAllCountTag }}个</li>
+        <li class="list">分类：{{ blogInfo.getAllCountCat }}个</li>
+      </ul>
     </div>
     <!-- <div class="sidebar-list">
       <h2 class="title">浏览排行</h2>
@@ -82,6 +91,16 @@ export default {
 
     .ellipsis{
       width: 80%;
+    }
+  }
+
+  .sidebar-count{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    .list{
+      width: 49%;
     }
   }
 }

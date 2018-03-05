@@ -22,6 +22,12 @@ Vue.directive('highlight', (el) => {
   })
 })
 
+Vue.directive('img-style', (el) => {
+  el.querySelectorAll('img').forEach(val => {
+    val.style = 'max-width: 30px; vertical-align: baseline;'
+  })
+})
+
 // router切换每次滚动条到顶部
 router.afterEach(() => window.scrollTo(0, 0))
 
@@ -32,3 +38,19 @@ new Vue({
   components: { App },
   template: '<App/>'
 })
+
+window.XM = {
+  hasClass (el, name = '') {
+    return el.className.match(new RegExp(name))
+  },
+  addClass (el, name) {
+    if (!this.hasClass(el, name)) {
+      el.className = el.className === '' ? name : el.className + ' ' + name
+    }
+  },
+  removeClass (el, name) {
+    if (this.hasClass(el, name)) {
+      el.className = el.className.replace(new RegExp(`\\s*${name}\\s*`), '')
+    }
+  }
+}

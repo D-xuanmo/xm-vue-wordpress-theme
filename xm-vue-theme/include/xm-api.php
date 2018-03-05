@@ -2,6 +2,7 @@
 /**
  * 删除不需要的字段
  */
+global $wpdb;
 function xm_rest_prepare_post( $data, $post, $request ) {
 	$_data = $data->data;
 	$params = $request->get_params();
@@ -21,15 +22,17 @@ add_filter( 'rest_prepare_post', 'xm_rest_prepare_post', 10, 3 );
 function add_get_blog_info()
 {
   $array = array(
-		'blogUrl'        => get_bloginfo('home'),
-		'adminAjax'      => admin_url('admin-ajax.php'),
-    'templeteUrl'    => get_template_directory_uri(),
-    'blogName'       => get_bloginfo('name'),
-		'adminPic'       => get_the_author_meta('simple_local_avatar', 1),
-		'banner'         => get_option('xm_options')['big_banner'],
-		'sidebarNoti'    => get_option('xm_options')['sidebar_notice'],
-		'footerText'     => get_option('xm_options')['footer_text'],
-		'copyright'      => get_option('xm_options')['footer_copyright']
+		'baseUrl'             => get_bloginfo('home'),
+		'adminAjax'           => admin_url('admin-ajax.php'),
+    'templeteUrl'         => get_template_directory_uri(),
+    'blogName'            => get_bloginfo('name'),
+		'adminPic'            => get_the_author_meta('simple_local_avatar', 1),
+		'setExtend'           => get_option('xm_vue_options'),
+		'getAllCountArticle'  => wp_count_posts()->publish,
+		'getAllCountCat'      => wp_count_terms('category'),
+		'getAllCountTag'      => wp_count_terms('post_tag'),
+		'getAllCountPage'     => wp_count_posts('page')->publish,
+		'getSidebarCount'     => get_option('xm_vue_options')['aside_count']
   );
   return $array;
 }
@@ -94,16 +97,27 @@ add_action( 'rest_api_init', function(){
   );
 } );
 
-// 获取菜单
+// 获取顶部置顶菜单
+add_action( 'rest_api_init', function () {
+        register_rest_route( 'xm-blog/v1', '/top-menu', array(
+        'methods' => 'GET',
+        'callback' => function () {
+					return wp_get_nav_menu_items('Top');
+				},
+    ) );
+} );
+
+// 获取主菜单
 function xm_get_menu() {
-	$array_menu = wp_get_nav_menu_items('home');
+	$array_menu = wp_get_nav_menu_items('Home');
 	$menu = array();
 	foreach ($array_menu as $m) {
 		if (empty($m->menu_item_parent)) {
 			$menu[$m->ID] = array();
-			$menu[$m->ID]['ID']        = $m->ID;
+			$menu[$m->ID]['ID']        = $m->object_id;
 			$menu[$m->ID]['title']     = $m->title;
 			$menu[$m->ID]['url']       = $m->url;
+			$menu[$m->ID]['type']      = $m->object;
 			$menu[$m->ID]['children']  = array();
 		}
 	}
@@ -111,9 +125,10 @@ function xm_get_menu() {
 	foreach ($array_menu as $m) {
 		if ($m->menu_item_parent) {
 			$submenu[$m->ID] = array();
-			$submenu[$m->ID]['ID']      = $m->ID;
+			$submenu[$m->ID]['ID']      = $m->object_id;
 			$submenu[$m->ID]['title']   = $m->title;
 			$submenu[$m->ID]['url']     = $m->url;
+			$submenu[$m->ID]['type']    = $m->object;
 			$menu[$m->menu_item_parent]['children'][$m->ID] = $submenu[$m->ID];
 		}
 	}
@@ -127,6 +142,21 @@ add_action( 'rest_api_init', function () {
     ) );
 } );
 
+// 获取page添加自定义字段
+function add_api_page_meta_field() {
+  register_rest_field( 'page', 'pageInfor', array(
+      'get_callback'    => function() {
+				$array = array(
+					'commentCount' => get_comments_number()
+				);
+				return $array;
+				},
+      'schema'          => null,
+    )
+  );
+}
+add_action( 'rest_api_init', 'add_api_page_meta_field' );
+
 /**
  * 添加自定义字段
  */
@@ -134,13 +164,6 @@ function add_api_posts_meta_field() {
   // 获取文章相关信息
   register_rest_field( 'post', 'articleInfor', array(
       'get_callback'    => 'xm_get_article_infor',
-      'schema'          => null,
-    )
-  );
-
-  // 获取总文章
-  register_rest_field( 'post', 'totalArticle', array(
-      'get_callback'    => 'get_total_article',
       'schema'          => null,
     )
   );
@@ -158,6 +181,7 @@ function xm_get_article_infor( $object ) {
 			'very_bad'  => 0
 		));
 	}
+	$current_category = get_the_category($postID);
   $array = array(
     'auther'       => get_the_author(),
 		'other'        => array(
@@ -176,17 +200,11 @@ function xm_get_article_infor( $object ) {
     'xmLink'       => get_post_meta($postID, 'xm_post_link', true),
     'summary'      => xm_get_post_excerpt(300, ''),
     'classify'     => get_the_category(),
-		'tags'         => get_the_tags($postID)
+		'tags'         => get_the_tags($postID),
+		'prevLink'     => get_previous_post($current_category, ''),
+		'nextLink'     => get_next_post($current_category, '')
   );
   return $array;
-}
-
-// 获取总文章
-function get_total_article() {
-  $count_posts = wp_count_posts()->publish;
-  return $count_posts / 5 > intval($count_posts / 5)
-          ? intval($count_posts / 5 + 1)
-          : intval($count_posts / 5);
 }
 add_action( 'rest_api_init', 'add_api_posts_meta_field' );
 ?>

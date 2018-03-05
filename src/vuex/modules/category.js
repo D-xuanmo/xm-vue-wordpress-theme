@@ -24,7 +24,7 @@ const actions = {
           bGlobalRequest: false,
           bMoreList: false
         }
-        if (res.data.length === 0) {
+        if (res.data.length === 0 && state.articleList.length === 0) {
           _res = {
             bClick: false,
             sMoreBtnText: '我是有底线的^_^',

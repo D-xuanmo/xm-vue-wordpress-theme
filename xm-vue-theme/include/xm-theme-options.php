@@ -6,7 +6,7 @@ function themeoptions_admin_menu() {
 if ( isset($_POST['update_themeoptions']) && $_POST['update_themeoptions'] == 'true' ) themeoptions_update();
 function themeoptions_page() {
   // 获取提交的数据
-  $a_options = get_option('xm_options');
+  $a_options = get_option('xm_vue_options');
   //加载上传图片的js(wp自带)
   wp_enqueue_script('thickbox');
   //加载css(wp自带)
@@ -227,24 +227,6 @@ function themeoptions_page() {
           </div>
         </div>
         <div class="row clearfix">
-          <label class="fl left-wrap" for="home-css">首页自定义css：</label>
-          <div class="fr right-wrap">
-            <textarea id="home-css" name="home-css" rows="8" cols="100"><?php echo $a_options['home_css']; ?></textarea>
-          </div>
-        </div>
-        <div class="row clearfix">
-          <label class="fl left-wrap" for="single-css">文章页自定义css：</label>
-          <div class="fr right-wrap">
-            <textarea id="single-css" name="single-css" rows="8" cols="100"><?php echo $a_options['single_css']; ?></textarea>
-          </div>
-        </div>
-        <div class="row clearfix">
-          <label class="fl left-wrap" for="all-css">全站公用css：</label>
-          <div class="fr right-wrap">
-            <textarea id="all-css" name="all-css" rows="8" cols="100"><?php echo $a_options['all_css']; ?></textarea>
-          </div>
-        </div>
-        <div class="row clearfix">
           <label class="fl left-wrap" for="footer-js">页面公用js：</label>
           <div class="fr right-wrap">
             <textarea id="footer-js" name="footer-js" rows="8" cols="100"><?php echo $a_options['footer_js']; ?></textarea>
@@ -273,16 +255,13 @@ function themeoptions_page() {
       'footer_text'         => $_POST['footer-txt'],
       'login_css'           => $_POST['login-css'],
       'all_head'            => $_POST['all-head'],
-      'home_css'            => $_POST['home-css'],
-      'single_css'          => $_POST['single-css'],
-      'all_css'             => $_POST['all-css'],
       'footer_js'           => $_POST['footer-js'],
       'keywords'            => $_POST['keywords'],
       'description'         => $_POST['description'],
       'link'                => $_POST['link'],
       'vip_style'           => $_POST['vip-style']
     );
-    update_option('xm_options', stripslashes_deep($options));
+    update_option('xm_vue_options', stripslashes_deep($options));
 	}
 	add_action('admin_menu', 'themeoptions_admin_menu');
 ?>

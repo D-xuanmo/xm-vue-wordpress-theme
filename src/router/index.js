@@ -14,7 +14,8 @@ export default new Router({
     {
       path: '/',
       name: 'index',
-      component: Index
+      component: Index,
+      meta: { keepAlive: true }
     },
     {
       path: '/cat/:id?/:title?',

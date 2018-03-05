@@ -2,7 +2,10 @@
   <loading v-if="bLoading"></loading>
   <div v-else id="app">
     <my-header></my-header>
-    <router-view/>
+    <keep-alive>
+      <router-view v-if="$route.meta.keepAlive"/>
+    </keep-alive>
+    <router-view v-if="!$route.meta.keepAlive"/>
     <my-footer></my-footer>
   </div>
 </template>
