@@ -1,6 +1,10 @@
-# blog
+# xm-vue-theme
 
-> This is my blog.
+> 一款基于vue开发的wordpress主题
+
+#主题介绍
+
+[https://www.xuanmo.xin/single/2317](https://www.xuanmo.xin/single/2317)
 
 ## Build Setup
 
@@ -8,7 +12,7 @@
 # install dependencies
 npm install
 
-# serve with hot reload at localhost:8080
+# serve with hot reload at localhost:5200
 npm run dev
 
 # build for production with minification
