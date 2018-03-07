@@ -2,7 +2,7 @@
 
 > 一款基于vue开发的wordpress主题
 
-#主题介绍
+# 主题介绍
 
 [https://www.xuanmo.xin/single/2317](https://www.xuanmo.xin/single/2317)
 
