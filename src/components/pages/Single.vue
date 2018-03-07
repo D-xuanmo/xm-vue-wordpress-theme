@@ -75,12 +75,12 @@
         </div>
         <div class="relative-link-wrap">
           <div class="prev-wrap">
-            上一篇：<span v-if="articleInfor.prevLink === ''">已是最新文章！</span>
-            <router-link v-else :to="{ name: 'single', params: { id: articleInfor.prevLink.ID } }">{{ articleInfor.prevLink.post_title }}</router-link>
+            上一篇：<span v-if="articleInfor.nextLink === ''">已是最新文章！</span>
+            <router-link v-else :to="{ name: 'single', params: { id: articleInfor.nextLink.ID } }">{{ articleInfor.nextLink.post_title }}</router-link>
           </div>
           <div class="next-wrap">
-            下一篇：<span v-if="articleInfor.nextLink === ''">已是最后一篇！</span>
-            <router-link v-else :to="{ name: 'single', params: { id: articleInfor.nextLink.ID } }">{{ articleInfor.nextLink.post_title }}</router-link>
+            下一篇：<span v-if="articleInfor.prevLink === ''">已是最后一篇！</span>
+            <router-link v-else :to="{ name: 'single', params: { id: articleInfor.prevLink.ID } }">{{ articleInfor.prevLink.post_title }}</router-link>
           </div>
         </div>
       </div>

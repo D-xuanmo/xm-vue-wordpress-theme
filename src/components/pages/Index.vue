@@ -139,7 +139,6 @@ export default {
     }
 
     .title{
-      margin-top: 10px;
       font-size: 16px;
     }
 
@@ -165,6 +164,9 @@ export default {
 @media screen and (max-width: 767px) {
   .main-wrap{
     .article-list{
+      .title{
+        margin-top: 10px;
+      }
       .thumbnail{
         float: none;
       }

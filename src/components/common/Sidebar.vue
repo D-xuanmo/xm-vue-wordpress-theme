@@ -1,11 +1,11 @@
 <template>
   <div class="fr sidebar-wrap hide-1200px">
     <div class="sidebar-list" v-show="blogInfo.setExtend.sidebar_notice">
-      <h2 class="title">公告</h2>
+      <h2 class="title"><i class="iconfont icon-notice1"></i> 公告</h2>
       <div class="list content">{{ blogInfo.setExtend.sidebar_notice }}</div>
     </div>
     <div class="sidebar-list" v-show="blogInfo.getSidebarCount === 'on'">
-      <h2 class="title">站点统计</h2>
+      <h2 class="title"><i class="iconfont icon-count"></i> 站点统计</h2>
       <ul class="sidebar-count">
         <li class="list">文章：{{ blogInfo.getAllCountArticle }}篇</li>
         <li class="list">页面：{{ blogInfo.getAllCountPage }}个</li>
@@ -87,6 +87,10 @@ export default {
       border-bottom: border-1($colorGay1);
       font-size: 16px;
       line-height: 40px;
+
+      .iconfont{
+        font-weight: lighter;
+      }
     }
 
     .ellipsis{

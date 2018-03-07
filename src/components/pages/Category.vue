@@ -185,7 +185,6 @@ export default {
     }
 
     .title{
-      margin-top: 10px;
       font-size: 16px;
     }
 
@@ -211,8 +210,36 @@ export default {
 @media screen and (max-width: 767px) {
   .main-wrap{
     .article-list{
+      .title{
+        margin-top: 10px;
+      }
       .thumbnail{
         float: none;
+      }
+      .summary{
+        overflow: hidden;
+        position: relative;
+        max-height: 150px;
+        &:after{
+          content: "";
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          height: 200px;
+          background: -webkit-gradient(linear,0 top,0 bottom,from(rgba(255,255,255,0)),to(#fff));
+        }
+        a{
+          position: absolute;
+          bottom: 0;
+          left: 50%;
+          z-index: 9;
+          padding: 5px 15px;
+          border: border-1($colorBlue);
+          border-radius: 5px;
+          font-size: 16px;
+          transform: translateX(-50%);
+        }
       }
       img{
         width: 100%;
