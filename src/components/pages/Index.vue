@@ -51,6 +51,7 @@ export default {
   },
   store,
   created () {
+    document.title = store.state.info.blogInfo.blogName
     store.dispatch('getList', {
       key: '',
       val: '',

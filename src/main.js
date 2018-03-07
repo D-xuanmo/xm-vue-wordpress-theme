@@ -22,10 +22,15 @@ Vue.directive('highlight', (el) => {
   })
 })
 
+// 设置img的style
 Vue.directive('img-style', (el) => {
   el.querySelectorAll('img').forEach(val => {
     val.style = 'max-width: 30px; vertical-align: baseline;'
   })
+})
+
+Vue.directive('title', (el, binding) => {
+  document.title = binding.value
 })
 
 // router切换每次滚动条到顶部
@@ -52,5 +57,12 @@ window.XM = {
     if (this.hasClass(el, name)) {
       el.className = el.className.replace(new RegExp(`\\s*${name}\\s*`), '')
     }
+  },
+  siblings (el) {
+    let arr = []
+    Array.from(el.parentNode.children).forEach(item => {
+      if (item !== el) arr.push(item)
+    })
+    return arr
   }
 }

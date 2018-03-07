@@ -3,7 +3,7 @@
   <section class="wrap main-wrap clearfix" v-else>
     <!-- 左边文章区域 -->
     <div class="fl content-wrap width-full">
-      <header class="main-header">{{ $route.query.type === undefined ? `当前频道：${$route.params.title}` : `关于“${$route.query.s}”的搜索结果` }}</header>
+      <header class="main-header" v-title="catTitle">{{ catTitle }}</header>
       <article class="" v-if="typeof articleList == 'string'">{{ articleList }}</article>
       <article class="article-list clearfix" v-else v-for="item in articleList" :key="item.key">
         <router-link
@@ -51,7 +51,13 @@ export default {
     loading
   },
   store,
+  data () {
+    return {
+      catTitle: ''
+    }
+  },
   created () {
+    this.catTitle = this.$route.query.type === undefined ? `当前频道：${this.$route.params.title}` : `关于“${this.$route.query.s}”的搜索结果`
     if (this.$route.query.type === undefined) {
       store.dispatch('getList', {
         key: 'categories',
@@ -104,6 +110,7 @@ export default {
   },
   watch: {
     $route () {
+      this.catTitle = this.$route.query.type === undefined ? `当前频道：${this.$route.params.title}` : `关于“${this.$route.query.s}”的搜索结果`
       if (this.$route.query.type === undefined) {
         store.dispatch('getList', {
           key: 'categories',

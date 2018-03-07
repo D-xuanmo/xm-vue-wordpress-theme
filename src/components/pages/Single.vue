@@ -5,7 +5,7 @@
       <div class="box-wrap">
         <header class="content-header">
           <!-- <div class="breadcrumbs">当前位置： 首页 > 关于我 > 测试</div> -->
-          <h2 class="title text-center">{{ singleRes.articleContent.title.rendered }}</h2>
+          <h2 class="title text-center" v-title="singleRes.articleContent.title.rendered">{{ singleRes.articleContent.title.rendered }}</h2>
           <div class="article-info text-center">
             <a href="#">{{ articleInfor.auther }}</a>
             <span class="text">发表于:</span>

@@ -41,15 +41,23 @@
           <router-link v-show="bFloatHead" class="float-title" :to="{ name: 'index' }">{{ blogInfo.blogName }}</router-link>
         </div>
         <!-- 导航 -->
-        <nav class="nav-list-wrap">
+        <nav class="nav-list-wrap" @mouseleave="closeSubMenu()">
           <i class="hide block iconfont icon-close" @click="closeMenu()"></i>
           <ul class="list-wrap">
-            <li class="nav-list">
+            <li class="nav-list" @mouseenter="showSubMenu($event)" @touchend="showSubMenu($event)">
               <router-link :to="{ name: 'index' }">首页</router-link>
             </li>
-            <li class="nav-list" v-for="item in navList" :key="item.key" @click="showSubMenu($event)">
-              <router-link v-if="item.type === 'page'" :to="{ name: 'page', params: { id: item.ID } }" @click.native.stop="closeMenu()">{{ item.title }}</router-link>
-              <router-link v-else-if="item.children.length === 0" :to="{ name: 'category', params: { id: item.ID, title: item.title } }" @click.native.stop="closeMenu()">{{ item.title }}</router-link>
+            <li class="nav-list" v-for="item in navList" :key="item.key" @mouseenter="showSubMenu($event)" @touchend="showSubMenu($event)">
+              <router-link
+                v-if="item.type === 'page'"
+                :to="{ name: 'page', params: { id: item.ID } }"
+                @click.native.stop="closeMenu()"
+              >{{ item.title }}</router-link>
+              <router-link
+                v-else-if="item.children.length === 0"
+                :to="{ name: 'category', params: { id: item.ID, title: item.title } }"
+                @click.native.stop="closeMenu()"
+              >{{ item.title }}</router-link>
               <a v-else href="javascript:;">{{ item.title }}</a>
               <ul class="sub-nav-wrap" v-if="item.children.length !== 0">
                 <li class="sub-nav-list" v-for="subNav in item.children" :key="subNav.key" @click.stop="closeMenu()">
@@ -97,9 +105,20 @@ export default {
     closeMenu () {
       window.XM.removeClass(document.querySelector('.nav-wrap'), 'show')
     },
-    // 移动端显示二级菜单
+    // 显示二级菜单
     showSubMenu (event) {
-      if (event.currentTarget.querySelector('ul')) event.currentTarget.querySelector('ul').style.display = 'block'
+      let oChildren = event.currentTarget.querySelector('ul')
+      if (oChildren) oChildren.style.display = 'block'
+      if (event.type === 'mouseenter') {
+        window.XM.siblings(event.currentTarget).forEach(item => {
+          if (item.querySelector('ul')) {
+            item.querySelector('ul').style.display = 'none'
+          }
+        })
+      }
+    },
+    closeSubMenu () {
+      document.querySelectorAll('.sub-nav-wrap').forEach(item => (item.style.display = 'none'))
     },
     showSearch () {
       this.bShowSearch = true
@@ -275,12 +294,6 @@ export default {
 
     .nav-list{
       position: relative;
-
-      &:hover{
-        .sub-nav-wrap{
-          display: block;
-        }
-      }
 
       > a{
         line-height: 60px;

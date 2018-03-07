@@ -2,6 +2,7 @@
   <section class="wrap main-wrap single" ref="content">
     <loading v-if="singleRes.bShowLoading"></loading>
     <div class="content-wrap" v-else>
+      <span class="hide" v-title="singleRes.articleContent.title.rendered"></span>
       <div class="box-wrap">
         <div class="content" v-html="singleRes.content" v-highlight></div>
       </div>
