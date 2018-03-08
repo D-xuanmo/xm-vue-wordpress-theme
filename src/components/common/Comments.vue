@@ -74,7 +74,7 @@
           <time>{{ item.date.replace('T', ' ') }}</time>
           <span v-if="item.status === 'hold'">您的评论正在审核中...</span>
         </p>
-        <div class="list-content" v-html="item.content.rendered.replace(/\[img\](\S)\[\/img\]/, (a, b, c) => {return b})" v-img-style></div>
+        <div class="list-content" v-html="item.content.rendered" v-img-style></div>
         <!-- <div class="list-btn-wrap">
           <a href="#">回复</a>
         </div> -->

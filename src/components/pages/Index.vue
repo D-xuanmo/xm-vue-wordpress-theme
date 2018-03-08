@@ -14,9 +14,7 @@
         </router-link>
         <div class="list-con">
           <h2 class="title">
-            <router-link :to="{ name: 'single', params: { id: item.id } }">
-              {{ item.title.rendered }}
-            </router-link>
+            <router-link :to="{ name: 'single', params: { id: item.id } }" v-html="item.title.rendered"></router-link>
           </h2>
           <div class="info-wrap">
             <span><i class="iconfont icon-about"></i>{{ item.articleInfor.auther }}</span>

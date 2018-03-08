@@ -44,7 +44,7 @@
         <nav class="nav-list-wrap" @mouseleave="closeSubMenu()">
           <i class="hide block iconfont icon-close" @click="closeMenu()"></i>
           <ul class="list-wrap">
-            <li class="nav-list" @mouseenter="showSubMenu($event)" @touchend="showSubMenu($event)">
+            <li class="nav-list" @mouseenter="showSubMenu($event)" @touchend="closeMenu()">
               <router-link :to="{ name: 'index' }">首页</router-link>
             </li>
             <li class="nav-list" v-for="item in navList" :key="item.key" @mouseenter="showSubMenu($event)" @touchend="showSubMenu($event)">
