@@ -15,10 +15,8 @@ function xm_rest_prepare_post( $data, $post, $request ) {
 add_filter( 'rest_prepare_post', 'xm_rest_prepare_post', 10, 3 );
 
 /**
- * 添加自定义接口
+ * 获取网站基本信息
  */
-
-// 获取网站基本信息
 function add_get_blog_info()
 {
   $array = array(
@@ -32,7 +30,8 @@ function add_get_blog_info()
 		'getAllCountCat'      => wp_count_terms('category'),
 		'getAllCountTag'      => wp_count_terms('post_tag'),
 		'getAllCountPage'     => wp_count_posts('page')->publish,
-		'getSidebarCount'     => get_option('xm_vue_options')['aside_count']
+		'getSidebarCount'     => get_option('xm_vue_options')['aside_count'],
+		'link'                => get_option('xm_vue_options')['link']
   );
   return $array;
 }
@@ -48,7 +47,9 @@ add_action( 'rest_api_init', function () {
 	);
 } );
 
-// 发表意见
+/**
+ * 发表意见
+ */
 function xm_opinion($request) {
 	$data = $request->get_params()['params'];
 	$count_key = 'xm_post_link';
@@ -70,7 +71,9 @@ add_action( 'rest_api_init', function(){
   );
 } );
 
-// 更新阅读量
+/**
+ * 更新阅读量
+ */
 function xm_get_view_count($request) {
 	$postID = $request->get_params()['params']['id'];
 	$count_key = 'post_views_count';
@@ -97,7 +100,9 @@ add_action( 'rest_api_init', function(){
   );
 } );
 
-// 获取顶部置顶菜单
+/**
+ * 获取顶部置顶菜单
+ */
 add_action( 'rest_api_init', function () {
         register_rest_route( 'xm-blog/v1', '/top-menu', array(
         'methods' => 'GET',
@@ -107,7 +112,9 @@ add_action( 'rest_api_init', function () {
     ) );
 } );
 
-// 获取主菜单
+/**
+ * 获取主菜单
+ */
 function xm_get_menu() {
 	$array_menu = wp_get_nav_menu_items('Home');
 	$menu = array();
@@ -142,7 +149,9 @@ add_action( 'rest_api_init', function () {
     ) );
 } );
 
-// 获取page添加自定义字段
+/**
+ * 获取page添加自定义字段
+ */
 function add_api_page_meta_field() {
   register_rest_field( 'page', 'pageInfor', array(
       'get_callback'    => function() {

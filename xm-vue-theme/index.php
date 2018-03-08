@@ -6,6 +6,7 @@
   <title><?php bloginfo( 'name' ); ?></title>
   <meta name="key" content="<?php echo get_option('xm_vue_options')['keywords']; ?>">
   <meta name="description" content="<?php echo get_option('xm_vue_options')['description']; ?>">
+  <meta name="format-detection" content="telephone=no">
   <?php if (!empty(get_option('xm_vue_options')['all_head'])) echo get_option('xm_vue_options')['all_head']; ?>
   <link rel="icon" href="<?php echo get_option('xm_vue_options')['favicon']; ?>">
   <?php wp_head(); ?>

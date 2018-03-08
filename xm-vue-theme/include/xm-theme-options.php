@@ -221,13 +221,13 @@ function themeoptions_page() {
 					</div>
 				</div>
         <div class="row clearfix">
-          <label class="fl left-wrap" for="login-css">后台登录页面css：</label>
+          <label class="fl left-wrap" for="login-css">后台登录页面css（不需要style标签）：</label>
           <div class="fr right-wrap">
             <textarea id="login-css" name="login-css" rows="8" cols="100"><?php echo $a_options['login_css']; ?></textarea>
           </div>
         </div>
         <div class="row clearfix">
-          <label class="fl left-wrap" for="footer-js">页面公用js：</label>
+          <label class="fl left-wrap" for="footer-js">页面公用js（不需要script标签）：</label>
           <div class="fr right-wrap">
             <textarea id="footer-js" name="footer-js" rows="8" cols="100"><?php echo $a_options['footer_js']; ?></textarea>
           </div>

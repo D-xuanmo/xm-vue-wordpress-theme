@@ -16,10 +16,10 @@ Vue.directive('highlight', (el) => {
   })
 })
 
-// 设置img的style
+// 设置表情样式
 Vue.directive('img-style', (el) => {
-  el.querySelectorAll('img').forEach(val => {
-    val.style = 'max-width: 30px; vertical-align: baseline;'
+  el.querySelectorAll('img').forEach(item => {
+    if (item.className.indexOf('wp-smiley') !== -1) item.style = 'max-width: 30px; vertical-align: baseline;'
   })
 })
 

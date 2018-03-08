@@ -179,9 +179,19 @@ export default {
       border-radius: 0 0 5px 5px;
     }
 
+    &:hover{
+      img{
+        transform: scale(1.1);
+      }
+    }
+
     .thumbnail{
+      overflow: hidden;
       float: left;
       margin-right: 10px;
+      img{
+        transition: .5s;
+      }
     }
 
     .title{

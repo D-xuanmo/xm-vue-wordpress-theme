@@ -13,6 +13,10 @@
         <li class="list">分类：{{ blogInfo.getAllCountCat }}个</li>
       </ul>
     </div>
+    <div class="sidebar-list link">
+      <h2 class="title"><i class="iconfont icon-link2"></i> 友情链接</h2>
+      <div class="content sidebar-count" v-html="blogInfo.link"></div>
+    </div>
     <!-- <div class="sidebar-list">
       <h2 class="title">浏览排行</h2>
       <ul class="list-wrap">

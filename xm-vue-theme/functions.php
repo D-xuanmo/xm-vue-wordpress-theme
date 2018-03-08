@@ -12,13 +12,13 @@ add_action('init', 'remove_redirects');
 // Load scripts
 function load_vue_scripts()
 {
-  wp_enqueue_style('app.css', get_template_directory_uri() . '/static/css/app.0f87e5e05531253a8d9500357012d7e4.css', false, null);
+  wp_enqueue_style('app.css', get_template_directory_uri() . '/static/css/app.9b209a966d48d46dfcfc2ba6360c5c15.css', false, null);
 
-  wp_enqueue_script('manifest.js', get_template_directory_uri() . '/static/js/manifest.0a8f68452b57ef7d7a6d.js', null, null, true);
+  wp_enqueue_script('manifest.js', get_template_directory_uri() . '/static/js/manifest.ab7207c7cf66b7f66a1e.js', null, null, true);
 
   wp_enqueue_script('vendor.js', get_template_directory_uri() . '/static/js/vendor.e8c17017c75b8a42f3b8.js', null, null, true);
 
-  wp_enqueue_script('app.js', get_template_directory_uri() . '/static/js/app.2eb564a8536cff931af9.js', null, null, true);
+  wp_enqueue_script('app.js', get_template_directory_uri() . '/static/js/app.bf7871aa52fc2da8b86d.js', null, null, true);
 }
 add_action('wp_enqueue_scripts', 'load_vue_scripts', 100);
 
@@ -366,4 +366,60 @@ function disable_emojis_tinymce($plugins)
   }
 }
 add_action('init', 'disable_emojis');
+
+/**
+ * 非管理员上传图片
+ */
+function comments_embed_img($comment) {
+  $comment = preg_replace('/(\[img\](\S+)\[\/img\])+/','<img src="$2" style="vertical-align: bottom; max-width: 40%; max-height: 250px;" />', $comment);
+  return $comment;
+}
+add_action('comment_text', 'comments_embed_img');
+
+/**
+ * 邮件回复
+ */
+function ludou_comment_mail_notify($comment_id, $comment_status)
+{
+  // 评论必须经过审核才会发送通知邮件
+  if ($comment_status !== 'approve' && $comment_status !== 1) {
+    return;
+  }
+  $comment = get_comment($comment_id);
+  if ($comment->comment_parent != '0') {
+    $parent_comment = get_comment($comment->comment_parent);
+    // 邮件接收者email
+    $to = trim($parent_comment->comment_author_email);
+    // 邮件标题
+    $subject = '您在[' . get_option("blogname") . ']的留言有了新的回复!';
+    // 邮件内容，自行修改，支持HTML
+    $message = '
+      <div style="width:90%; margin:10px auto 0; border:1px solid #eee; border-radius:8px; font-size:12px; font-family:PingFangSC,Microsoft Yahei; color:#111;">
+        <div style="width:100%; height:60px; border-radius:6px 6px 0 0; background:#eee; color:#333;">
+          <p style="margin:0 0 0 30px; line-height:60px;"> 您在 <a style="text-decoration:none; color:#2ebef3; font-weight:600;" href="' . get_option('home') . '">' . get_option('blogname') . '  </a> 的留言有新回复啦！</p>
+        </div>
+        <div style="width:90%; margin:0 auto">
+          <p><strong>' . $parent_comment->comment_author . '</strong> 您好!</p>
+          <p>您在 [' . get_option('blogname') . '] 的文章<strong style="color:#2ebef3;">《' . get_the_title($comment->comment_post_ID) . '》</strong>上发表的评论有新回复啦，快来看看吧 ^_^:</p>
+          <p>这是你的评论:</p>
+          <p style="margin: 15px 0; padding: 20px; border-radius: 5px; background-color: #eee;">' . $parent_comment->comment_content . '</p>
+          <p><strong>' . trim($comment->comment_author) . '</strong> 给你的回复是:<br />
+          <p style="margin: 15px 0; padding: 20px; border-radius: 5px; background-color: #eee;">'. trim($comment->comment_content) . '</p>
+          <p>您也可移步到文章<a style="text-decoration:none; color:#2ebef3" href="' . get_bloginfo('home') . '/single/' . $comment->comment_post_ID . '"> 《'. get_the_title($comment->comment_post_ID) .'》 </a>查看完整回复内容</p>
+          <p style="padding-bottom: 10px; border-bottom: 1px dashed #ccc;">欢迎再次光临 <a style="text-decoration:none; color:#2ebef3" href="' . get_option('home') . '">' . get_option('blogname') . '</a></p>
+          <p>(此邮件由系统自动发出, 请勿回复。)</p>
+          <p style="text-align: right;">如果您想更深入的和博主交流的话，欢迎回复哦^-^</p>
+        </div>
+      </div>';
+    $message_headers = "Content-Type: text/html; charset=\"" . get_option('blog_charset') . "\"\n";
+    // 不用给不填email的评论者和管理员发提醒邮件
+    if ($to != '' && $to != get_bloginfo('admin_email')) {
+      @wp_mail($to, $subject, $message, $message_headers);
+    }
+  }
+}
+// 编辑和管理员的回复直接发送提醒邮件，因为编辑和管理员的评论不需要审核
+add_action('comment_post', 'ludou_comment_mail_notify', 20, 2);
+// 普通访客发表的评论，等博主审核后再发送提醒邮件
+add_action('wp_set_comment_status', 'ludou_comment_mail_notify', 20, 2);
 ?>
