@@ -7,7 +7,8 @@
         <p class="comment-tips">电子邮件地址不会被公开。 必填项已用<i class="c-red">*</i>标注</p>
         <div class="comment-form-content">
           <label for="content">内容<i class="c-red">*</i></label>
-          <textarea id="content" name="content" v-model="content" rows="8" cols="80"></textarea>
+          <textarea id="content" name="content" v-model="content.value" rows="8" cols="80" @keyup="contentValidate()"></textarea>
+          <span v-show="content.validate" class="comment-tips">{{ content.msg }}</span>
         </div>
         <div class="box">
           <div class="comment-inp comment-from-author">
@@ -16,12 +17,12 @@
               type="text"
               id="author"
               name="author"
-              v-model="author"
+              v-model="author.value"
               value=""
               autocomplete="off"
-              v-validate="'required|min:3'"
+              @keyup="authorValidate()"
             >
-            <span v-show="errors.has('author')" class="comment-tips">{{ errors.first('author') }}</span>
+            <span v-show="author.validate" class="comment-tips">{{ author.msg }}</span>
           </div>
           <div class="comment-inp comment-from-email">
             <label for="email">邮箱<i class="c-red">*</i></label>
@@ -29,14 +30,12 @@
               type="email"
               id="email"
               name="email"
-              v-model="email"
+              v-model="email.value"
               value=""
               autocomplete="off"
-              v-validate
-              data-vv-rules="email"
-              data-vv-zh="email"
+              @keyup="emailValidate()"
             >
-            <span v-show="errors.has('email')" class="comment-tips">{{ errors.first('email') }}</span>
+            <span v-show="email.validate" class="comment-tips">{{ email.msg }}</span>
           </div>
           <div class="comment-inp comment-from-url">
             <label for="url">网址</label>
@@ -44,17 +43,23 @@
               type="url"
               id="url"
               name="url"
-              v-model="url"
-              value=""
               autocomplete="off"
-              v-validate="'required|min:3'"
+              v-model="url.value"
             >
-            <span v-show="errors.has('url')" class="comment-tips">{{ errors.first('url') }}</span>
           </div>
           <div class="comment-inp comment-from-code">
             <label for="img-code">验证码<i class="c-red">*</i></label>
-            <input type="number" id="img-code" name="img-code" value="" autocomplete="off">
-            <canvas width="120" height="30" class="canvas-img-code" @click="imgCode"></canvas>
+            <input
+              type="number"
+              id="img-code"
+              name="img-code"
+              value=""
+              v-model="imgCode.value"
+              autocomplete="off"
+              @keyup="codeValidate()"
+            >
+            <canvas width="120" height="30" class="canvas-img-code" @click="randomCode()"></canvas>
+            <span v-show="imgCode.validate" class="comment-tips">{{ imgCode.msg }}</span>
           </div>
         </div>
         <input type="submit" class="submit-btn" @click.prevent="bSubmit && postComment()" :value="submitText">
@@ -87,10 +92,32 @@ export default {
   name: 'comments',
   data: () => ({
     commentList: [],
-    author: '',
-    email: '',
-    url: '',
-    content: '',
+    author: {
+      value: '',
+      validate: true,
+      msg: ''
+    },
+    email: {
+      value: '',
+      validate: true,
+      msg: ''
+    },
+    url: {
+      value: '',
+      validate: true,
+      msg: ''
+    },
+    content: {
+      value: '',
+      validate: true,
+      msg: ''
+    },
+    imgCode: {
+      value: '',
+      validate: true,
+      msg: ''
+    },
+    random: {},
     currentNum: 1,
     bClick: true,
     bMoreList: false,
@@ -102,9 +129,9 @@ export default {
   created () {
     let authorInfo = JSON.parse(localStorage.getItem('authorInfo'))
     if (authorInfo !== null) {
-      this.author = authorInfo.author
-      this.email = authorInfo.email
-      this.url = authorInfo.url
+      this.author.value = authorInfo.author
+      this.email.value = authorInfo.email
+      this.url.value = authorInfo.url
     }
     // 获取评论列表
     axios.get('/wp-json/wp/v2/comments/', {
@@ -123,35 +150,41 @@ export default {
   methods: {
     // 提交评论
     postComment () {
-      this.bSubmit = false
-      this.submitText = '提交中...'
-      let data = new URLSearchParams()
-      // 保存评论者信息
-      localStorage.setItem('authorInfo', JSON.stringify({
-        author: this.author,
-        email: this.email,
-        url: this.url
-      }))
-      data.append('author_name', this.author)
-      data.append('author_email', this.email)
-      data.append('author_url', this.url)
-      data.append('content', this.content)
-      data.append('post', this.$route.params.id)
-      data.append('author_user_agent', navigator.userAgent)
-      axios.post(`/wp-json/wp/v2/comments`, data).then((res) => {
-        this.bSubmit = true
-        this.submitText = '提交评论'
-        this.commentList.unshift(res.data)
-      }).catch((err) => {
-        this.submitText = err.response.data.message
-        setTimeout(() => {
+      this.contentValidate()
+      this.authorValidate()
+      this.emailValidate()
+      this.codeValidate()
+      if (!this.content.validate && !this.author.validate && !this.email.validate && !this.imgCode.validate) {
+        this.bSubmit = false
+        this.submitText = '提交中...'
+        let data = new URLSearchParams()
+        // 保存评论者信息
+        localStorage.setItem('authorInfo', JSON.stringify({
+          author: this.author.value,
+          email: this.email.value,
+          url: this.url.value
+        }))
+        data.append('author_name', this.author.value)
+        data.append('author_email', this.email.value)
+        data.append('author_url', this.url.value)
+        data.append('content', this.content.value)
+        data.append('post', this.$route.params.id)
+        data.append('author_user_agent', navigator.userAgent)
+        axios.post(`/wp-json/wp/v2/comments`, data).then((res) => {
           this.bSubmit = true
           this.submitText = '提交评论'
-        }, 1000)
-      })
+          this.commentList.unshift(res.data)
+        }).catch((err) => {
+          this.submitText = err.response.data.message
+          setTimeout(() => {
+            this.bSubmit = true
+            this.submitText = '提交评论'
+          }, 1000)
+        })
+      }
     },
     // 验证码
-    imgCode () {
+    randomCode (bool) {
       let canvas = document.querySelector('.canvas-img-code')
       let ctx = canvas.getContext('2d')
       let nRandom1 = Math.floor(Math.random() * 10 + 5)
@@ -161,10 +194,11 @@ export default {
       ctx.clearRect(0, 0, canvas.width, canvas.height)
       ctx.font = '20px Microsoft Yahei'
       ctx.fillStyle = '#333'
-      ctx.fillText(nRandom1 + ' ' + aOperator[nRandomResult] + ' ' + nRandom2 + ' = ?', 10, 23)
-      return {
+      ctx.fillText(`${nRandom1} ${aOperator[nRandomResult]} ${nRandom2} = ?`, 10, 23)
+      this.random = {
         nRandom1,
-        nRandom2
+        nRandom2,
+        operator: aOperator[nRandomResult]
       }
     },
     // 评论列表下一页
@@ -184,10 +218,71 @@ export default {
           this.bClick = false
         }
       }).catch((err) => console.log(err))
+    },
+    // 表单验证
+    contentValidate () {
+      // 验证内容
+      if (this.content.value !== '') {
+        this.content.validate = false
+      } else {
+        this.content.validate = true
+        this.content.msg = '来点内容吧！'
+      }
+    },
+    authorValidate () {
+      // 验证昵称
+      if (this.author.value !== '') {
+        this.author.validate = false
+      } else {
+        this.author.validate = true
+        this.author.msg = '昵称不能为空！'
+      }
+    },
+    emailValidate () {
+      // 验证邮箱
+      if (this.email.value !== '') {
+        this.email.validate = false
+        if (this.email.value.match(/^(\w+|(\.\w+))+@(\w+\.)+\w+$/) === null) {
+          this.email.validate = true
+          this.email.msg = '邮箱格式错误！'
+        }
+      } else {
+        this.email.validate = true
+        if (this.email.value === '') {
+          this.email.msg = '邮箱不能为空！'
+        }
+      }
+    },
+    codeValidate () {
+      // 验证码
+      if (this.imgCode.value === '') {
+        this.imgCode.validate = true
+        this.imgCode.msg = '请输入验证码！'
+      } else {
+        let _randomCode = this.random
+        let result = 0
+        switch (_randomCode.operator) {
+          case '+':
+            result = _randomCode.nRandom1 + _randomCode.nRandom2
+            break
+          case '-':
+            result = _randomCode.nRandom1 - _randomCode.nRandom2
+            break
+          case '*':
+            result = _randomCode.nRandom1 * _randomCode.nRandom2
+            break
+        }
+        if (+this.imgCode.value !== result) {
+          this.imgCode.validate = true
+          this.imgCode.msg = '是不是看错了？'
+        } else {
+          this.imgCode.validate = false
+        }
+      }
     }
   },
   mounted () {
-    this.imgCode()
+    this.randomCode()
   }
 }
 </script>
@@ -217,6 +312,11 @@ export default {
     padding: 10px;
     border-radius: 5px;
     background: $colorMainGay;
+
+    .comment-tips:not(p){
+      font-size: 12px;
+      color: #f00;
+    }
 
     .comment-form-content{
       box-sizing: border-box;
@@ -256,13 +356,9 @@ export default {
       }
 
       input{
+        -webkit-appearance: none;
         width: 100%;
         height: 30px;
-      }
-
-      .comment-tips{
-        font-size: 12px;
-        color: #f00;
       }
     }
 
@@ -274,6 +370,7 @@ export default {
         position: absolute;
         bottom: 5px;
         right: 5px;
+        z-index: 5;
       }
     }
 

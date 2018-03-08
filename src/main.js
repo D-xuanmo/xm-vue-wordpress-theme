@@ -4,13 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import Prism from '../static/js/prism'
-import VeeValidate, { Validator } from 'vee-validate'
-import zh from 'vee-validate/dist/locale/zh_CN'
-
 import '../static/css/prism.css'
-
-Validator.localize('zh_CN', zh)
-Vue.use(VeeValidate)
 
 Vue.config.productionTip = false
 
@@ -29,6 +23,7 @@ Vue.directive('img-style', (el) => {
   })
 })
 
+// 设置网页标题
 Vue.directive('title', (el, binding) => {
   document.title = binding.value
 })
