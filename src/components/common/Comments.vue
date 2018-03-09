@@ -5,6 +5,22 @@
       <div class="comment-from">
         <h3 class="wrap-title">发表评论</h3>
         <p class="comment-tips">电子邮件地址不会被公开。 必填项已用<i class="c-red">*</i>标注</p>
+        <!-- 评论其他功能 -->
+        <div class="comment-other">
+          <ul class="list-wrap">
+            <li class="list">
+              <i class="iconfont icon-picture"></i>贴图
+            </li>
+            <li class="list" @click.stop="getExpression()">
+              <i class="iconfont icon-expression"></i>表情
+            </li>
+          </ul>
+          <div class="expression-wrap" ref="expression">
+            <a href="javascript:;" v-for="(item, key) in expression.content" :key="item.key" :title="item.title" :data-title="`/${key}`" @click.stop="editExpression($event)">
+              <img :src="item.url" :alt="item.title" width="30">
+            </a>
+          </div>
+        </div>
         <div class="comment-form-content">
           <label for="content">内容<i class="c-red">*</i></label>
           <textarea id="content" name="content" v-model="content.value" rows="8" cols="80" @keyup="contentValidate()"></textarea>
@@ -87,6 +103,7 @@
   </div>
 </template>
 <script>
+import { mapState } from 'vuex'
 import axios from 'axios'
 export default {
   name: 'comments',
@@ -118,6 +135,11 @@ export default {
       msg: ''
     },
     random: {},
+    expression: {
+      content: {},
+      state: true,
+      clickState: true
+    },
     currentNum: 1,
     bClick: true,
     bMoreList: false,
@@ -146,6 +168,11 @@ export default {
         this.bClick = false
       }
     }).catch((err) => console.log(err))
+  },
+  computed: {
+    ...mapState({
+      templeteUrl: state => state.info.blogInfo.templeteUrl
+    })
   },
   methods: {
     // 提交评论
@@ -219,9 +246,8 @@ export default {
         }
       }).catch((err) => console.log(err))
     },
-    // 表单验证
+    // 验证内容
     contentValidate () {
-      // 验证内容
       if (this.content.value !== '') {
         this.content.validate = false
       } else {
@@ -229,8 +255,8 @@ export default {
         this.content.msg = '来点内容吧！'
       }
     },
+    // 验证昵称
     authorValidate () {
-      // 验证昵称
       if (this.author.value !== '') {
         this.author.validate = false
       } else {
@@ -238,8 +264,8 @@ export default {
         this.author.msg = '昵称不能为空！'
       }
     },
+    // 验证邮箱
     emailValidate () {
-      // 验证邮箱
       if (this.email.value !== '') {
         this.email.validate = false
         if (this.email.value.match(/^(\w+|(\.\w+))+@(\w+\.)+\w+$/) === null) {
@@ -253,8 +279,8 @@ export default {
         }
       }
     },
+    // 验证码
     codeValidate () {
-      // 验证码
       if (this.imgCode.value === '') {
         this.imgCode.validate = true
         this.imgCode.msg = '请输入验证码！'
@@ -279,10 +305,36 @@ export default {
           this.imgCode.validate = false
         }
       }
+    },
+    // 获取表情
+    getExpression () {
+      if (this.expression.clickState) {
+        this.$refs.expression.style.display = 'block'
+        if (this.expression.state) {
+          axios.get(`${this.templeteUrl}/expression.php`).then(res => {
+            this.expression.content = res.data
+            this.expression.state = false
+          }).catch(err => console.log(err))
+        }
+      } else {
+        this.$refs.expression.style.display = 'none'
+      }
+      this.expression.clickState = !this.expression.clickState
+    },
+    // 添加表情
+    editExpression (event) {
+      this.expression.clickState = true
+      this.$refs.expression.style.display = 'none'
+      this.content.value += ` ${event.currentTarget.getAttribute('data-title')} `
     }
   },
   mounted () {
     this.randomCode()
+    // 关闭表情显示
+    document.body.onclick = () => {
+      this.expression.clickState = true
+      this.$refs.expression.style.display = 'none'
+    }
   }
 }
 </script>
@@ -306,6 +358,61 @@ export default {
     }
   }
 
+  .comment-other{
+    position: relative;
+    margin: 10px 0;
+    ul.list-wrap{
+      display: flex;
+      justify-content: flex-start;
+
+      .list{
+        margin-right: 5px;
+        cursor: pointer;
+      }
+
+      .iconfont{
+        font-size: 16px;
+      }
+    }
+
+    // 表情容器
+    .expression-wrap{
+      display: none;
+      overflow-y: scroll;
+      -webkit-overflow-scrolling: touch;
+      box-sizing: border-box;
+      position: absolute;
+      top: 30px;
+      left: 0;
+      z-index: 2;
+      width: 100%;
+      height: 200px;
+      padding: 15px;
+      background: #fff;
+      border-radius: 5px;
+      &:after{
+        content: "";
+        display: inline-block;
+        width: 100%;
+      }
+
+      a{
+        display: inline-block;
+        width: 50px;
+        height: 50px;
+        margin: 4px;
+        border-radius: 5px;
+        background: $colorGay2;
+        text-align: center;
+        line-height: 50px;
+      }
+
+      img{
+        vertical-align: middle;
+      }
+    }
+  }
+
   .comment-from{
     box-sizing: border-box;
     margin-bottom: 20px;
@@ -320,7 +427,7 @@ export default {
 
     .comment-form-content{
       box-sizing: border-box;
-      margin: 20px 0;
+      margin-bottom: 20px;
       padding: 5px;
       border-radius: 5px;
       background: #fff;

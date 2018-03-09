@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'iconfont';  /* project id 552040 */
-  src: url('//at.alicdn.com/t/font_552040_6czmtnznifcg14i.eot');
-  src: url('//at.alicdn.com/t/font_552040_6czmtnznifcg14i.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_552040_6czmtnznifcg14i.woff') format('woff'),
-  url('//at.alicdn.com/t/font_552040_6czmtnznifcg14i.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_552040_6czmtnznifcg14i.svg#iconfont') format('svg');
+  src: url('//at.alicdn.com/t/font_552040_qiw5vtjbnw2ke29.eot');
+  src: url('//at.alicdn.com/t/font_552040_qiw5vtjbnw2ke29.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_552040_qiw5vtjbnw2ke29.woff') format('woff'),
+  url('//at.alicdn.com/t/font_552040_qiw5vtjbnw2ke29.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_552040_qiw5vtjbnw2ke29.svg#iconfont') format('svg');
 }
 .iconfont{
   font-family: "iconfont" !important;
@@ -87,4 +87,12 @@
 // 统计
 .icon-count:before{
   content: "\e64a";
+}
+// 图片
+.icon-picture:before{
+  content: "\e64c";
+}
+// 表情
+.icon-expression:before{
+  content: "\e600";
 }
