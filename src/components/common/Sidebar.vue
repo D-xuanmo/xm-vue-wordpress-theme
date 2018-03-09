@@ -1,20 +1,32 @@
 <template>
   <div class="fr sidebar-wrap hide-1200px">
-    <div class="sidebar-list" v-show="blogInfo.setExtend.sidebar_notice">
-      <h2 class="title"><i class="iconfont icon-notice1"></i> 公告</h2>
+    <div class="sidebar-list" v-if="blogInfo.setExtend.sidebar_notice">
+      <h2 class="title"><i class="iconfont icon-notice1"></i>公告</h2>
       <div class="list content">{{ blogInfo.setExtend.sidebar_notice }}</div>
     </div>
+    <div class="sidebar-list">
+      <h2 class="title"><i class="iconfont icon-hot1"></i>最新评论</h2>
+      <ul class="list-wrap new-comment">
+        <li class="list clearfix" v-for="item in blogInfo.newComment" :key="item.key">
+          <div class="fl" v-html="item.avatar"></div>
+          <router-link :to="{ name: 'single', params: { id: item.comment_post_ID } }" :title="item.comment_content">{{ item.comment_content }}</router-link>
+          <p class="link-text f-s-12px">{{ item.countCom }}人发表意见，{{ item.link }}人喜欢</p>
+        </li>
+      </ul>
+    </div>
     <div class="sidebar-list" v-show="blogInfo.getSidebarCount === 'on'">
-      <h2 class="title"><i class="iconfont icon-count"></i> 站点统计</h2>
+      <h2 class="title"><i class="iconfont icon-count"></i>站点统计</h2>
       <ul class="sidebar-count">
+        <li class="list">标签：{{ blogInfo.getAllCountTag }}个</li>
         <li class="list">文章：{{ blogInfo.getAllCountArticle }}篇</li>
         <li class="list">页面：{{ blogInfo.getAllCountPage }}个</li>
-        <li class="list">标签：{{ blogInfo.getAllCountTag }}个</li>
+        <li class="list">评论：{{ blogInfo.getAllCountComment }}条</li>
         <li class="list">分类：{{ blogInfo.getAllCountCat }}个</li>
+        <li class="list">最后更新：{{ blogInfo.lastUpDate }}</li>
       </ul>
     </div>
     <div class="sidebar-list link">
-      <h2 class="title"><i class="iconfont icon-link2"></i> 友情链接</h2>
+      <h2 class="title"><i class="iconfont icon-link2"></i>友情链接</h2>
       <div class="content sidebar-count" v-html="blogInfo.link"></div>
     </div>
     <!-- <div class="sidebar-list">
@@ -93,6 +105,8 @@ export default {
       line-height: 40px;
 
       .iconfont{
+        margin-right: 3px;
+        font-size: 16px;
         font-weight: lighter;
       }
     }
@@ -102,13 +116,33 @@ export default {
     }
   }
 
+  // 统计
   .sidebar-count{
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
 
     .list{
-      width: 49%;
+      &:nth-of-type(odd){
+        width: 40%;
+      }
+      &:nth-of-type(even){
+        width: 58%;
+      }
+    }
+  }
+
+  // 评论列表
+  .new-comment{
+    a{
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .link-text{
+      margin-top: 5px;
+      color: $colorTextMain;
     }
   }
 }

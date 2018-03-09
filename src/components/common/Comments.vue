@@ -268,7 +268,7 @@ export default {
     emailValidate () {
       if (this.email.value !== '') {
         this.email.validate = false
-        if (this.email.value.match(/^(\w+|(\.\w+))+@(\w+\.)+\w+$/) === null) {
+        if (this.email.value.match(/^(\w+|\w+(\.\w+))+@(\w+\.)+\w+$/) === null) {
           this.email.validate = true
           this.email.msg = '邮箱格式错误！'
         }

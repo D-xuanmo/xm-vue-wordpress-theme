@@ -32,7 +32,7 @@ body {
   overflow-x: hidden;
   background: $colorGay2;
   font-size: 14px;
-  font-family: "PingFangSC-Regular", Microsoft Yahe;
+  font-family: "monospace",Menlo,PingFangSC-Regular,Microsoft Yahe;
   font-weight: lighter;
   color: $colorTextMain;
 }
@@ -41,13 +41,22 @@ body {
   margin: 50px auto 0;
 }
 
+// 侧边栏
 .sidebar-wrap{
+  // 友情链接
   .link{
     a{
       display: block;
       width: 49%;
       margin-top: 10px;
       text-align: center;
+    }
+  }
+  // 最新评论
+  .new-comment{
+    img{
+      margin-right: 10px;
+      border-radius: 5px;
     }
   }
 }

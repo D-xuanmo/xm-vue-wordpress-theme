@@ -2,7 +2,6 @@
 /**
  * 删除不需要的字段
  */
-global $wpdb;
 function xm_rest_prepare_post( $data, $post, $request ) {
 	$_data = $data->data;
 	$params = $request->get_params();
@@ -19,6 +18,17 @@ add_filter( 'rest_prepare_post', 'xm_rest_prepare_post', 10, 3 );
  */
 function add_get_blog_info()
 {
+	global $wpdb;
+	// 获取最后更新时间
+	$last = $wpdb->get_results("SELECT MAX(post_modified) AS MAX_m FROM $wpdb->posts WHERE (post_type = 'post' OR post_type = 'page') AND (post_status = 'publish' OR post_status = 'private')");
+	$last = date('Y-n-j', strtotime($last[0]->MAX_m));
+	// 获取最新评论
+	$newComment = get_comments(array('number' => 10, 'status' => 'approve', 'type' => 'comment', 'user_id' => 0, 'post_type' => 'post'));
+	for ($i=0; $i < count($newComment); $i++) {
+		$newComment[$i]->avatar   = get_avatar($newComment[$i]->comment_author_email, 50);
+		$newComment[$i]->countCom = get_comments_number($newComment[$i]->comment_post_ID);
+		$newComment[$i]->link     = get_post_meta($newComment[$i]->comment_post_ID, 'xm_post_link', true)['very_good'];
+	}
   $array = array(
 		'baseUrl'             => get_bloginfo('home'),
 		'adminAjax'           => admin_url('admin-ajax.php'),
@@ -30,8 +40,12 @@ function add_get_blog_info()
 		'getAllCountCat'      => wp_count_terms('category'),
 		'getAllCountTag'      => wp_count_terms('post_tag'),
 		'getAllCountPage'     => wp_count_posts('page')->publish,
+		'getAllCountComment'  => $wpdb->get_var("SELECT COUNT(*) FROM $wpdb->comments"),
+		'lastUpDate'          => $last,
 		'getSidebarCount'     => get_option('xm_vue_options')['aside_count'],
-		'link'                => get_option('xm_vue_options')['link']
+		'link'                => get_option('xm_vue_options')['link'],
+		'newArticle'          => $wpdb->get_results("SELECT ID,post_title FROM $wpdb->posts where post_status='publish' and post_type='post' ORDER BY ID DESC LIMIT 0 , 10"),
+		'newComment'          => $newComment
   );
   return $array;
 }
@@ -98,19 +112,19 @@ add_action( 'rest_api_init', function(){
       'callback' => 'xm_get_view_count',
     )
   );
-} );
+});
 
 /**
  * 获取顶部置顶菜单
  */
-add_action( 'rest_api_init', function () {
-        register_rest_route( 'xm-blog/v1', '/top-menu', array(
-        'methods' => 'GET',
-        'callback' => function () {
-					return wp_get_nav_menu_items('Top');
-				},
-    ) );
-} );
+add_action('rest_api_init', function () {
+  register_rest_route('xm-blog/v1', '/top-menu', array(
+      'methods' => 'GET',
+      'callback' => function () {
+				return wp_get_nav_menu_items('Top');
+			},
+  ));
+});
 
 /**
  * 获取主菜单
@@ -120,7 +134,7 @@ function xm_get_menu() {
 	$menu = array();
 	foreach ($array_menu as $m) {
 		if (empty($m->menu_item_parent)) {
-			$menu[$m->ID] = array();
+			$menu[$m->ID]              = array();
 			$menu[$m->ID]['ID']        = $m->object_id;
 			$menu[$m->ID]['title']     = $m->title;
 			$menu[$m->ID]['url']       = $m->url;
@@ -131,7 +145,7 @@ function xm_get_menu() {
 	$submenu = array();
 	foreach ($array_menu as $m) {
 		if ($m->menu_item_parent) {
-			$submenu[$m->ID] = array();
+			$submenu[$m->ID]            = array();
 			$submenu[$m->ID]['ID']      = $m->object_id;
 			$submenu[$m->ID]['title']   = $m->title;
 			$submenu[$m->ID]['url']     = $m->url;
@@ -159,12 +173,37 @@ function add_api_page_meta_field() {
 					'commentCount' => get_comments_number()
 				);
 				return $array;
-				},
+			},
       'schema'          => null,
     )
   );
 }
 add_action( 'rest_api_init', 'add_api_page_meta_field' );
+
+/**
+ * 获取用户添加自定义字段
+ */
+function add_api_user_meta_field() {
+  register_rest_field( 'user', 'meta', array(
+      'get_callback'    => function() {
+				global $wpdb;
+				$id = intval($_GET['id']);
+				$array = array(
+					'qq'         => get_the_author_meta('qq', $id),
+					'github'     => get_the_author_meta('github_url', $id),
+					'wechat_num' => get_the_author_meta('wechat_num', $id),
+					'wechat_img' => get_the_author_meta('wechat_img', $id),
+					'sina_url'   => get_the_author_meta('sina_url', $id),
+					'sex'        => get_the_author_meta('sex', $id),
+					'aaa'        => $ccc
+				);
+				return $array;
+			},
+      'schema'          => null,
+    )
+  );
+}
+add_action( 'rest_api_init', 'add_api_user_meta_field' );
 
 /**
  * 添加自定义字段

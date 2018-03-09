@@ -12,13 +12,13 @@ add_action('init', 'remove_redirects');
 // Load scripts
 function load_vue_scripts()
 {
-  wp_enqueue_style('app.css', get_template_directory_uri() . '/static/css/app.53f7c85ac2a86053b69768780f7247b7.css', false, null);
+  wp_enqueue_style('app.css', get_template_directory_uri() . '/static/css/app.86dc691c5eefcb7d537a9b6104061e77.css', false, null);
 
-  wp_enqueue_script('manifest.js', get_template_directory_uri() . '/static/js/manifest.d935852f3e953e147bb5.js', null, null, true);
+  wp_enqueue_script('manifest.js', get_template_directory_uri() . '/static/js/manifest.3c2261369b24a4557fae.js', null, null, true);
 
   wp_enqueue_script('vendor.js', get_template_directory_uri() . '/static/js/vendor.e8c17017c75b8a42f3b8.js', null, null, true);
 
-  wp_enqueue_script('app.js', get_template_directory_uri() . '/static/js/app.734ed5495e291d1b345d.js', null, null, true);
+  wp_enqueue_script('app.js', get_template_directory_uri() . '/static/js/app.3692ae1665b4214cc2aa.js', null, null, true);
 }
 add_action('wp_enqueue_scripts', 'load_vue_scripts', 100);
 
@@ -95,6 +95,7 @@ function xm_user_contact($user_contactmethods){
   $user_contactmethods['wechat_num'] = '微信号';
   $user_contactmethods['wechat_img'] = '微信二维码链接';
   $user_contactmethods['sina_url'] = '新浪微博';
+  $user_contactmethods['sex'] = '性别';
   return $user_contactmethods;
 }
 add_filter('user_contactmethods', 'xm_user_contact');
@@ -136,6 +137,7 @@ function appthemes_add_quicktags()
       QTags.addButton(aLanguage[i], aLanguage[i], '\n<pre class="line-numbers language-' + aLanguage[i] + '"><code class="language-' + aLanguage[i] + '">\n', '\n</code></pre>\n');
     }
     QTags.addButton('c-code', 'c-code', '<span class="code">', '</span>');
+    QTags.addButton('h2', 'h2', '<h2>', '</h2>');
     // 添加html转换容器
     jQuery(function() {
       jQuery('#html-transform').click(function() {

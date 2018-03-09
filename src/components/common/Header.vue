@@ -161,9 +161,6 @@ export default {
 
 <style lang="scss">
 @import "../../assets/scss/_common.scss";
-.router-link-exact-active:not(.float-title){
-  color: $colorBlue;
-}
 
 .header-wrap{
   background: #fff;
@@ -263,6 +260,10 @@ export default {
     .float-title{
       font-size: 24px;
     }
+  }
+
+  .router-link-exact-active:not(.float-title){
+    color: $colorBlue;
   }
 
   .wrap{

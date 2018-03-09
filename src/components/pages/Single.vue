@@ -22,6 +22,7 @@
             <span class="text">{{ articleInfor.commentCount }}</span>
             <i class="iconfont icon-hot"></i>
             <span class="text">{{ singleRes.viewCount }}</span>
+            <a v-if="edit" :href="`/wp-admin/post.php?post=${$route.params.id}&action=edit`">编辑</a>
           </div>
         </header>
         <div class="content" v-html="singleRes.content" v-highlight></div>
@@ -130,6 +131,7 @@ import { mapState, mapMutations } from 'vuex'
 export default {
   name: 'single',
   data: () => ({
+    edit: false,
     articleHref: window.location.href
   }),
   components: {
@@ -164,6 +166,9 @@ export default {
         bShowLoading: true
       })
     }
+  },
+  mounted () {
+    if (document.querySelector('#wpadminbar')) this.edit = true
   }
 }
 </script>
