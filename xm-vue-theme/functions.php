@@ -12,7 +12,7 @@ add_action('init', 'remove_redirects');
 // Load scripts
 function load_vue_scripts()
 {
-  wp_enqueue_style('app.css', get_template_directory_uri() . '/static/css/app.86dc691c5eefcb7d537a9b6104061e77.css', false, null);
+  wp_enqueue_style('app.css', get_template_directory_uri() . '/static/css/app.fd9dfe407978058e8392c006168d9d8f.css', false, null);
 
   wp_enqueue_script('manifest.js', get_template_directory_uri() . '/static/js/manifest.3c2261369b24a4557fae.js', null, null, true);
 

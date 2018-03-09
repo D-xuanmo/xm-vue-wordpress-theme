@@ -9,7 +9,7 @@ code[class*="language-"],
 pre[class*="language-"] {
 	color: black;
 	background: none;
-	font-family: "monospace",Menlo,PingFangSC-Regular,Microsoft Yahe;
+	font-family: "Menlo",PingFangSC-Regular,Microsoft Yahe;
 	text-align: left;
 	white-space: pre;
 	word-spacing: normal;
