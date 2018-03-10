@@ -17,6 +17,13 @@ module.exports = {
         pathRewrite: {
           '^/wp-json': 'http://blog:5300/wp-json'
         }
+      },
+      '/wp-content': {
+        target: 'http://blog:5300',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/wp-content': 'http://blog:5300/wp-content'
+        }
       }
     },
 

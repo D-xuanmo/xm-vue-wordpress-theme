@@ -1,20 +1,22 @@
 <template>
   <div class="comments-wrap">
     <!-- 发表评论 -->
-    <form  action="#" method="post">
+    <form  action="#" method="post" ref="form">
       <div class="comment-from">
         <h3 class="wrap-title">发表评论</h3>
         <p class="comment-tips">电子邮件地址不会被公开。 必填项已用<i class="c-red">*</i>标注</p>
         <!-- 评论其他功能 -->
         <div class="comment-other">
           <ul class="list-wrap">
-            <li class="list">
+            <li class="list" @click="showChartlet()">
               <i class="iconfont icon-picture"></i>贴图
             </li>
             <li class="list" @click.stop="getExpression()">
               <i class="iconfont icon-expression"></i>表情
             </li>
           </ul>
+          <upload-img v-show="showChart" @showChart="getShowChart" @updateContent="getContent" :showChart="showChart"></upload-img>
+          <!-- 表情容器 -->
           <div class="expression-wrap" ref="expression">
             <a href="javascript:;" v-for="(item, key) in expression.content" :key="item.key" :title="item.title" :data-title="`/${key}`" @click.stop="editExpression($event)">
               <img :src="item.url" :alt="item.title" width="30">
@@ -103,10 +105,14 @@
   </div>
 </template>
 <script>
+import uploadImg from '@/components/common/UploadImg'
 import { mapState } from 'vuex'
 import axios from 'axios'
 export default {
   name: 'comments',
+  components: {
+    uploadImg
+  },
   data: () => ({
     commentList: [],
     author: {
@@ -144,6 +150,7 @@ export default {
     bClick: true,
     bMoreList: false,
     bSubmit: true,
+    showChart: false,
     sMoreBtnText: '下一页',
     submitText: '提交评论'
   }),
@@ -201,6 +208,8 @@ export default {
           this.bSubmit = true
           this.submitText = '提交评论'
           this.commentList.unshift(res.data)
+          this.content.value = ''
+          this.imgCode.value = ''
         }).catch((err) => {
           this.submitText = err.response.data.message
           setTimeout(() => {
@@ -326,14 +335,28 @@ export default {
       this.expression.clickState = true
       this.$refs.expression.style.display = 'none'
       this.content.value += ` ${event.currentTarget.getAttribute('data-title')} `
+    },
+    // 显示上传图片控件
+    showChartlet () {
+      this.showChart = true
+    },
+    // 获取关闭上传控件的值
+    getShowChart (value) {
+      this.showChart = value
+    },
+    // 获取子组件发回来的图片数据
+    getContent (value) {
+      this.content.value += value
     }
   },
   mounted () {
     this.randomCode()
     // 关闭表情显示
-    document.body.onclick = () => {
-      this.expression.clickState = true
-      this.$refs.expression.style.display = 'none'
+    if (this.$refs.expression) {
+      document.body.onclick = () => {
+        this.expression.clickState = true
+        this.$refs.expression.style.display = 'none'
+      }
     }
   }
 }

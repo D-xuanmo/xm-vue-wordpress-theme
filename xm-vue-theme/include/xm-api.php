@@ -28,11 +28,13 @@ function add_get_blog_info()
 		$newComment[$i]->avatar   = get_avatar($newComment[$i]->comment_author_email, 50);
 		$newComment[$i]->countCom = get_comments_number($newComment[$i]->comment_post_ID);
 		$newComment[$i]->link     = get_post_meta($newComment[$i]->comment_post_ID, 'xm_post_link', true)['very_good'];
+		$newComment[$i]->title     = get_the_title($newComment[$i]->comment_post_ID);
 	}
   $array = array(
 		'baseUrl'             => get_bloginfo('home'),
 		'adminAjax'           => admin_url('admin-ajax.php'),
     'templeteUrl'         => get_template_directory_uri(),
+    'contentUrl'          => content_url(),
     'blogName'            => get_bloginfo('name'),
 		'adminPic'            => get_the_author_meta('simple_local_avatar', 1),
 		'setExtend'           => get_option('xm_vue_options'),

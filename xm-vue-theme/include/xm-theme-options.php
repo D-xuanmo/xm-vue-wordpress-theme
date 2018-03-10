@@ -131,7 +131,6 @@ function themeoptions_page() {
             >
           </div>
         </div>
-
 				<div class="row">
           <div class="margin-top-15 clearfix">
             <label class="fl left-wrap" for="">后台登录logo：</label>
@@ -178,7 +177,6 @@ function themeoptions_page() {
             </div>
           </div>
         </div>
-
         <div class="row">
           <div class="margin-top-15 clearfix">
             <label class="fl left-wrap" for="">页面大图：</label>
@@ -199,6 +197,29 @@ function themeoptions_page() {
             </div>
             <div class="fr right-wrap">
               <img src="<?php echo $a_options['big_banner']; ?>" class="preview-img" style="max-width: 400px;" alt="">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="margin-top-15 clearfix">
+            <label class="fl left-wrap" for="">404页面图片：</label>
+            <div class="fr right-wrap">
+              <input
+                type="text"
+                class="url-inp"
+                name="not-found"
+                id="not-found"
+                value="<?php echo $a_options['not_found']; ?>"
+              >
+              <input type="button" name="img-upload" value="选择文件">
+            </div>
+          </div>
+          <div class="margin-top-15 clearfix">
+            <div class="fl left-wrap">
+              404图片预览：
+            </div>
+            <div class="fr right-wrap">
+              <img src="<?php echo $a_options['not_found']; ?>" class="preview-img" style="max-width: 400px;" alt="">
             </div>
           </div>
         </div>
@@ -250,6 +271,7 @@ function themeoptions_page() {
       'text_pic'            => $_POST['text-pic'],
       'favicon'             => $_POST['favicon-img'],
       'big_banner'          => $_POST['big-banner'],
+      'not_found'           => $_POST['not-found'],
       'sidebar_notice'      => $_POST['sidebar-notice'],
       'footer_copyright'    => $_POST['footer-copyright'],
       'footer_text'         => $_POST['footer-txt'],

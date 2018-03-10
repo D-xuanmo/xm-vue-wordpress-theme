@@ -9,7 +9,7 @@
       <ul class="list-wrap new-comment">
         <li class="list clearfix" v-for="item in blogInfo.newComment" :key="item.key">
           <div class="fl" v-html="item.avatar"></div>
-          <router-link :to="{ name: 'single', params: { id: item.comment_post_ID } }" :title="item.comment_content">{{ item.comment_content }}</router-link>
+          <router-link :to="{ name: 'single', params: { id: item.comment_post_ID } }" :title="item.title">{{ item.title }}</router-link>
           <p class="link-text f-s-12px">{{ item.countCom }}人发表意见，{{ item.link }}人喜欢</p>
         </li>
       </ul>
