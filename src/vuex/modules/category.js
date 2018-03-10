@@ -31,7 +31,7 @@ const actions = {
             articleList: '暂无数据！'
           }
           oResult = {...oResult, ..._res}
-        } else if (res.data.length < 5) {
+        } else if (res.data.length <= 5) {
           _res = {
             bClick: false,
             sMoreBtnText: '我是有底线的^_^'
@@ -40,7 +40,7 @@ const actions = {
         }
         commit('getList', oResult)
       })
-      .catch((err) => console.log(err))
+      .catch((err) => console.log(err.response))
   }
 }
 
