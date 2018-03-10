@@ -40,19 +40,6 @@ new Vue({
 })
 
 window.XM = {
-  hasClass (el, name = '') {
-    return el.className.match(new RegExp(name))
-  },
-  addClass (el, name) {
-    if (!this.hasClass(el, name)) {
-      el.className = el.className === '' ? name : el.className + ' ' + name
-    }
-  },
-  removeClass (el, name) {
-    if (this.hasClass(el, name)) {
-      el.className = el.className.replace(new RegExp(`\\s*${name}\\s*`), '')
-    }
-  },
   siblings (el) {
     let arr = []
     Array.from(el.parentNode.children).forEach(item => {

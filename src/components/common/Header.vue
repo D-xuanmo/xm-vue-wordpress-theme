@@ -1,6 +1,6 @@
 <template>
   <header class="header-wrap">
-    <div class="hd-top wrap clearfix">
+    <div class="hd-top wrap clearfix" :class="{ active: bFloatTopHead }">
       <div class="fl logo">
         <h1><router-link :to="{ name: 'index' }">{{ blogInfo.blogName }}</router-link></h1>
       </div>
@@ -33,7 +33,7 @@
     </div>
 
     <!-- 导航容器 -->
-    <div class="nav-wrap" :class="{ active: bFloatHead }">
+    <div class="nav-wrap" :class="{ active: bFloatHead, show: bNavShow }">
       <div class="wrap">
         <!-- 头像 -->
         <div class="head-portrait">
@@ -82,7 +82,9 @@ export default {
   data: () => ({
     searchRes: '',
     bFloatHead: false,
-    bShowSearch: false
+    bFloatTopHead: false,
+    bShowSearch: false,
+    bNavShow: false
   }),
   methods: {
     // 搜索
@@ -99,11 +101,11 @@ export default {
     },
     // 移动端显示菜单
     showMenu () {
-      window.XM.addClass(document.querySelector('.nav-wrap'), 'show')
+      this.bNavShow = true
     },
     // 移动端关闭菜单
     closeMenu () {
-      window.XM.removeClass(document.querySelector('.nav-wrap'), 'show')
+      this.bNavShow = true
     },
     // 显示二级菜单
     showSubMenu (event) {
@@ -135,24 +137,12 @@ export default {
     })
   },
   mounted () {
-    let _this = this
-    let oHeadTop = document.querySelector('.hd-top')
-    let oBackTop = document.querySelector('.icon-back-top')
+    let that = this
     window.addEventListener('scroll', function () {
       if (this.scrollY > 500) {
-        if (this.innerWidth > 767) {
-          _this.bFloatHead = true
-        } else {
-          window.XM.addClass(oHeadTop, 'active')
-        }
-        window.XM.addClass(oBackTop, 'active')
+        this.innerWidth > 767 ? that.bFloatHead = true : that.bFloatTopHead = true
       } else {
-        if (this.innerWidth > 767) {
-          _this.bFloatHead = false
-        } else {
-          window.XM.removeClass(oHeadTop, 'active')
-        }
-        window.XM.removeClass(oBackTop, 'active')
+        this.innerWidth > 767 ? that.bFloatHead = false : that.bFloatTopHead = false
       }
     }, false)
   }

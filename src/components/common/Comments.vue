@@ -352,8 +352,8 @@ export default {
   mounted () {
     this.randomCode()
     // 关闭表情显示
-    if (this.$refs.expression) {
-      document.body.onclick = () => {
+    document.body.onclick = () => {
+      if (this.$refs.expression) {
         this.expression.clickState = true
         this.$refs.expression.style.display = 'none'
       }

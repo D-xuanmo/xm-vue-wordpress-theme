@@ -140,6 +140,7 @@ pre[class*="language-"] {
 
 pre.line-numbers {
 	position: relative;
+	max-height: 500px;
 	margin: 0;
 	padding-left: 3.8em;
 	counter-reset: linenumber;

@@ -29,13 +29,18 @@
         <div class="fr">Theme by <a href="https://www.xuanmo.xin">Xuanmo</a></div>
       </div>
     </div>
-    <div class="iconfont icon-back-top" @click="backTop()"></div>
+    <div class="iconfont icon-back-top" :class="{ active: bMark }" @click="backTop()"></div>
   </div>
 </template>
 <script>
 import { mapState } from 'vuex'
 export default {
   name: 'myFooter',
+  data () {
+    return {
+      bMark: false
+    }
+  },
   computed: {
     ...mapState({
       blogInfo: state => state.info.blogInfo
@@ -45,6 +50,12 @@ export default {
     backTop () {
       window.scrollTo(0, 0)
     }
+  },
+  mounted () {
+    let that = this
+    window.addEventListener('scroll', function () {
+      this.scrollY > 500 ? that.bMark = true : that.bMark = false
+    }, false)
   }
 }
 </script>

@@ -1,6 +1,6 @@
 <template>
   <div class="fr sidebar-wrap hide-1200px">
-    <div class="sidebar-list" v-if="blogInfo.setExtend.sidebar_notice">
+    <div class="sidebar-list" v-if="blogInfo.setExtend.sidebar_notice" :class="{ float: bFloat }">
       <h2 class="title"><i class="iconfont icon-notice1"></i>公告</h2>
       <div class="list content">{{ blogInfo.setExtend.sidebar_notice }}</div>
     </div>
@@ -49,6 +49,7 @@ export default {
   name: 'sidebar',
   store,
   data: () => ({
+    bFloat: false,
     sidebarHotArticle: [
       {
         title: 'before伪类与阿里图标做的图标库before伪类与阿里图标做的图标库',
@@ -76,6 +77,12 @@ export default {
     ...mapState({
       blogInfo: state => state.info.blogInfo
     })
+  },
+  mounted () {
+    let that = this
+    window.addEventListener('scroll', function () {
+      this.scrollY > 1500 ? that.bFloat = true : that.bFloat = false
+    }, false)
   }
 }
 </script>
@@ -85,6 +92,7 @@ export default {
   width: 300px;
 
   .sidebar-list{
+    box-sizing: border-box;
     margin-top: 15px;
     padding: 0 15px 15px;
     border-radius: 5px;
@@ -92,6 +100,12 @@ export default {
     color: $colorGay3;
     &:first-of-type{
       margin-top: 0;
+    }
+
+    &.float{
+      position: fixed;
+      top: 80px;
+      width: 300px;
     }
 
     .list{

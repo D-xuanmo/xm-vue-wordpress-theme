@@ -31,16 +31,28 @@ const actions = {
             articleList: '暂无数据！'
           }
           oResult = {...oResult, ..._res}
-        } else if (res.data.length <= 5) {
+        } else if (res.data.length < 5) {
           _res = {
             bClick: false,
             sMoreBtnText: '我是有底线的^_^'
           }
           oResult = {...oResult, ..._res}
+          console.log(res.data)
         }
         commit('getList', oResult)
       })
-      .catch((err) => console.log(err.response))
+      .catch(err => {
+        let _res = {}
+        if (err.response.data.code === 'rest_post_invalid_page_number') {
+          _res = {
+            bClick: false,
+            bMoreList: false,
+            sMoreBtnText: '我是有底线的^_^'
+          }
+        }
+        oResult = {...oResult, ..._res}
+        commit('getList', oResult)
+      })
   }
 }
 
