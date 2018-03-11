@@ -22,13 +22,21 @@ $fileName = date("YmdHis") . substr(rand(), 0, 6) . "." . $fileEx;
 // 移动文件到指定目录
 move_uploaded_file($_FILES["file"]["tmp_name"], $addFilePath . $fileName);
 
+// 判断发表文章的时候是否提交了本次的图片，未提交从服务器删除本图片
+if ($_POST["mark"] === "upload") {
+  $result = array(
+    "name"  => urlencode($fileName),
+    "size"  => ceil($fileSize / 1024) . "Kb",
+    "type"  => urlencode($_FILES["file"]["type"]),
+    "path"  => $_POST["url"] . '/uploads/' . $currentPath . urlencode($fileName),
+    "code"  => $_POST["mark"]
+  );
+} else {
+  $result = array(
+    "code" => unlink(dirname(dirname(dirname(__FILE__))) . "/uploads/" . $currentPath . $_POST['fileName'])
+  );
+}
+
 // 输出结果
-$result = array(
-  "name"  => urlencode($fileName),
-  "size"  => ceil($fileSize / 1024) . "Kb",
-  "type"  => urlencode($_FILES["file"]["type"]),
-  "path"  => $_POST["url"] . '/uploads/' . $currentPath . urlencode($fileName),
-  "code"  => 2
-);
 echo urldecode(json_encode($result));
 ?>

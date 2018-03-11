@@ -11,15 +11,19 @@
         <div>{{ currentProgress }}%</div>
       </div>
       <div class="select-img">
-        <input type="file" name="file" value="" accept="image/png,image/gif,image/jpeg" @change.stop="uploadImg($event)">
+        <input type="file" name="file" value="" ref="inpFile" accept="image/png,image/gif,image/jpeg" @change.stop="showImgName($event)">
         <p class="mask">
-          <i class="iconfont icon-picture"></i>点击选择图片
+          <span v-if="bFileMark"><i class="iconfont icon-picture"></i>点击选择图片</span>
+          <span v-else>已选择：{{ fileName }}</span>
         </p>
       </div>
       <div class="result-img">
         <img :src="resultImgUrl">
       </div>
-      <div class="btn btn-insert" @click.stop="insertImg()">插入到文章</div>
+      <div class="btn-wrap">
+        <div class="btn btn-upload" @click.stop="uploadImg()">上传文件</div>
+        <div class="btn btn-insert" @click.stop="insertImg()">插入到文章</div>
+      </div>
     </div>
   </div>
 </template>
@@ -30,7 +34,10 @@ export default {
   name: 'uploadImg',
   data: () => ({
     currentProgress: 0,
-    resultImgUrl: ''
+    resultImgUrl: '',
+    bFileMark: true,
+    fileName: '',
+    resFileName: ''
   }),
   props: ['showChart'],
   computed: {
@@ -40,40 +47,63 @@ export default {
     })
   },
   methods: {
+    showImgName (event) {
+      this.bFileMark = false
+      this.fileName = event.currentTarget.files[0].name
+    },
     // 上传图片
-    uploadImg (event) {
-      let _file = event.currentTarget
-      window.XM.addClass(document.body, 'o-hide')
-      // 上传实时进度
-      let config = {
-        onUploadProgress: progressEvent => (this.currentProgress = parseInt(progressEvent.loaded / progressEvent.total * 100))
-      }
-      let data = new FormData()
-      if (_file.files[0].size / 1024 > 2048) {
-        alert('请上传小于2M的图片！')
-      } else {
-        data.append('postID', this.$route.params.id)
-        data.append('file', _file.files[0])
-        data.append('url', this.contentUrl)
-        axios.post(`/wp-content/themes/xm-vue-theme/xm_upload.php`, data, config).then(res => {
-          this.resultImgUrl = res.data.path
-          _file.value = ''
-        }).catch(err => console.log(err))
+    uploadImg () {
+      let _file = this.$refs.inpFile
+      if (_file.value) {
+        // 上传实时进度
+        let config = {
+          onUploadProgress: progressEvent => (this.currentProgress = parseInt(progressEvent.loaded / progressEvent.total * 100))
+        }
+        let data = new FormData()
+        if (_file.files[0].size / 1024 > 2048) {
+          alert('请上传小于2M的图片！')
+        } else {
+          data.append('postID', this.$route.params.id)
+          data.append('file', _file.files[0])
+          data.append('url', this.contentUrl)
+          data.append('mark', 'upload')
+          axios.post(`/wp-content/themes/xm-vue-theme/xm_upload.php`, data, config).then(res => {
+            this.resultImgUrl = res.data.path
+            this.resFileName = res.data.name
+            _file.value = ''
+          }).catch(err => console.log(err))
+        }
       }
     },
     // 隐藏上传控件
     hideUpload () {
-      this.$emit('showChart', false)
+      // 如果本次上传的图片为发表就从服务器删除此图片
+      let data = new FormData()
+      data.append('mark', 'close')
+      data.append('url', this.contentUrl)
+      data.append('postID', this.$route.params.id)
+      data.append('fileName', this.resFileName)
+      axios.post(`/wp-content/themes/xm-vue-theme/xm_upload.php`, data).catch(err => console.log(err))
+      // 关闭控件
+      this.$emit('showChart', {
+        close: false,
+        resFileName: this.resFileName
+      })
       this.currentProgress = 0
       this.resultImgUrl = ''
+      this.bFileMark = true
       window.XM.removeClass(document.body, 'o-hide')
     },
     // 插入到文章
     insertImg () {
       this.$emit('updateContent', ` [img]${this.resultImgUrl}[/img] `)
-      this.$emit('showChart', false)
+      this.$emit('showChart', {
+        close: false,
+        resFileName: this.resFileName
+      })
       this.currentProgress = 0
       this.resultImgUrl = ''
+      this.bFileMark = true
       window.XM.removeClass(document.body, 'o-hide')
     }
   },
@@ -148,6 +178,15 @@ export default {
       font-size: 18px;
     }
 
+    .mask{
+      span{
+        overflow: hidden;
+        display: block;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+
     input{
       opacity: 0;
       position: absolute;
@@ -166,15 +205,21 @@ export default {
     }
   }
 
-  .btn-insert{
-    width: 100px;
-    height: 40px;
-    margin: 15px auto;
-    border-radius: 5px;
-    background: #0ae;
-    line-height: 40px;
-    color: #fff;
-    cursor: pointer;
+  .btn-wrap{
+    display: flex;
+    justify-content: space-between;
+    width: 300px;
+    margin: 0 auto;
+    .btn{
+      width: 100px;
+      height: 40px;
+      margin: 15px auto;
+      border-radius: 5px;
+      background: #0ae;
+      line-height: 40px;
+      color: #fff;
+      cursor: pointer;
+    }
   }
 }
 @media screen and (max-width: 767px) {
@@ -195,6 +240,15 @@ export default {
     .result-img{
       img{
         max-width: 200px;
+      }
+    }
+  }
+}
+@media screen and (max-height: 500px) {
+  .upload-img-wrap{
+    .result-img{
+      img{
+        max-width: 100px;
       }
     }
   }

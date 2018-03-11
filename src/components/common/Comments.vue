@@ -191,7 +191,7 @@ export default {
       if (!this.content.validate && !this.author.validate && !this.email.validate && !this.imgCode.validate) {
         this.bSubmit = false
         this.submitText = '提交中...'
-        let data = new URLSearchParams()
+        let data = new FormData()
         // 保存评论者信息
         localStorage.setItem('authorInfo', JSON.stringify({
           author: this.author.value,
@@ -338,15 +338,16 @@ export default {
     },
     // 显示上传图片控件
     showChartlet () {
+      window.XM.addClass(document.body, 'o-hide')
       this.showChart = true
     },
     // 获取关闭上传控件的值
-    getShowChart (value) {
-      this.showChart = value
+    getShowChart (params) {
+      this.showChart = params.close
     },
     // 获取子组件发回来的图片数据
-    getContent (value) {
-      this.content.value += value
+    getContent (params) {
+      this.content.value += params
     }
   },
   mounted () {
