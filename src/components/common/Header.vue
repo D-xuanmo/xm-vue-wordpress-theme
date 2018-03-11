@@ -105,7 +105,7 @@ export default {
     },
     // 移动端关闭菜单
     closeMenu () {
-      this.bNavShow = true
+      this.bNavShow = false
     },
     // 显示二级菜单
     showSubMenu (event) {

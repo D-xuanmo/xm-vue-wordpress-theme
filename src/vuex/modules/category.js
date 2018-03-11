@@ -37,7 +37,6 @@ const actions = {
             sMoreBtnText: '我是有底线的^_^'
           }
           oResult = {...oResult, ..._res}
-          console.log(res.data)
         }
         commit('getList', oResult)
       })
