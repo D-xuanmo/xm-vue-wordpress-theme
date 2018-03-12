@@ -14,9 +14,9 @@ const mutations = {
       state.bLoading = false
     }).catch((res) => (state.blogInfo = { msg: '请求出错' }))
     // 获取置顶菜单
-    axios.get('/wp-json/xm-blog/v1/top-menu').then((res) => (state.topNavList = res.data)).catch((err) => console.log(err))
+    axios.get('/wp-json/xm-blog/v1/top-menu').then((res) => (state.topNavList = res.data)).catch((err) => console.log(err.response))
     // 获取主菜单
-    axios.get('/wp-json/xm-blog/v1/menu').then((res) => (state.navList = res.data)).catch((err) => console.log(err))
+    axios.get('/wp-json/xm-blog/v1/menu').then((res) => (state.navList = res.data)).catch((err) => console.log(err.response))
   }
 }
 

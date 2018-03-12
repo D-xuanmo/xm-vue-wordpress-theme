@@ -17,7 +17,7 @@
             <router-link :to="{ name: 'single', params: { id: item.id } }" v-html="item.title.rendered"></router-link>
           </h2>
           <div class="info-wrap">
-            <span><i class="iconfont icon-about"></i>{{ item.articleInfor.auther }}</span>
+            <span><i class="iconfont icon-about"></i>{{ item.articleInfor.author }}</span>
             <span><i class="iconfont icon-time1"></i>{{ item.date.replace('T', ' ') }}</span>
             <span><i class="iconfont icon-hot"></i>{{ item.articleInfor.viewCount }}</span>
             <span><i class="iconfont icon-message"></i>{{ item.articleInfor.commentCount }}</span>
@@ -126,9 +126,14 @@ export default {
     padding: 15px;
     border-radius: 5px;
     background: #fff;
+    transition: .7s;
     &:first-of-type{
       margin-top: 0;
       border-radius: 0 0 5px 5px;
+    }
+    &:hover{
+      box-shadow: 0 5px 10px #ccc;
+      transform: translate(0, -5px);
     }
 
     &:hover{
@@ -182,6 +187,7 @@ export default {
         overflow: hidden;
         position: relative;
         max-height: 150px;
+        min-height: 50px;
         &:after{
           content: "";
           position: absolute;

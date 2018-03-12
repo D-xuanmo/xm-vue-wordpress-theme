@@ -91,6 +91,7 @@
           <a :href="item.author_url" target="_blank" class="author">{{ item.author_name }}</a>
           <time>{{ item.date.replace('T', ' ') }}</time>
           <span v-if="item.status === 'hold'">您的评论正在审核中...</span>
+          <!-- <span>{{ item.meta.userAnget }}</span> -->
         </p>
         <div class="list-content" v-html="item.content.rendered" v-img-style></div>
         <!-- <div class="list-btn-wrap">
@@ -203,6 +204,7 @@ export default {
         data.append('author_url', this.url.value)
         data.append('content', this.content.value)
         data.append('post', this.$route.params.id)
+        data.append('aaa', 111)
         data.append('author_user_agent', navigator.userAgent)
         axios.post(`/wp-json/wp/v2/comments`, data).then((res) => {
           this.bSubmit = true

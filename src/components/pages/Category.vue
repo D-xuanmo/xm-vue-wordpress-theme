@@ -3,7 +3,7 @@
   <section class="wrap main-wrap clearfix" v-else>
     <!-- 左边文章区域 -->
     <div class="fl content-wrap width-full">
-      <header class="main-header" v-title="catTitle">{{ catTitle }}</header>
+      <header class="main-header" v-title="catTitle" v-html="catTitle"></header>
       <article class="" v-if="typeof articleList == 'string'">{{ articleList }}</article>
       <article class="article-list clearfix" v-else v-for="item in articleList" :key="item.key">
         <router-link
@@ -18,7 +18,7 @@
             <router-link :to="{ name: 'single', params: { id: item.id } }" v-html="item.title.rendered"></router-link>
           </h2>
           <div class="info-wrap">
-            <span><i class="iconfont icon-about"></i>{{ item.articleInfor.auther }}</span>
+            <span><i class="iconfont icon-about"></i>{{ item.articleInfor.author }}</span>
             <span><i class="iconfont icon-time1"></i>{{ item.date.replace('T', ' ') }}</span>
             <span><i class="iconfont icon-hot"></i>{{ item.articleInfor.viewCount }}</span>
             <span><i class="iconfont icon-message"></i>{{ item.articleInfor.commentCount }}</span>
@@ -107,27 +107,29 @@ export default {
     }
   },
   watch: {
-    $route () {
-      this.catTitle = this.$route.query.type === undefined ? `当前频道：${this.$route.params.title}` : `关于“${this.$route.query.s}”的搜索结果`
-      if (this.$route.query.type === undefined) {
-        store.dispatch('getList', {
-          key: 'categories',
-          val: this.$route.params.id,
-          currentNum: 1
-        })
-      } else {
-        store.dispatch('getList', {
-          key: 'search',
-          val: this.$route.query.s,
-          currentNum: 1
+    $route (to, from, next) {
+      if (to.name !== 'index') {
+        this.catTitle = this.$route.query.type === undefined ? `当前频道：${this.$route.params.title}` : `关于“${this.$route.query.s}”的搜索结果`
+        if (this.$route.query.type === undefined) {
+          store.dispatch('getList', {
+            key: 'categories',
+            val: this.$route.params.id,
+            currentNum: 1
+          })
+        } else {
+          store.dispatch('getList', {
+            key: 'search',
+            val: this.$route.query.s,
+            currentNum: 1
+          })
+        }
+        store.commit('getList', {
+          articleList: [],
+          bGlobalRequest: true,
+          bClick: true,
+          sMoreBtnText: '加载更多...'
         })
       }
-      store.commit('getList', {
-        articleList: [],
-        bGlobalRequest: true,
-        bClick: true,
-        sMoreBtnText: '加载更多...'
-      })
     }
   }
 }
@@ -172,9 +174,14 @@ export default {
     padding: 15px;
     border-radius: 5px;
     background: #fff;
+    transition: .7s;
     &:first-of-type{
       margin-top: 0;
       border-radius: 0 0 5px 5px;
+    }
+    &:hover{
+      box-shadow: 0 5px 10px #ccc;
+      transform: translate(0, -5px);
     }
 
     &:hover{
@@ -228,6 +235,7 @@ export default {
         overflow: hidden;
         position: relative;
         max-height: 150px;
+        min-height: 50px;
         &:after{
           content: "";
           position: absolute;

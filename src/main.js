@@ -29,7 +29,7 @@ Vue.directive('title', (el, binding) => {
 })
 
 // router切换每次滚动条到顶部
-router.afterEach(() => window.scrollTo(0, 0))
+// router.afterEach(() => window.scrollTo(0, 0))
 
 /* eslint-disable no-new */
 new Vue({

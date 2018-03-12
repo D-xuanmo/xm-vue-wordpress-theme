@@ -5,9 +5,9 @@
       <div class="box-wrap">
         <header class="content-header">
           <!-- <div class="breadcrumbs">当前位置： 首页 > 关于我 > 测试</div> -->
-          <h2 class="title text-center" v-title="singleRes.articleContent.title.rendered">{{ singleRes.articleContent.title.rendered }}</h2>
+          <h2 class="title text-center" v-title="singleRes.articleContent.title.rendered" v-html="singleRes.articleContent.title.rendered"></h2>
           <div class="article-info text-center">
-            <a href="#">{{ articleInfor.auther }}</a>
+            <a href="#">{{ articleInfor.author }}</a>
             <span class="text">发表于:</span>
             <time>{{ singleRes.articleContent.date.replace('T', ' ') }}</time>
             <span class="text">分类:</span>
@@ -15,14 +15,13 @@
               v-for="(item, index) in singleRes.classify"
               :key="item.key"
               :to="{ name: 'category', params: { id: item.cat_ID, title: item.cat_name } }"
-            >
-              {{ item.name }}{{ index == singleRes.classify.length - 1 ? '' : '、'  }}
-            </router-link>
+              v-html="`${item.name}${index == singleRes.classify.length - 1 ? '' : '、'}`"
+            ></router-link>
             <i class="iconfont icon-message"></i>
             <span class="text">{{ articleInfor.commentCount }}</span>
             <i class="iconfont icon-hot"></i>
             <span class="text">{{ singleRes.viewCount }}</span>
-            <a v-if="edit" :href="`/wp-admin/post.php?post=${$route.params.id}&action=edit`">编辑</a>
+            <a v-if="edit" :href="`/wp-admin/post.php?post=${$route.params.id}&action=edit`" target="_blank">编辑</a>
           </div>
         </header>
         <div class="content" v-html="singleRes.content" v-highlight></div>
@@ -86,27 +85,27 @@
         </div>
       </div>
       <!-- 作者信息 -->
-      <div class="auther-introduct box-wrap">
+      <div class="author-introduct box-wrap">
         <!-- 头像 -->
-        <img :src="articleInfor.other.autherPic.full" alt="" width="100">
+        <img :src="articleInfor.other.authorPic.full" alt="" width="100">
         <div class="right">
           <!-- 昵称 -->
           <div class="header">
             <p class="inline-block name">
-              作者简介：<i class="iconfont icon-about2"></i><span class="f-s-14px">{{ articleInfor.auther }}</span>
+              作者简介：<i class="iconfont icon-about2"></i><span class="f-s-14px">{{ articleInfor.author }}</span>
             </p>
             <p class="inline-block leave"></p>
           </div>
           <!-- 简介 -->
-          <p class="auther-summary">{{ articleInfor.other.autherTro }}</p>
+          <p class="author-summary">{{ articleInfor.other.authorTro }}</p>
           <!-- 社交信息 -->
-          <div class="auther-link">
+          <div class="author-link">
             <router-link :to="{ name: 'index' }">
               <svg class="iconfont-colour" aria-hidden="true">
                 <use xlink:href="#icon-icon-test"></use>
               </svg>
             </router-link>
-            <a :href="key == 'email' ? 'mailto:' + item.url : item.url" v-for="(item, key) in singleRes.autherOtherInfo" :key="item.key">
+            <a :href="key == 'email' ? 'mailto:' + item.url : item.url" v-for="(item, key) in singleRes.authorOtherInfo" :key="item.key">
               <svg class="iconfont-colour" aria-hidden="true">
                 <use :xlink:href="item.icon"></use>
               </svg>
@@ -115,7 +114,7 @@
         </div>
       </div>
       <div class="box-wrap">
-        <h2 class="comment-title">共 {{ singleRes.commentCount }} 条评论关于 “{{ singleRes.articleContent.title.rendered }}”</h2>
+        <h2 class="comment-title" v-html="`共 ${singleRes.commentCount} 条评论关于 “${singleRes.articleContent.title.rendered}”`"></h2>
         <comments :commentCount="singleRes.commentCount"></comments>
       </div>
     </div>
@@ -242,7 +241,7 @@ export default {
   }
 
   // 作者介绍
-  .auther-introduct{
+  .author-introduct{
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -267,7 +266,7 @@ export default {
     }
   }
 
-  .auther-link{
+  .author-link{
     margin-top: 10px;
     a{
       display: inline-block;
@@ -298,7 +297,7 @@ export default {
     .opinion{
       width: 100%;
     }
-    .auther-link{
+    .author-link{
       a{
         margin-bottom: 10px;
       }

@@ -15,27 +15,31 @@ export default new Router({
       path: '/',
       name: 'index',
       component: Index,
-      meta: { keepAlive: true }
+      meta: { keepAlive: false }
     },
     {
       path: '/cat/:id?/:title?',
       name: 'category',
-      component: Category
+      component: Category,
+      meta: { keepAlive: false }
     },
     {
       path: '/single/:id',
       name: 'single',
-      component: Single
+      component: Single,
+      meta: { keepAlive: false }
     },
     {
       path: '/page/:id',
       name: 'page',
-      component: Page
+      component: Page,
+      meta: { keepAlive: false }
     },
     {
       path: '*',
       name: 'notFound',
-      component: NotFound
+      component: NotFound,
+      meta: { keepAlive: false }
     }
   ]
 })

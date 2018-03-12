@@ -7,7 +7,7 @@
         <div class="content" v-html="singleRes.content" v-highlight></div>
       </div>
       <div class="box-wrap">
-        <h2 class="comment-title">共 {{ singleRes.commentCount }} 条评论关于 “{{ singleRes.articleContent.title.rendered }}”</h2>
+        <h2 class="comment-title" v-html="`共 ${singleRes.commentCount} 条评论关于 “${singleRes.articleContent.title.rendered}”`"></h2>
         <comments :commentCount="singleRes.commentCount"></comments>
       </div>
     </div>

@@ -29,7 +29,7 @@ const state = {
       title: 'Angry'
     }
   },
-  autherOtherInfo: {
+  authorOtherInfo: {
     github: {
       icon: '#icon-GitHub'
     },
@@ -79,8 +79,8 @@ const actions = {
           })
           commit('getArticle', oResult)
           // 合并作者信息数据
-          for (let key in state.autherOtherInfo) {
-            state.autherOtherInfo[key].url = _res.articleInfor.other[key]
+          for (let key in state.authorOtherInfo) {
+            state.authorOtherInfo[key].url = _res.articleInfor.other[key]
           }
         }).catch((err) => console.log(err))
     })
