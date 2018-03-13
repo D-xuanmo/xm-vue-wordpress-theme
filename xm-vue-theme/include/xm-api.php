@@ -196,8 +196,7 @@ function add_api_user_meta_field() {
 					'wechat_num' => get_the_author_meta('wechat_num', $id),
 					'wechat_img' => get_the_author_meta('wechat_img', $id),
 					'sina_url'   => get_the_author_meta('sina_url', $id),
-					'sex'        => get_the_author_meta('sex', $id),
-					'aaa'        => $ccc
+					'sex'        => get_the_author_meta('sex', $id)
 				);
 				return $array;
 			},
@@ -206,6 +205,23 @@ function add_api_user_meta_field() {
   );
 }
 add_action( 'rest_api_init', 'add_api_user_meta_field' );
+
+/**
+ * 获取评论添加自定义字段
+ */
+function add_api_comment_meta_field() {
+  register_rest_field( 'comment', 'meta', array(
+      'get_callback'    => function($object) {
+				$array = array(
+					'userAnget'   => $object['author_user_agent']
+				);
+				return $array;
+			},
+      'schema'          => null,
+    )
+  );
+}
+add_action( 'rest_api_init', 'add_api_comment_meta_field' );
 
 /**
  * 添加自定义字段
@@ -233,10 +249,10 @@ function xm_get_article_infor( $object ) {
 	}
 	$current_category = get_the_category($postID);
   $array = array(
-    'auther'       => get_the_author(),
+    'author'       => get_the_author(),
 		'other'        => array(
-			'autherPic'  => get_the_author_meta('simple_local_avatar'),
-			'autherTro'  => get_the_author_meta('description'),
+			'authorPic'  => get_the_author_meta('simple_local_avatar'),
+			'authorTro'  => get_the_author_meta('description'),
 			'github'     => get_the_author_meta('github_url'),
 			'qq'         => get_the_author_meta('qq'),
 			'wechatNum'  => get_the_author_meta('wechat_num'),

@@ -248,6 +248,12 @@ function themeoptions_page() {
           </div>
         </div>
         <div class="row clearfix">
+          <label class="fl left-wrap" for="common-css">页面公用css（不需要style标签）：</label>
+          <div class="fr right-wrap">
+            <textarea id="common-css" name="common-css" rows="8" cols="100"><?php echo $a_options['common_css']; ?></textarea>
+          </div>
+        </div>
+        <div class="row clearfix">
           <label class="fl left-wrap" for="footer-js">页面公用js（不需要script标签）：</label>
           <div class="fr right-wrap">
             <textarea id="footer-js" name="footer-js" rows="8" cols="100"><?php echo $a_options['footer_js']; ?></textarea>
@@ -277,6 +283,7 @@ function themeoptions_page() {
       'footer_text'         => $_POST['footer-txt'],
       'login_css'           => $_POST['login-css'],
       'all_head'            => $_POST['all-head'],
+      'common_css'          => $_POST['common-css'],
       'footer_js'           => $_POST['footer-js'],
       'keywords'            => $_POST['keywords'],
       'description'         => $_POST['description'],

@@ -7,7 +7,10 @@
   <meta name="key" content="<?php echo get_option('xm_vue_options')['keywords']; ?>">
   <meta name="description" content="<?php echo get_option('xm_vue_options')['description']; ?>">
   <meta name="format-detection" content="telephone=no">
-  <?php if (!empty(get_option('xm_vue_options')['all_head'])) echo get_option('xm_vue_options')['all_head']; ?>
+  <?php
+    if (!empty(get_option('xm_vue_options')['all_head'])) echo get_option('xm_vue_options')['all_head'];
+    if (!empty(get_option('xm_vue_options')['common_css'])) echo '<style>' . get_option('xm_vue_options')['common_css'] . '</style>';
+  ?>
   <link rel="icon" href="<?php echo get_option('xm_vue_options')['favicon']; ?>">
   <?php wp_head(); ?>
   <script src=//at.alicdn.com/t/font_556506_02zrofvxcsug14i.js></script>
