@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'iconfont';  /* project id 552040 */
-  src: url('//at.alicdn.com/t/font_552040_z0nmx8ac5adlhaor.eot');
-  src: url('//at.alicdn.com/t/font_552040_z0nmx8ac5adlhaor.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_552040_z0nmx8ac5adlhaor.woff') format('woff'),
-  url('//at.alicdn.com/t/font_552040_z0nmx8ac5adlhaor.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_552040_z0nmx8ac5adlhaor.svg#iconfont') format('svg');
+  src: url('//at.alicdn.com/t/font_552040_yypdvbaaaa21q0k9.eot');
+  src: url('//at.alicdn.com/t/font_552040_yypdvbaaaa21q0k9.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_552040_yypdvbaaaa21q0k9.woff') format('woff'),
+  url('//at.alicdn.com/t/font_552040_yypdvbaaaa21q0k9.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_552040_yypdvbaaaa21q0k9.svg#iconfont') format('svg');
 }
 .iconfont{
   font-family: "iconfont" !important;
@@ -76,9 +76,23 @@
 .icon-search:before{
   content: "\e607";
 }
-// 搜索
+// 关闭
 .icon-close:before{
   content: "\e601";
+}
+.icon-close1:before{
+  content: "\e626";
+}
+// 成功
+.icon-success:before{
+  content: "\e610";
+}
+// 提示
+.icon-tips:before{
+  content: "\e606";
+}
+.icon-tips1:before{
+  content: "\e628";
 }
 // 公告
 .icon-notice1:before{

@@ -119,12 +119,14 @@
       </div>
     </div>
     <sidebar></sidebar>
+    <tips :show="showTips"></tips>
   </section>
 </template>
 <script>
 import sidebar from '@/components/common/Sidebar'
 import comments from '@/components/common/Comments'
 import loading from '@/components/common/Loading'
+import tips from '@/components/common/Tips'
 import store from '@/vuex/store'
 import { mapState, mapMutations } from 'vuex'
 export default {
@@ -136,7 +138,8 @@ export default {
   components: {
     sidebar,
     comments,
-    loading
+    loading,
+    tips
   },
   store,
   methods: {
@@ -145,7 +148,8 @@ export default {
   computed: {
     ...mapState({
       singleRes: state => state.single,
-      articleInfor: state => state.single.articleContent.articleInfor
+      articleInfor: state => state.single.articleContent.articleInfor,
+      showTips: state => state.single.showTips
     })
   },
   created () {
@@ -296,10 +300,24 @@ export default {
   .main-wrap{
     .opinion{
       width: 100%;
+      .list{
+        img{
+          width: 35px;
+        }
+      }
     }
     .author-link{
       a{
         margin-bottom: 10px;
+      }
+    }
+  }
+}
+@media screen and (max-width: 360px) {
+  .main-wrap{
+    .author-introduct{
+      img{
+        display: none;
       }
     }
   }

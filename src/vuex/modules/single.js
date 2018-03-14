@@ -7,6 +7,12 @@ const state = {
   tags: [],
   commentCount: 0,
   bShowLoading: true,
+  showTips: {
+    mark: false,
+    msg: '',
+    className: '',
+    icon: 'icon-tips'
+  },
   opinion: {
     very_good: {
       pic: require('../../assets/images/like_love.png'),
@@ -94,7 +100,20 @@ const mutations = {
   // 点赞
   addOpinion (state, key) {
     if (localStorage.getItem(`xm_link_${state.id}`)) {
-      alert('您已经发表意见了！')
+      state.showTips = {
+        mark: true,
+        msg: '您已经发表过意见了！',
+        className: 'alert-warning',
+        icon: 'icon-tips'
+      }
+      setTimeout(() => {
+        state.showTips = {
+          mark: false,
+          msg: '您已经发表过意见了！',
+          className: 'alert-warning',
+          icon: 'icon-tips'
+        }
+      }, 2000)
     } else {
       axios.post('/wp-json/xm-blog/v1/link/', {
         params: {
