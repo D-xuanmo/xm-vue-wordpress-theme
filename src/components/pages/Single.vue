@@ -176,7 +176,6 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-@import "../../assets/scss/_common.scss";
 .main-wrap{
   // 正文
   .content-wrap{
@@ -291,7 +290,7 @@ export default {
     margin-bottom: 10px;
     padding: 10px 0;
     border-radius: 5px;
-    background: $colorMainGay;
+    background: $main-gay-color;
     font-size: 18px;
     text-align: center;
   }

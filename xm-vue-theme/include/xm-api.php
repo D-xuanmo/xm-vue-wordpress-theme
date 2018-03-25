@@ -106,9 +106,7 @@ function xm_get_view_count($request) {
 }
 
 add_action( 'rest_api_init', function(){
-  register_rest_route(
-    'xm-blog/v1',
-    '/view-count/',
+  register_rest_route( 'xm-blog/v1', '/view-count/',
     array(
       'methods'  => 'POST',
       'callback' => 'xm_get_view_count',
@@ -141,6 +139,7 @@ function xm_get_menu() {
 			$menu[$m->ID]['title']     = $m->title;
 			$menu[$m->ID]['url']       = $m->url;
 			$menu[$m->ID]['type']      = $m->object;
+			$menu[$m->ID]['icon']      = $m->attr_title;
 			$menu[$m->ID]['children']  = array();
 		}
 	}
@@ -152,6 +151,7 @@ function xm_get_menu() {
 			$submenu[$m->ID]['title']   = $m->title;
 			$submenu[$m->ID]['url']     = $m->url;
 			$submenu[$m->ID]['type']    = $m->object;
+			$submenu[$m->ID]['icon']    = $m->attr_title;
 			$menu[$m->menu_item_parent]['children'][$m->ID] = $submenu[$m->ID];
 		}
 	}
@@ -188,7 +188,6 @@ add_action( 'rest_api_init', 'add_api_page_meta_field' );
 function add_api_user_meta_field() {
   register_rest_field( 'user', 'meta', array(
       'get_callback'    => function() {
-				global $wpdb;
 				$id = intval($_GET['id']);
 				$array = array(
 					'qq'         => get_the_author_meta('qq', $id),
@@ -205,23 +204,6 @@ function add_api_user_meta_field() {
   );
 }
 add_action( 'rest_api_init', 'add_api_user_meta_field' );
-
-/**
- * 获取评论添加自定义字段
- */
-function add_api_comment_meta_field() {
-  register_rest_field( 'comment', 'meta', array(
-      'get_callback'    => function($object) {
-				$array = array(
-					'userAnget'   => $object['author_user_agent']
-				);
-				return $array;
-			},
-      'schema'          => null,
-    )
-  );
-}
-add_action( 'rest_api_init', 'add_api_comment_meta_field' );
 
 /**
  * 添加自定义字段

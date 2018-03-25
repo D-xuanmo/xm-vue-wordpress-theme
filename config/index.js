@@ -12,17 +12,17 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/wp-json': {
-        target: 'http://blog:5300',
+        target: 'http://localhost:8888',
         changeOrigin: true,
         pathRewrite: {
-          '^/wp-json': 'http://blog:5300/wp-json'
+          '^/wp-json': 'http://localhost:8888/wp-json'
         }
       },
       '/wp-content': {
-        target: 'http://blog:5300',
+        target: 'http://localhost:8888',
         changeOrigin: true,
         pathRewrite: {
-          '^/wp-content': 'http://blog:5300/wp-content'
+          '^/wp-content': 'http://localhost:8888/wp-content'
         }
       }
     },

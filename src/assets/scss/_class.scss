@@ -1,10 +1,10 @@
-@import "./_common.scss";
-.fr {
-  float: right;
-}
-
+// 公用class
 .fl {
   float: left;
+}
+
+.fr {
+  float: right;
 }
 
 // 清除浮动
@@ -79,7 +79,7 @@
 }
 
 .wrap {
-  width: $wrap;
+  width: $container-wrap;
   margin: 0 auto;
 }
 
@@ -109,7 +109,7 @@
 }
 
 .c-blue{
-  color: $colorBlue;
+  color: $color-blue;
 }
 
 .case-show{
@@ -117,7 +117,7 @@
   width: 150px;
   margin: 20px auto;
   padding: 10px 18px;
-  background-color: $colorBlue;
+  background-color: $color-blue;
   border-radius: 4px;
   font-size: 14px;
   line-height: 1.42857143;
@@ -128,5 +128,5 @@
 .code {
   padding: 0 5px;
   background: #e9eaed;
-  color: #06aaff;
+  color: $color-blue;
 }

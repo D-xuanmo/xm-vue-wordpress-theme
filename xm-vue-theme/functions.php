@@ -12,13 +12,13 @@ add_action('init', 'remove_redirects');
 // Load scripts
 function load_vue_scripts()
 {
-  wp_enqueue_style('app.css', get_template_directory_uri() . '/static/css/app.5bdd1704ea9ac0c465c6356b1964d4dc.css', false, null);
+  wp_enqueue_style('app.css', get_template_directory_uri() . '/static/css/app.3e593575159f4fadd8d22d328b1d94e6.css', false, null);
 
-  wp_enqueue_script('manifest.js', get_template_directory_uri() . '/static/js/manifest.c888501a35c96563ba37.js', null, null, true);
+  wp_enqueue_script('manifest.js', get_template_directory_uri() . '/static/js/manifest.3661090f6f445acd81c4.js', null, null, true);
 
-  wp_enqueue_script('vendor.js', get_template_directory_uri() . '/static/js/vendor.e8c17017c75b8a42f3b8.js', null, null, true);
+  wp_enqueue_script('vendor.js', get_template_directory_uri() . '/static/js/vendor.ef54087857309481cb70.js', null, null, true);
 
-  wp_enqueue_script('app.js', get_template_directory_uri() . '/static/js/app.e487ace26a4023502563.js', null, null, true);
+  wp_enqueue_script('app.js', get_template_directory_uri() . '/static/js/app.7c38a4396afab1a822df.js', null, null, true);
 }
 add_action('wp_enqueue_scripts', 'load_vue_scripts', 100);
 

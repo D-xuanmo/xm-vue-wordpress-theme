@@ -87,7 +87,6 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-@import "../../assets/scss/_common.scss";
 .sidebar-wrap{
   width: 300px;
 
@@ -156,7 +155,7 @@ export default {
     }
     .link-text{
       margin-top: 5px;
-      color: $colorTextMain;
+      color: $main-text-color;
     }
   }
 }

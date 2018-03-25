@@ -1,22 +1,21 @@
-@import "./common";
 @import "./tag";
 @import "./class";
 @import "./iconfont";
 
 ::selection{
-  background: $colorBlue;
+  background: $color-blue;
   color: #fff;
 }
 
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 5px;
+  height: 5px;
   background: #e4e4e4;
 }
 
 ::-webkit-scrollbar-thumb {
   border-radius: 10px;
-  background-color: $colorBlue;
+  background-color: $color-blue;
   background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, .2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%, transparent 75%, transparent);
 }
 
@@ -31,14 +30,22 @@
 body {
   overflow-x: hidden;
   background: $colorGay2;
-  font-size: 14px;
-  font-family: "Menlo",PingFangSC-Regular,Microsoft Yahe;
-  font-weight: lighter;
-  color: $colorTextMain;
+  font: lighter 14px "Menlo",PingFangSC-Regular,Microsoft Yahe;
+  color: $main-text-color;
 }
 
 .main-wrap{
   margin: 50px auto 0;
+}
+
+.single{
+  .content{
+    img{
+      max-width: 100%;
+      margin: 10px 0;
+      box-shadow: 0 0 10px #d2d2d2;
+    }
+  }
 }
 
 // 侧边栏

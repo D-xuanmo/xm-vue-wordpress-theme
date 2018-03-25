@@ -1,11 +1,13 @@
+// 字体图标
 @font-face {
   font-family: 'iconfont';  /* project id 552040 */
-  src: url('//at.alicdn.com/t/font_552040_yypdvbaaaa21q0k9.eot');
-  src: url('//at.alicdn.com/t/font_552040_yypdvbaaaa21q0k9.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_552040_yypdvbaaaa21q0k9.woff') format('woff'),
-  url('//at.alicdn.com/t/font_552040_yypdvbaaaa21q0k9.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_552040_yypdvbaaaa21q0k9.svg#iconfont') format('svg');
+  src: url('//at.alicdn.com/t/font_552040_5wvwqa77dycr3sor.eot');
+  src: url('//at.alicdn.com/t/font_552040_5wvwqa77dycr3sor.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_552040_5wvwqa77dycr3sor.woff') format('woff'),
+  url('//at.alicdn.com/t/font_552040_5wvwqa77dycr3sor.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_552040_5wvwqa77dycr3sor.svg#iconfont') format('svg');
 }
+
 .iconfont{
   font-family: "iconfont" !important;
   font-size: 14px;
@@ -14,106 +16,56 @@
   -webkit-text-stroke-width: 0.2px;
   -moz-osx-font-smoothing: grayscale;
 }
-// 主页
-.icon-home1:before{
-  content: "\e649";
-}
-.icon-home2:before{
-  content: "\e69e";
-}
-// 关于
-.icon-about:before{
-  content: "\e63c";
-}
-.icon-about1:before{
-  content: "\e645";
-}
-.icon-about2:before{
-  content: "\e61f";
-}
-// 信息
-.icon-message:before{
-  content: "\e619";
-}
-// 链接
-.icon-link:before{
-  content: "\e6af";
-}
-.icon-link2:before{
-  content: "\e622";
-}
-// 时间
-.icon-time:before{
-  content: "\e6c1";
-}
-.icon-time1:before{
-  content: "\e62a";
-}
-// 赞
-.icon-zan:before{
-  content: "\e681";
-}
-// hot
-.icon-hot:before{
-  content: "\e688";
-}
-.icon-hot1:before{
-  content: "\e6a0";
-}
-// 标签
-.icon-tag:before{
-  content: "\e636";
-}
-// 返回顶部
-.icon-back-top:before{
-  content: "\e6e7";
-}
-// 菜单
-.icon-menu:before{
-  content: "\e605";
-}
-// 搜索
-.icon-search:before{
-  content: "\e607";
-}
-// 关闭
-.icon-close:before{
-  content: "\e601";
-}
-.icon-close1:before{
-  content: "\e626";
-}
-// 成功
-.icon-success:before{
-  content: "\e610";
-}
-// 提示
-.icon-tips:before{
-  content: "\e606";
-}
-.icon-tips1:before{
-  content: "\e628";
-}
-// 公告
-.icon-notice1:before{
-  content: "\e64b";
-}
-.icon-notice2:before{
-  content: "\e6df";
-}
-// 统计
-.icon-count:before{
-  content: "\e64a";
-}
-// 图片
-.icon-picture:before{
-  content: "\e64c";
-}
-// 表情
-.icon-expression:before{
-  content: "\e600";
-}
-// 表情
-.icon-code:before{
-  content: "\e7ae";
+
+$iconMap: (
+  "home1":            "\e649",
+  "home2":            "\e69e",
+  "about":            "\e63c",
+  "about1":           "\e645",
+  "about2":           "\e61f",
+  "message":          "\e619",
+  "message1":         "\e667",
+  "link":             "\e6af",
+  "link2":            "\e622",
+  "time":             "\e6c1",
+  "time1":            "\e62a",
+  "zan":              "\e681",
+  "hot":              "\e688",
+  "hot1":             "\e6a0",
+  "tag":              "\e636",
+  "tag1":             "\e611",
+  "back-top":         "\e6e7",
+  "menu":             "\e605",
+  "search":           "\e607",
+  "icon-arrow-top":   "\e65d",
+  "icon-arrow-right": "\e65f",
+  "icon-arrow-bottom":"\e65e",
+  "icon-arrow-left":  "\e660",
+  "icon-arrow-right1":"\e757",
+  "close":            "\e601",
+  "close1":           "\e626",
+  "success":          "\e610",
+  "tips":             "\e606",
+  "tips1":            "\e628",
+  "notice1":          "\e64b",
+  "notice2":          "\e6df",
+  "count":            "\e64a",
+  "picture":          "\e64c",
+  "expression":       "\e600",
+  "code":             "\e7ae",
+  "note1":            "\e727",
+  "note2":            "\e617",
+  "case":             "\e678",
+  "life1":            "\e65a",
+  "life2":            "\e657",
+  "software":         "\e612",
+  "html5-1":          "\e602",
+  "html5-2":          "\e6f0",
+  "wordpress":        "\e65b"
+);
+
+@each $key, $value in $iconMap {
+  .icon-#{$key}:before{
+    content: "#{$value}";
+  }
 }

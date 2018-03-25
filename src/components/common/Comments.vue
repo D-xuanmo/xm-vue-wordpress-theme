@@ -204,7 +204,6 @@ export default {
         data.append('author_url', this.url.value)
         data.append('content', this.content.value)
         data.append('post', this.$route.params.id)
-        data.append('aaa', 111)
         data.append('author_user_agent', navigator.userAgent)
         axios.post(`/wp-json/wp/v2/comments`, data).then((res) => {
           this.bSubmit = true
@@ -212,6 +211,7 @@ export default {
           this.commentList.unshift(res.data)
           this.content.value = ''
           this.imgCode.value = ''
+          this.randomCode()
         }).catch((err) => {
           this.submitText = err.response.data.message
           setTimeout(() => {
@@ -366,7 +366,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../assets/scss/_common.scss";
 .comments-wrap{
   padding: 10px 0;
 
@@ -379,7 +378,7 @@ export default {
       display: inline-block;
       padding: 10px 30px;
       border-radius: 5px;
-      background: $colorBlue;
+      background: $color-blue;
       cursor: pointer;
     }
   }
@@ -444,7 +443,7 @@ export default {
     margin-bottom: 20px;
     padding: 10px;
     border-radius: 5px;
-    background: $colorMainGay;
+    background: $main-gay-color;
 
     .comment-tips:not(p){
       font-size: 12px;
@@ -514,7 +513,7 @@ export default {
       margin: 20px auto;
       padding: 15px 0;
       border-radius: 30px;
-      background: $colorBlue;
+      background: $color-blue;
       text-align: center;
       color: #fff;
       cursor: pointer;
@@ -528,7 +527,7 @@ export default {
     margin: 0 0 20px 5%;
     padding: 10px 10px 10px 50px;
     border-radius: 5px;
-    background: $colorMainGay;
+    background: $main-gay-color;
     &:last-of-type{
       margin-bottom: 0;
     }

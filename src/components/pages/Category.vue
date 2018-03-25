@@ -136,7 +136,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../assets/scss/_common.scss";
 .main-wrap{
   // 标题栏
   .main-header{
@@ -158,7 +157,7 @@ export default {
       display: inline-block;
       padding: 10px 30px;
       border-radius: 5px;
-      background: $colorBlue;
+      background: $color-blue;
       cursor: pointer;
     }
   }
@@ -251,7 +250,7 @@ export default {
           left: 50%;
           z-index: 9;
           padding: 5px 15px;
-          border: border-1($colorBlue);
+          border: border-1($color-blue);
           border-radius: 5px;
           font-size: 16px;
           transform: translateX(-50%);

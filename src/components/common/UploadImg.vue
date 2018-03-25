@@ -112,7 +112,6 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-@import "../../assets/scss/_common.scss";
 // 评论上传图片
 .upload-img-wrap{
   position: fixed;

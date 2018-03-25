@@ -4,9 +4,11 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import Prism from '../static/js/prism'
+import Axios from './servers/http'
 import '../static/css/prism.css'
 
 Vue.config.productionTip = false
+window.axios = Axios
 
 // 注册代码高亮指令
 Vue.directive('highlight', (el) => {

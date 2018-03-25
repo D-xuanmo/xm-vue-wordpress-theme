@@ -1,16 +1,50 @@
-@import "./_common.scss";
-// 清除默认样式
-body, h1, h2, h3, h4, h5, h6, p, ul, ol, input{
+// 设置标签默认样式
+blockquote,
+body,
+button,
+caption,
+dd,
+div,
+dl,
+dt,
+fieldset,
+figure,
+form,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+hr,
+html,
+input,
+legend,
+li,
+menu,
+ol,
+p,
+pre,
+table,
+td,
+textarea,
+th,
+ul {
   margin: 0;
   padding: 0;
 }
 
-h1, h2, h3, h4, h5, h6{
-  font-size: 14px;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: $main-font-size;
 }
 
-input,
 button,
+input,
 select,
 textarea {
   outline: 0;
@@ -40,22 +74,12 @@ img {
   -webkit-touch-callout: none;
 }
 
-.single{
-  .content{
-    img{
-      max-width: 100%;
-      margin: 10px 0;
-      box-shadow: 0 0 10px #d2d2d2;
-    }
-  }
-}
-
 a {
   text-decoration: none;
-  color: $colorTextMain;
+  color: $main-text-color;
   transition: .5s;
 
   &:hover {
-    color: $colorBlue;
+    color: $color-blue;
   }
 }

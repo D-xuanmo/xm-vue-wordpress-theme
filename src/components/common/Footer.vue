@@ -60,11 +60,10 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-@import "../../assets/scss/_common.scss";
 .footer-wrap{
   margin-top: 30px;
   padding: 15px 0;
-  box-shadow: -5px 0px 10px $colorMainBoxShadow;
+  box-shadow: -5px 0px 10px $box-shadow-color;
   background: #fff;
 
   .logo{
@@ -102,7 +101,7 @@ export default {
     bottom: 30px;
     z-index: 999;
     font-size: 50px;
-    color: $colorBlue;
+    color: $color-blue;
     cursor: pointer;
     transition: .7s;
     &.active{

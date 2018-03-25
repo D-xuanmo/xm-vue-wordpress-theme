@@ -37,7 +37,7 @@
       <div class="wrap">
         <!-- 头像 -->
         <div class="head-portrait">
-          <img v-show="!bFloatHead" :src="blogInfo.adminPic.full" width="150" alt="">
+          <img v-show="!bFloatHead" :src="blogInfo.adminPic.full" width="150" height="150" alt="">
           <router-link v-show="bFloatHead" class="float-title" :to="{ name: 'index' }">{{ blogInfo.blogName }}</router-link>
         </div>
         <!-- 导航 -->
@@ -45,24 +45,24 @@
           <i class="hide block iconfont icon-close" @click="closeMenu()"></i>
           <ul class="list-wrap">
             <li class="nav-list" @mouseenter="showSubMenu($event)" @touchend="closeMenu()">
-              <router-link :to="{ name: 'index' }">首页</router-link>
+              <router-link :to="{ name: 'index' }"><i v-show="bShowNavIcon" class="iconfont icon-home2"></i>首页</router-link>
             </li>
             <li class="nav-list" v-for="item in navList" :key="item.key" @mouseenter="showSubMenu($event)" @touchend="showSubMenu($event)">
               <router-link
                 v-if="item.type === 'page'"
                 :to="{ name: 'page', params: { id: item.ID } }"
                 @click.native.stop="closeMenu()"
-              >{{ item.title }}</router-link>
+              ><i class="iconfont" :class="item.icon"></i>{{ item.title }}</router-link>
               <router-link
                 v-else-if="item.children.length === 0"
                 :to="{ name: 'category', params: { id: item.ID, title: item.title } }"
                 @click.native.stop="closeMenu()"
-              >{{ item.title }}</router-link>
-              <a v-else href="javascript:;">{{ item.title }}</a>
+              ><i class="iconfont" :class="item.icon"></i>{{ item.title }}</router-link>
+              <a v-else href="javascript:;"><i class="iconfont" :class="item.icon"></i>{{ item.title }}</a>
               <ul class="sub-nav-wrap" v-if="item.children.length !== 0">
                 <li class="sub-nav-list" v-for="subNav in item.children" :key="subNav.key" @click.stop="closeMenu()">
-                  <router-link v-if="subNav.type === 'page'" :to="{ name: 'page', params: { id: subNav.ID } }">{{ subNav.title }}</router-link>
-                  <router-link v-else :to="{ name: 'category', params: { id: subNav.ID, title: subNav.title } }">{{ subNav.title }}</router-link>
+                  <router-link v-if="subNav.type === 'page'" :to="{ name: 'page', params: { id: subNav.ID } }"><i class="iconfont" :class="subNav.icon"></i>{{ subNav.title }}</router-link>
+                  <router-link v-else :to="{ name: 'category', params: { id: subNav.ID, title: subNav.title } }"><i class="iconfont" :class="subNav.icon"></i>{{ subNav.title }}</router-link>
                 </li>
               </ul>
             </li>
@@ -133,7 +133,8 @@ export default {
     ...mapState({
       blogInfo: state => state.info.blogInfo,
       navList: state => state.info.navList,
-      topNavList: state => state.info.topNavList
+      topNavList: state => state.info.topNavList,
+      bShowNavIcon: state => state.info.bShowNavIcon
     })
   },
   mounted () {
@@ -150,8 +151,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import "../../assets/scss/_common.scss";
-
 .header-wrap{
   background: #fff;
 
@@ -231,7 +230,7 @@ export default {
 // 导航
 .nav-wrap{
   margin-bottom: 20px;
-  box-shadow: 0 5px 10px $colorMainBoxShadow;
+  box-shadow: 0 5px 10px $box-shadow-color;
   background: #fff;
   &.active{
     position: fixed;
@@ -253,7 +252,7 @@ export default {
   }
 
   .router-link-exact-active:not(.float-title){
-    color: $colorBlue;
+    color: $color-blue;
   }
 
   .wrap{
@@ -289,6 +288,10 @@ export default {
       > a{
         line-height: 60px;
       }
+
+      .iconfont{
+        margin-right: 3px;
+      }
     }
 
     .sub-nav-wrap{
@@ -299,7 +302,7 @@ export default {
       left: 50%;
       width: 200px;
       background: #fff;
-      text-align: center;
+      text-indent: 28px;
       line-height: 40px;
       transform: translateX(-50%);
     }

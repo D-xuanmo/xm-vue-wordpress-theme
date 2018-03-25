@@ -1,4 +1,3 @@
-import axios from 'axios'
 const state = {
   id: 0,
   viewCount: 0,
@@ -59,7 +58,7 @@ const actions = {
     let oResult = {}
     new Promise((resolve, reject) => {
       // 更新文章阅读量
-      axios.post(`/wp-json/xm-blog/v1/view-count/`, {
+      window.axios.post(`/wp-json/xm-blog/v1/view-count/`, {
         params: {
           id: _params.id
         }
@@ -72,7 +71,7 @@ const actions = {
       }).catch((err) => console.log(err))
     }).then((resolve, reject) => {
       // 获取文章数据
-      axios.get(`/wp-json/wp/v2/posts/${_params.id}`)
+      window.axios.get(`/wp-json/wp/v2/posts/${_params.id}`)
         .then((res) => {
           let _res = res.data
           oResult = Object.assign(oResult, {
@@ -115,7 +114,7 @@ const mutations = {
         }
       }, 2000)
     } else {
-      axios.post('/wp-json/xm-blog/v1/link/', {
+      window.axios.post('/wp-json/xm-blog/v1/link/', {
         params: {
           id: state.id,
           key

@@ -1,4 +1,3 @@
-import axios from 'axios'
 const state = {
   articleList: [],
   currentNum: 1,
@@ -14,7 +13,7 @@ const actions = {
     let oResult = {}
     let url = _params.key === '' ? `/wp-json/wp/v2/posts?page=${_params.currentNum}&per_page=5&_embed=true` : `/wp-json/wp/v2/posts?${_params.key}=${_params.val}&page=${_params.currentNum}&per_page=5&_embed=true`
     // 获取列表文章
-    axios.get(url)
+    window.axios.get(url)
       .then((res) => {
         let _res = {}
         oResult = {

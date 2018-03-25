@@ -1,4 +1,3 @@
-import axios from 'axios'
 const state = {
   id: 0,
   commentCount: 0,
@@ -9,7 +8,7 @@ const state = {
 const actions = {
   getPage ({ commit, state }, _params) {
     let oResult = {}
-    axios.get(`/wp-json/wp/v2/pages/${_params.id}`)
+    window.axios.get(`/wp-json/wp/v2/pages/${_params.id}`)
       .then((res) => {
         let _res = res.data
         oResult = Object.assign(oResult, {

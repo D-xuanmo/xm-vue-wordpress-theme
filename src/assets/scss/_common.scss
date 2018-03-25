@@ -1,15 +1,24 @@
+// 主体文字颜色
+$main-text-color: #687686;
+
+// 主体阴影颜色
+$box-shadow-color: #e2e2e2;
+
+// 主体灰色
+$main-gay-color: #fbfbfb;
+
 // 公用颜色
-$colorTextMain: #687686;
-$colorMainBoxShadow: #e2e2e2;
-$colorMainGay: #fbfbfb;
-$colorBlue: #06aaff;
+$color-blue: #06aaff;
 $colorGay: #eef0f3;
 $colorGay1: #c8d1d8;
 $colorGay2: #e9eaed;
 $colorGay3: #5b5f6d;
 
 // 页面宽度
-$wrap: 1200px;
+$container-wrap: 1200px;
+
+// 主体文字大小
+$main-font-size: 14px;
 
 // 透明兼容写法
 @mixin opacity($number) {
