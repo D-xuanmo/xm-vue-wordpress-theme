@@ -1,10 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Index from '@/components/pages/Index'
-import Category from '@/components/pages/Category'
-import Single from '@/components/pages/Single'
-import Page from '@/components/pages/Page'
-import NotFound from '@/components/pages/404'
+import Index from '@/views/Index'
+import Category from '@/views/Category'
+import Single from '@/views/single/Single'
+import Page from '@/views/Page'
+import NotFound from '@/views/404'
 
 Vue.use(Router)
 

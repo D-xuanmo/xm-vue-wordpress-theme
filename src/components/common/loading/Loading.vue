@@ -1,11 +1,19 @@
 <template>
   <div class="loading">
-    <img src="../../../static/images/loading.svg" alt="">
+    <div class="box">
+      <img src="./images/loading.svg" width="50" height="50" alt="">
+      <p class="text">{{ msg }}</p>
+    </div>
   </div>
 </template>
 <script>
 export default {
-  name: 'loading'
+  name: 'loading',
+  data () {
+    return {
+      msg: '加载中...'
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>
@@ -18,11 +26,15 @@ export default {
   height: 100%;
   background: rgba(255, 255, 255, 0.8);
 
-  img{
+  .box{
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+
+    .text{
+      margin-top: 10px;
+    }
   }
 }
 </style>

@@ -5,10 +5,12 @@ import App from './App'
 import router from './router'
 import Prism from '../static/js/prism'
 import Axios from './servers/http'
+import Message from './components/common/message/index'
 import '../static/css/prism.css'
 
 Vue.config.productionTip = false
 window.axios = Axios
+Vue.use(Message)
 
 // 注册代码高亮指令
 Vue.directive('highlight', (el) => {
@@ -18,17 +20,8 @@ Vue.directive('highlight', (el) => {
   })
 })
 
-// 设置表情样式
-Vue.directive('img-style', (el) => {
-  el.querySelectorAll('img').forEach(item => {
-    if (item.className.indexOf('wp-smiley') !== -1) item.style = 'max-width: 30px; vertical-align: baseline;'
-  })
-})
-
 // 设置网页标题
-Vue.directive('title', (el, binding) => {
-  document.title = binding.value
-})
+Vue.directive('title', (el, binding) => (document.title = binding.value))
 
 // router切换每次滚动条到顶部
 // router.afterEach(() => window.scrollTo(0, 0))

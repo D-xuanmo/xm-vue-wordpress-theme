@@ -13,7 +13,7 @@
       <div class="select-img">
         <input type="file" name="file" value="" ref="inpFile" accept="image/png,image/gif,image/jpeg" @change.stop="showImgName($event)">
         <p class="mask">
-          <span v-if="bFileMark"><i class="iconfont icon-picture"></i>点击选择图片</span>
+          <span v-if="bFileMark"><i class="iconfont icon-upload-img2"></i>点击选择图片</span>
           <span v-else>已选择：{{ fileName }}</span>
         </p>
       </div>

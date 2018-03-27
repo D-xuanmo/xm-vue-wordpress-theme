@@ -31,7 +31,7 @@
         <ul class="opinion">
           <li
             class="list"
-            v-for="(item, key) in singleRes.opinion"
+            v-for="(item, key) in opinion"
             :key="item.key"
             :opinion-type="key"
             @click.prevent="addOpinion(key)"
@@ -99,18 +99,29 @@
           <!-- 简介 -->
           <p class="author-summary">{{ articleInfor.other.authorTro }}</p>
           <!-- 社交信息 -->
-          <div class="author-link">
-            <router-link :to="{ name: 'index' }">
-              <svg class="iconfont-colour" aria-hidden="true">
-                <use xlink:href="#icon-icon-test"></use>
-              </svg>
-            </router-link>
-            <a :href="key == 'email' ? 'mailto:' + item.url : item.url" v-for="(item, key) in singleRes.authorOtherInfo" :key="item.key">
-              <svg class="iconfont-colour" aria-hidden="true">
-                <use :xlink:href="item.icon"></use>
-              </svg>
-            </a>
-          </div>
+          <ul class="author-link">
+            <li class="list">
+              <router-link :to="{ name: 'index' }">
+                <svg class="iconfont-colour" aria-hidden="true">
+                  <use xlink:href="#icon-icon-test"></use>
+                </svg>
+              </router-link>
+            </li>
+            <li class="list" v-for="(item, key) in singleRes.authorOtherInfo" :key="item.key" v-if="key === 'wechatNum'" @click="showWechatNum(item.url)">
+              <a href="javascript:;">
+                <svg class="iconfont-colour" aria-hidden="true">
+                  <use :xlink:href="item.icon"></use>
+                </svg>
+              </a>
+            </li>
+            <li class="list" v-else>
+              <a :href="key == 'email' ? `mailto:${item.url}` : item.url">
+                <svg class="iconfont-colour" aria-hidden="true">
+                  <use :xlink:href="item.icon"></use>
+                </svg>
+              </a>
+            </li>
+          </ul>
         </div>
       </div>
       <div class="box-wrap">
@@ -119,37 +130,87 @@
       </div>
     </div>
     <sidebar></sidebar>
-    <tips :show="showTips"></tips>
   </section>
 </template>
 <script>
 import sidebar from '@/components/common/Sidebar'
 import comments from '@/components/common/Comments'
-import loading from '@/components/common/Loading'
-import tips from '@/components/common/Tips'
+import loading from '@/components/common/loading/Loading'
 import store from '@/vuex/store'
-import { mapState, mapMutations } from 'vuex'
+import { mapState } from 'vuex'
 export default {
   name: 'single',
   data: () => ({
     edit: false,
-    articleHref: window.location.href
+    articleHref: window.location.href,
+    opinion: {
+      very_good: {
+        pic: require('./images/like_love.png'),
+        title: 'Love'
+      },
+      good: {
+        pic: require('./images/like_haha.png'),
+        title: 'Haha'
+      },
+      commonly: {
+        pic: require('./images/like_wow.png'),
+        title: 'Wow'
+      },
+      bad: {
+        pic: require('./images/like_sad.png'),
+        title: 'Sad'
+      },
+      very_bad: {
+        pic: require('./images/link_angry.png'),
+        title: 'Angry'
+      }
+    }
   }),
   components: {
     sidebar,
     comments,
-    loading,
-    tips
+    loading
   },
   store,
   methods: {
-    ...mapMutations(['addOpinion'])
+    // 点赞
+    addOpinion (key) {
+      if (localStorage.getItem(`xm_link_${this.$route.params.id}`)) {
+        this.$message({
+          title: '您已经发表过意见了！',
+          type: 'warning'
+        })
+      } else {
+        window.axios.post('/wp-json/xm-blog/v1/link/', {
+          params: {
+            id: this.$route.params.id,
+            key
+          }
+        }).then((res) => {
+          this.articleInfor.xmLink[key] = res.data
+          // 设置点赞状态
+          localStorage.setItem(`xm_link_${this.$route.params.id}`, true)
+        }).catch((err) => console.log(err))
+      }
+    },
+
+    // 显示微信号码
+    showWechatNum (num) {
+      this.$message({
+        title: `微信号：${num}`,
+        showClose: true,
+        showImg: true,
+        center: true,
+        wrapCenter: true,
+        width: 280,
+        imgUrl: this.articleInfor.other.wechatPic
+      })
+    }
   },
   computed: {
     ...mapState({
       singleRes: state => state.single,
-      articleInfor: state => state.single.articleContent.articleInfor,
-      showTips: state => state.single.showTips
+      articleInfor: state => state.single.articleContent.articleInfor
     })
   },
   created () {
@@ -270,9 +331,11 @@ export default {
   }
 
   .author-link{
+    display: flex;
+    flex-wrap: wrap;
     margin-top: 10px;
-    a{
-      display: inline-block;
+
+    .list{
       box-sizing: border-box;
       margin-right: 10px;
       padding: 2px 10px;
@@ -280,6 +343,7 @@ export default {
       background: #f5f5f5;
       font-size: 12px;
     }
+
     .iconfont-colour{
       width: 20px;
       vertical-align: middle;
@@ -306,7 +370,7 @@ export default {
       }
     }
     .author-link{
-      a{
+      .list{
         margin-bottom: 10px;
       }
     }

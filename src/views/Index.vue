@@ -27,7 +27,7 @@
         </div>
       </article>
       <div class="more-btn">
-        <img v-if="bMoreList" src="../../../static/images/bars.svg" alt="" width="40">
+        <img v-if="bMoreList" src="../../static/images/bars.svg" alt="" width="40">
         <span v-else @click="bClick && getMoreList()">{{ sMoreBtnText }}</span>
       </div>
     </div>
@@ -38,7 +38,7 @@
 
 <script>
 import sidebar from '@/components/common/Sidebar'
-import loading from '@/components/common/Loading'
+import loading from '@/components/common/loading/Loading'
 import store from '@/vuex/store'
 import { mapState } from 'vuex'
 export default {

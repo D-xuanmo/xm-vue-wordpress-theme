@@ -12,8 +12,8 @@
 
 <script>
 import myHeader from '@/components/common/Header'
-import myFooter from '@/components/common/Footer'
-import loading from '@/components/common/Loading'
+import myFooter from '@/components/common/footer/Footer'
+import loading from '@/components/common/loading/Loading'
 import store from '@/vuex/store'
 import { mapState } from 'vuex'
 export default {

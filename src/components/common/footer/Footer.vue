@@ -8,18 +8,18 @@
         </div>
         <div class="fr link-logo">
           <a href="http://cn.wordpress.org">
-            <img src="../../assets/images/wordpress.png" width="40" alt="" style="margin-top: 13px;">
+            <img src="./images/wordpress.png" width="40" alt="" style="margin-top: 13px;">
             <span class="block">Wordpress</span>
           </a>
           <a href="https://www.aliyun.com">
-            <img src="../../assets/images/aliyun-logo.png" width="50" alt="">
+            <img src="./images/aliyun-logo.png" width="50" alt="">
             <span class="block">阿里云</span>
           </a>
           <a href="https://console.upyun.com/register/?invite=BylFlCEWG">
-            <img src="../../assets/images/upyun_logo4.png" width="70" alt="" style="margin-top: 13px;">
+            <img src="./images/upyun_logo4.png" width="70" alt="" style="margin-top: 13px;">
           </a>
           <a href="https://verify.nic.xin/xinDetail/xinAuthInfoDetail?domainName=xuanmo.xin">
-            <img src="../../assets/images/xin.png" width="100" alt="" style="margin-top: 33px;">
+            <img src="./images/xin.png" width="100" alt="" style="margin-top: 33px;">
           </a>
         </div>
       </div>

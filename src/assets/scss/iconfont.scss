@@ -1,11 +1,11 @@
 // 字体图标
 @font-face {
   font-family: 'iconfont';  /* project id 552040 */
-  src: url('//at.alicdn.com/t/font_552040_5wvwqa77dycr3sor.eot');
-  src: url('//at.alicdn.com/t/font_552040_5wvwqa77dycr3sor.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_552040_5wvwqa77dycr3sor.woff') format('woff'),
-  url('//at.alicdn.com/t/font_552040_5wvwqa77dycr3sor.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_552040_5wvwqa77dycr3sor.svg#iconfont') format('svg');
+  src: url('//at.alicdn.com/t/font_552040_77ceep7ar0vbo6r.eot');
+  src: url('//at.alicdn.com/t/font_552040_77ceep7ar0vbo6r.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_552040_77ceep7ar0vbo6r.woff') format('woff'),
+  url('//at.alicdn.com/t/font_552040_77ceep7ar0vbo6r.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_552040_77ceep7ar0vbo6r.svg#iconfont') format('svg');
 }
 
 .iconfont{
@@ -37,11 +37,11 @@ $iconMap: (
   "back-top":         "\e6e7",
   "menu":             "\e605",
   "search":           "\e607",
-  "icon-arrow-top":   "\e65d",
-  "icon-arrow-right": "\e65f",
-  "icon-arrow-bottom":"\e65e",
-  "icon-arrow-left":  "\e660",
-  "icon-arrow-right1":"\e757",
+  "arrow-top":        "\e65d",
+  "arrow-right":      "\e65f",
+  "arrow-bottom":     "\e65e",
+  "arrow-left":       "\e660",
+  "arrow-right1":     "\e757",
   "close":            "\e601",
   "close1":           "\e626",
   "success":          "\e610",
@@ -51,14 +51,17 @@ $iconMap: (
   "notice2":          "\e6df",
   "count":            "\e64a",
   "picture":          "\e64c",
+  "upload-img1":      "\e639",
+  "upload-img2":      "\e615",
   "expression":       "\e600",
   "code":             "\e7ae",
   "note1":            "\e727",
   "note2":            "\e617",
   "case":             "\e678",
   "life1":            "\e65a",
-  "life2":            "\e657",
   "software":         "\e612",
+  "download1":        "\e71e",
+  "download2":        "\e637",
   "html5-1":          "\e602",
   "html5-2":          "\e6f0",
   "wordpress":        "\e65b"

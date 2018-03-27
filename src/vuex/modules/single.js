@@ -6,34 +6,6 @@ const state = {
   tags: [],
   commentCount: 0,
   bShowLoading: true,
-  showTips: {
-    mark: false,
-    msg: '',
-    className: '',
-    icon: 'icon-tips'
-  },
-  opinion: {
-    very_good: {
-      pic: require('../../assets/images/like_love.png'),
-      title: 'Love'
-    },
-    good: {
-      pic: require('../../assets/images/like_haha.png'),
-      title: 'Haha'
-    },
-    commonly: {
-      pic: require('../../assets/images/like_wow.png'),
-      title: 'Wow'
-    },
-    bad: {
-      pic: require('../../assets/images/like_sad.png'),
-      title: 'Sad'
-    },
-    very_bad: {
-      pic: require('../../assets/images/link_angry.png'),
-      title: 'Angry'
-    }
-  },
   authorOtherInfo: {
     github: {
       icon: '#icon-GitHub'
@@ -95,36 +67,6 @@ const actions = {
 const mutations = {
   getArticle (state, params) {
     state = Object.assign(state, params)
-  },
-  // 点赞
-  addOpinion (state, key) {
-    if (localStorage.getItem(`xm_link_${state.id}`)) {
-      state.showTips = {
-        mark: true,
-        msg: '您已经发表过意见了！',
-        className: 'alert-warning',
-        icon: 'icon-tips'
-      }
-      setTimeout(() => {
-        state.showTips = {
-          mark: false,
-          msg: '您已经发表过意见了！',
-          className: 'alert-warning',
-          icon: 'icon-tips'
-        }
-      }, 2000)
-    } else {
-      window.axios.post('/wp-json/xm-blog/v1/link/', {
-        params: {
-          id: state.id,
-          key
-        }
-      }).then((res) => {
-        state.articleContent.articleInfor.xmLink[key] = res.data
-        // 设置点赞状态
-        localStorage.setItem(`xm_link_${state.id}`, true)
-      }).catch((err) => console.log(err))
-    }
   }
 }
 

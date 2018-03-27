@@ -93,7 +93,7 @@
           <span v-if="item.status === 'hold'">您的评论正在审核中...</span>
           <!-- <span>{{ item.meta.userAnget }}</span> -->
         </p>
-        <div class="list-content" v-html="item.content.rendered" v-img-style></div>
+        <div class="list-content" v-html="item.content.rendered" v-replace-img></div>
         <!-- <div class="list-btn-wrap">
           <a href="#">回复</a>
         </div> -->
@@ -155,6 +155,16 @@ export default {
     sMoreBtnText: '下一页',
     submitText: '提交评论'
   }),
+  directives: {
+    // 替换表情的默认样式
+    'replace-img': {
+      inserted (el) {
+        el.querySelectorAll('img').forEach(item => {
+          if (item.className.indexOf('wp-smiley') !== -1) item.style = 'max-width: 30px; vertical-align: bottom;'
+        })
+      }
+    }
+  },
   props: ['commentCount'],
   created () {
     let authorInfo = JSON.parse(localStorage.getItem('authorInfo'))

@@ -16,7 +16,7 @@
 <script>
 import sidebar from '@/components/common/Sidebar'
 import comments from '@/components/common/Comments'
-import loading from '@/components/common/Loading'
+import loading from '@/components/common/loading/Loading'
 import store from '@/vuex/store'
 import { mapState } from 'vuex'
 export default {
