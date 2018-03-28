@@ -80,7 +80,10 @@
             <span v-show="imgCode.validate" class="comment-tips">{{ imgCode.msg }}</span>
           </div>
         </div>
-        <input type="submit" class="submit-btn" @click.prevent="bSubmit && postComment()" :value="submitText">
+        <div class="submit-wrap">
+          <i v-show="!bSubmit" class="iconfont icon-loading"></i>
+          <input type="submit" class="submit-btn" @click.prevent="bSubmit && postComment()" :value="submitText">
+        </div>
       </div>
     </form>
     <!-- 评论列表 -->
@@ -108,7 +111,6 @@
 <script>
 import uploadImg from '@/components/common/UploadImg'
 import { mapState } from 'vuex'
-import axios from 'axios'
 export default {
   name: 'comments',
   components: {
@@ -174,7 +176,7 @@ export default {
       this.url.value = authorInfo.url
     }
     // 获取评论列表
-    axios.get('/wp-json/wp/v2/comments/', {
+    window.axios.get('/wp-json/wp/v2/comments/', {
       params: {
         post: this.$route.params.id,
         page: this.currentNum
@@ -215,19 +217,27 @@ export default {
         data.append('content', this.content.value)
         data.append('post', this.$route.params.id)
         data.append('author_user_agent', navigator.userAgent)
-        axios.post(`/wp-json/wp/v2/comments`, data).then((res) => {
+        window.axios.post('/wp-json/wp/v2/comments', data).then((res) => {
+          // 允许继续点击提交按钮
           this.bSubmit = true
           this.submitText = '提交评论'
           this.commentList.unshift(res.data)
           this.content.value = ''
           this.imgCode.value = ''
           this.randomCode()
+          this.$message({
+            title: '提交评论成功',
+            type: 'success'
+          })
         }).catch((err) => {
-          this.submitText = err.response.data.message
-          setTimeout(() => {
-            this.bSubmit = true
-            this.submitText = '提交评论'
-          }, 1000)
+          this.$message({
+            title: err.response.data.message,
+            type: 'error'
+          })
+          this.randomCode()
+          this.submitText = '提交评论'
+          // 允许继续点击提交按钮
+          this.bSubmit = true
         })
       }
     },
@@ -253,7 +263,7 @@ export default {
     getMoreList () {
       this.bMoreList = true
       this.currentNum++
-      axios.get('/wp-json/wp/v2/comments/', {
+      window.axios.get('/wp-json/wp/v2/comments/', {
         params: {
           post: this.$route.params.id,
           page: this.currentNum
@@ -332,7 +342,7 @@ export default {
       if (this.expression.clickState) {
         this.$refs.expression.style.display = 'block'
         if (this.expression.state) {
-          axios.get(`${this.templeteUrl}/expression.php`).then(res => {
+          window.axios.get(`${this.templeteUrl}/expression.php`).then(res => {
             this.expression.content = res.data
             this.expression.state = false
           }).catch(err => console.log(err))
@@ -516,17 +526,26 @@ export default {
       }
     }
 
-    .submit-btn{
-      -webkit-appearance: none;
-      display: block;
+    .submit-wrap{
       width: 250px;
+      height: 45px;
       margin: 20px auto;
-      padding: 15px 0;
       border-radius: 30px;
       background: $color-blue;
       text-align: center;
-      color: #fff;
+      line-height: 45px;
       cursor: pointer;
+
+      input{
+        -webkit-appearance: none;
+        color: #fff;
+      }
+
+      .iconfont{
+        vertical-align: middle;
+        font-size: 18px;
+        color: #fff;
+      }
     }
   }
 

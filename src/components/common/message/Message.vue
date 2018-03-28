@@ -84,7 +84,6 @@ export default {
   padding: 10px 15px;
   border: 1px solid #ebeef5;
   border-radius: 5px;
-  box-shadow: 0 0 20px #eee;
   transition: .7s;
   transform: translateX(-50%);
 
@@ -117,6 +116,7 @@ export default {
 
   &.box-center{
     top: 50%;
+    box-shadow: 0 0 20px #eee;
     transform: translate(-50%, -50%);
   }
 

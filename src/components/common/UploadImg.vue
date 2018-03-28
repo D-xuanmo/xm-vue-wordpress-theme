@@ -28,7 +28,6 @@
   </div>
 </template>
 <script>
-import axios from 'axios'
 import { mapState } from 'vuex'
 export default {
   name: 'uploadImg',
@@ -67,7 +66,7 @@ export default {
           data.append('file', _file.files[0])
           data.append('url', this.contentUrl)
           data.append('mark', 'upload')
-          axios.post(`/wp-content/themes/xm-vue-theme/xm_upload.php`, data, config).then(res => {
+          window.axios.post(`/wp-content/themes/xm-vue-theme/xm_upload.php`, data, config).then(res => {
             this.resultImgUrl = res.data.path
             this.resFileName = res.data.name
             _file.value = ''
@@ -83,7 +82,7 @@ export default {
       data.append('url', this.contentUrl)
       data.append('postID', this.$route.params.id)
       data.append('fileName', this.resFileName)
-      axios.post(`/wp-content/themes/xm-vue-theme/xm_upload.php`, data).catch(err => console.log(err))
+      window.axios.post(`/wp-content/themes/xm-vue-theme/xm_upload.php`, data).catch(err => console.log(err))
       // 关闭控件
       this.$emit('showChart', {
         close: false,

@@ -1,11 +1,11 @@
 // 字体图标
 @font-face {
   font-family: 'iconfont';  /* project id 552040 */
-  src: url('//at.alicdn.com/t/font_552040_77ceep7ar0vbo6r.eot');
-  src: url('//at.alicdn.com/t/font_552040_77ceep7ar0vbo6r.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_552040_77ceep7ar0vbo6r.woff') format('woff'),
-  url('//at.alicdn.com/t/font_552040_77ceep7ar0vbo6r.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_552040_77ceep7ar0vbo6r.svg#iconfont') format('svg');
+  src: url('//at.alicdn.com/t/font_552040_siqxeyuig5mte29.eot');
+  src: url('//at.alicdn.com/t/font_552040_siqxeyuig5mte29.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_552040_siqxeyuig5mte29.woff') format('woff'),
+  url('//at.alicdn.com/t/font_552040_siqxeyuig5mte29.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_552040_siqxeyuig5mte29.svg#iconfont') format('svg');
 }
 
 .iconfont{
@@ -51,8 +51,8 @@ $iconMap: (
   "notice2":          "\e6df",
   "count":            "\e64a",
   "picture":          "\e64c",
-  "upload-img1":      "\e639",
-  "upload-img2":      "\e615",
+  "upload-img1":      "\e69d",
+  "upload-img2":      "\e621",
   "expression":       "\e600",
   "code":             "\e7ae",
   "note1":            "\e727",
@@ -62,13 +62,31 @@ $iconMap: (
   "software":         "\e612",
   "download1":        "\e71e",
   "download2":        "\e637",
+  "loading":          "\e6da",
   "html5-1":          "\e602",
   "html5-2":          "\e6f0",
   "wordpress":        "\e65b"
 );
 
 @each $key, $value in $iconMap {
-  .icon-#{$key}:before{
-    content: "#{$value}";
+  @if $key == "loading" {
+    .icon-#{$key}{
+      display: inline-block;
+      animation: rotating 2s linear infinite;
+      &:before{
+        content: "#{$value}";
+      }
+    }
+  }
+  @else {
+    .icon-#{$key}:before{
+      content: "#{$value}";
+    }
+  }
+}
+
+@keyframes rotating {
+  to {
+    transform: rotateZ(359deg);
   }
 }
