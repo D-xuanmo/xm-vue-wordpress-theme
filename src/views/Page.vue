@@ -15,7 +15,7 @@
 </template>
 <script>
 import sidebar from '@/components/common/Sidebar'
-import comments from '@/components/common/Comments'
+import comments from '@/components/common/comment/Comments'
 import loading from '@/components/common/loading/Loading'
 import store from '@/vuex/store'
 import { mapState } from 'vuex'

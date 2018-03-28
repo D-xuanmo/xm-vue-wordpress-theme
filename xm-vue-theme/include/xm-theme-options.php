@@ -45,7 +45,7 @@ function themeoptions_page() {
             >
           </div>
         </div>
-				<div class="row clearfix">
+        <div class="row clearfix">
           <label class="fl left-wrap">是否开启文字头像：</label>
           <div class="fr right-wrap">
             <label for="text-pic-on">开</label>
@@ -106,7 +106,7 @@ function themeoptions_page() {
 				<div class="row clearfix">
           <label class="fl left-wrap">评论区vip等级样式：</label>
           <div class="fr right-wrap">
-            <label for="vip-style-1" class="vip-style" style="display: inline-block; width: 18px; height: 18px; background: url(<?php bloginfo('template_url'); ?>/images/vip.png) -35px -51px;"></label>
+            <label for="vip-style-1" class="vip-style" style="display: inline-block; width: 15px; height: 15px; background: url(<?php bloginfo('template_url'); ?>/static/images/vip.png) -147px -70px;"></label>
             <input
               type="radio"
               id="vip-style-1"
@@ -114,20 +114,12 @@ function themeoptions_page() {
               value="vip-style-1" <?php if($a_options['vip_style'] == 'vip-style-1' || $a_options['vip_style'] == '') echo 'checked'; ?>
             >
 
-            <label for="vip-style-2" class="vip-style" style="display: inline-block; width: 15px; height: 15px; background: url(<?php bloginfo('template_url'); ?>/images/vip.png) -147px -70px;"></label>
+            <label for="vip-style-2" class="vip-style" style="display: inline-block; width: 42px; height: 15px; background: url(<?php bloginfo('template_url'); ?>/static/images/vip.png) -2px -2px;"></label>
             <input
               type="radio"
               id="vip-style-2"
               name="vip-style"
               value="vip-style-2" <?php if($a_options['vip_style'] == 'vip-style-2') echo 'checked'; ?>
-            >
-
-            <label for="vip-style-3" class="vip-style" style="display: inline-block; width: 42px; height: 15px; background: url(<?php bloginfo('template_url'); ?>/images/vip.png) -2px -2px;"></label>
-            <input
-              type="radio"
-              id="vip-style-3"
-              name="vip-style"
-              value="vip-style-3" <?php if($a_options['vip_style'] == 'vip-style-3') echo 'checked'; ?>
             >
           </div>
         </div>
@@ -271,7 +263,7 @@ function themeoptions_page() {
 	function themeoptions_update() {
 		// 数据提交
     $options = array(
-			'update_themeoptions' => 'true',
+        'update_themeoptions' => 'true',
       'login_logo'          => $_POST['login-logo'],
       'aside_count'         => $_POST['aside-count'],
       'text_pic'            => $_POST['text-pic'],

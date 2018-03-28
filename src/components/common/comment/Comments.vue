@@ -90,12 +90,19 @@
     <ul class="comment-list-wrap">
       <li class="comment-list" v-for="item in commentList" :key="item.key">
         <img :src="item.author_avatar_urls[96]" class="list-gravatar" width="60" height="60" alt="">
-        <p class="list-header">
+        <div class="list-header">
           <a :href="item.author_url" target="_blank" class="author">{{ item.author_name }}</a>
+          <!-- 评论者等级 -->
+          <p class="inline-block">
+            <span class="icon-vip icon-level" :class="[item.userAgentImg.vipStyle.style, item.userAgentImg.vipStyle.level]" :style="`
+            background-image: url(${templeteUrl}/static/images/vip.png);`"></span>
+          </p>
+          <img :src="item.userAgentImg.systemLogo" class="browser-logo" width="20" alt="">
+          <img :src="item.userAgentImg.browserLogo" class="browser-logo" width="20" alt="">
           <time>{{ item.date.replace('T', ' ') }}</time>
           <span v-if="item.status === 'hold'">您的评论正在审核中...</span>
           <!-- <span>{{ item.meta.userAnget }}</span> -->
-        </p>
+        </div>
         <div class="list-content" v-html="item.content.rendered" v-replace-img></div>
         <!-- <div class="list-btn-wrap">
           <a href="#">回复</a>
@@ -103,7 +110,7 @@
       </li>
     </ul>
     <div class="more-btn" v-show="commentList.length">
-      <img v-if="bMoreList" src="../../../static/images/bars.svg" alt="" width="40">
+      <img v-if="bMoreList" src="../../../../static/images/bars.svg" alt="" width="40">
       <span v-else @click="bClick && getMoreList()">{{ sMoreBtnText }}</span>
     </div>
   </div>
@@ -557,6 +564,7 @@ export default {
     padding: 10px 10px 10px 50px;
     border-radius: 5px;
     background: $main-gay-color;
+
     &:last-of-type{
       margin-bottom: 0;
     }
@@ -573,8 +581,42 @@ export default {
       font-weight: bold;
     }
 
+    .browser-logo{
+      vertical-align: bottom;
+    }
+
     .list-content{
       margin: 10px 0;
+    }
+
+    // 评论者等级
+    .icon-vip{
+      display: block;
+      &.vip-style-1{
+        width: 16px;
+        height: 14px;
+        background-position: -147px -70px;
+        @for $i from 1 through 6 {
+          &.vip#{$i + 1}{
+            background-position-Y: -#{70 - $i * -25}px;
+          }
+        }
+      }
+
+      &.vip-style-2{
+        width: 43px;
+        height: 13px;
+        background-position: -2px -3px;
+        transition: .5s;
+        @for $i from 1 through 6 {
+          &.vip#{$i + 1}{
+            background-position-X: -#{$i * 59}px;
+          }
+        }
+        &:hover{
+          background-position-Y: -23px;
+        }
+      }
     }
 
     time,

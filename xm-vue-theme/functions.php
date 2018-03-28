@@ -7,19 +7,21 @@ function remove_redirects()
 {
   add_rewrite_rule('^/(.+)/?', 'index.php', 'top');
 }
+
 add_action('init', 'remove_redirects');
 
 // Load scripts
 function load_vue_scripts()
 {
-  wp_enqueue_style('app.css', get_template_directory_uri() . '/static/css/app.5ccfa3149697c504871134dbf26632ee.css', false, null);
+  wp_enqueue_style('app.css', get_template_directory_uri() . '/static/css/app.f46c52f250483804ba6895259c0cfa9a.css', false, null);
 
-  wp_enqueue_script('manifest.js', get_template_directory_uri() . '/static/js/manifest.df1b397bb496620bef13.js', null, null, true);
+  wp_enqueue_script('manifest.js', get_template_directory_uri() . '/static/js/manifest.231552c72bf9ac7a99ab.js', null, null, true);
 
   wp_enqueue_script('vendor.js', get_template_directory_uri() . '/static/js/vendor.344ff7d1707d932a8825.js', null, null, true);
 
-  wp_enqueue_script('app.js', get_template_directory_uri() . '/static/js/app.95b898527585f63d3b47.js', null, null, true);
+  wp_enqueue_script('app.js', get_template_directory_uri() . '/static/js/app.cdedea07f8833eee2ad2.js', null, null, true);
 }
+
 add_action('wp_enqueue_scripts', 'load_vue_scripts', 100);
 
 /**
@@ -70,7 +72,8 @@ add_filter('login_headertitle', create_function(false, "return get_bloginfo('nam
 /*
  * 自定义登录页面的LOGO图片
  */
-function my_custom_login_logo() {
+function my_custom_login_logo()
+{
   echo '
     <style>
     .login h1 a {
@@ -81,12 +84,14 @@ function my_custom_login_logo() {
     </style>
   ';
 }
+
 add_action('login_head', 'my_custom_login_logo');
 
 /**
  * 给用户添加自定义字段
  */
-function xm_user_contact($user_contactmethods){
+function xm_user_contact($user_contactmethods)
+{
   unset($user_contactmethods['aim']);
   unset($user_contactmethods['yim']);
   unset($user_contactmethods['jabber']);
@@ -98,6 +103,7 @@ function xm_user_contact($user_contactmethods){
   $user_contactmethods['sex'] = '性别';
   return $user_contactmethods;
 }
+
 add_filter('user_contactmethods', 'xm_user_contact');
 
 /*
@@ -111,6 +117,7 @@ if (get_magic_quotes_gpc()) {
       stripslashes($value);
     return $value;
   }
+
   $_POST = array_map('stripslashes_deep', $_POST);
   $_GET = array_map('stripslashes_deep', $_GET);
   $_COOKIE = array_map('stripslashes_deep', $_COOKIE);
@@ -119,91 +126,95 @@ if (get_magic_quotes_gpc()) {
 /**
  * 允许未登录评论
  */
-add_filter( 'rest_allow_anonymous_comments', '__return_true' );
+add_filter('rest_allow_anonymous_comments', '__return_true');
 
 /*
  * 添加自定义编辑器按钮
  */
 function add_my_media_button()
 {
- echo '<a href="javascript:;" id="html-transform" class="button">html尖括号转义</a>';
+  echo '<a href="javascript:;" id="html-transform" class="button">html尖括号转义</a>';
 }
+
 function appthemes_add_quicktags()
 {
-?>
-  <script>
-    var aLanguage = ['html', 'css', 'sass', 'scss', 'less', 'javascript', 'php', 'json', 'git'];
-    for( var i = 0, length = aLanguage.length; i < length; i++ ) {
-      QTags.addButton(aLanguage[i], aLanguage[i], '\n<pre class="line-numbers language-' + aLanguage[i] + '"><code class="language-' + aLanguage[i] + '">\n', '\n</code></pre>\n');
-    }
-    QTags.addButton('c-code', 'c-code', '<span class="code">', '</span>');
-    QTags.addButton('h2', 'h2', '<h2>', '</h2>');
-    // 添加html转换容器
-    jQuery(function() {
-      jQuery('#html-transform').click(function() {
-        jQuery('body').append(
-          '<div id="xm-transform">'
-          + '<textarea name="name" rows="15" cols="100"></textarea>'
-          + '<span id="xm-transfom-btn">转换</span>'
-          + '<span id="xm-copy-btn">复制</span>'
-          + '</div>'
-        );
-        jQuery('#xm-transform')
-          .css({
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            zIndex: 99999,
-            width: '100%',
-            height: '100%',
-            background: 'rgba(255,255,255,0.7)'
-          })
-          .children('textarea').css({
-            resize: 'none',
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            width: '60%',
-            height: '300px',
-            transform: 'translate(-50%, -50%)'
-          })
-          .siblings('span').css({
-            position: 'absolute',
-            top: '90%',
-            left: '50%',
-            width: '100px',
-            height: '40px',
-            borderRadius: '5px',
-            background: '#2196F3',
-            textAlign: 'center',
-            lineHeight: '40px',
-            color: '#fff',
-            cursor: 'pointer'
-          });
-        jQuery('textarea').click(function(e) { e.stopPropagation(); });
-        jQuery('#xm-transfom-btn')
-          .css('transform', 'translateX(-115%)')
-          .click(function(e) {
-            e.stopPropagation();
-            jQuery(this).siblings('textarea').val(function() {
-              return jQuery(this).val().replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  ?>
+    <script>
+        var aLanguage = ['html', 'css', 'sass', 'scss', 'less', 'javascript', 'php', 'json', 'git'];
+        for (var i = 0, length = aLanguage.length; i < length; i++) {
+            QTags.addButton(aLanguage[i], aLanguage[i], '\n<pre class="line-numbers language-' + aLanguage[i] + '"><code class="language-' + aLanguage[i] + '">\n', '\n</code></pre>\n');
+        }
+        QTags.addButton('c-code', 'c-code', '<span class="code">', '</span>');
+        QTags.addButton('h2', 'h2', '<h2>', '</h2>');
+        // 添加html转换容器
+        jQuery(function () {
+            jQuery('#html-transform').click(function () {
+                jQuery('body').append(
+                    '<div id="xm-transform">'
+                    + '<textarea name="name" rows="15" cols="100"></textarea>'
+                    + '<span id="xm-transfom-btn">转换</span>'
+                    + '<span id="xm-copy-btn">复制</span>'
+                    + '</div>'
+                );
+                jQuery('#xm-transform')
+                    .css({
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        zIndex: 99999,
+                        width: '100%',
+                        height: '100%',
+                        background: 'rgba(255,255,255,0.7)'
+                    })
+                    .children('textarea').css({
+                    resize: 'none',
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    width: '60%',
+                    height: '300px',
+                    transform: 'translate(-50%, -50%)'
+                })
+                    .siblings('span').css({
+                    position: 'absolute',
+                    top: '90%',
+                    left: '50%',
+                    width: '100px',
+                    height: '40px',
+                    borderRadius: '5px',
+                    background: '#2196F3',
+                    textAlign: 'center',
+                    lineHeight: '40px',
+                    color: '#fff',
+                    cursor: 'pointer'
+                });
+                jQuery('textarea').click(function (e) {
+                    e.stopPropagation();
+                });
+                jQuery('#xm-transfom-btn')
+                    .css('transform', 'translateX(-115%)')
+                    .click(function (e) {
+                        e.stopPropagation();
+                        jQuery(this).siblings('textarea').val(function () {
+                            return jQuery(this).val().replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                        });
+                    });
+                jQuery('#xm-copy-btn').click(function (e) {
+                    e.stopPropagation();
+                    jQuery(this).siblings('textarea')[0].select();
+                    if (document.execCommand('Copy')) {
+                        jQuery(this).text('复制成功');
+                    }
+                });
+                jQuery('#xm-transform').click(function () {
+                    jQuery(this).remove();
+                });
             });
-          });
-        jQuery('#xm-copy-btn').click(function(e) {
-          e.stopPropagation();
-          jQuery(this).siblings('textarea')[0].select();
-          if (document.execCommand('Copy')) {
-            jQuery(this).text('复制成功');
-          }
         });
-        jQuery('#xm-transform').click(function() {
-          jQuery(this).remove();
-        });
-      });
-    });
-  </script>
-<?php
+    </script>
+  <?php
 }
+
 add_action('media_buttons', 'add_my_media_button');
 add_action('admin_print_footer_scripts', 'appthemes_add_quicktags');
 
@@ -214,136 +225,139 @@ function custom_smilies_src($src, $img)
 {
   return get_bloginfo('template_directory') . '/static/images/smilies/' . $img;
 }
+
 add_filter('smilies_src', 'custom_smilies_src', 10, 2);
 if (!isset($wpsmiliestrans)) {
   $wpsmiliestrans = array(
-    "/weixiao"     => "weixiao.gif",
-    "/nanguo"      => "nanguo.gif",
-    "/qiudale"     => "qiudale.gif",
-    "/penxue"      => "penxue.gif",
-    "/piezui"      => "piezui.gif",
-    "/aoman"       => "aoman.gif",
-    "/baiyan"      => "baiyan.gif",
-    "/bishi"       => "bishi.gif",
-    "/bizui"       => "bizui.gif",
-    "/cahan"       => "cahan.gif",
-    "/ciya"        => "ciya.gif",
-    "/dabing"      => "dabing.gif",
-    "/daku"        => "daku.gif",
-    "/deyi"        => "deyi.gif",
-    "/doge"        => "doge.gif",
-    "/fadai"       => "fadai.gif",
-    "/fanu"        => "fanu.gif",
-    "/fendou"      => "fendou.gif",
-    "/ganga"       => "ganga.gif",
-    "/guzhang"     => "guzhang.gif",
-    "/haixiu"      => "haixiu.gif",
-    "/hanxiao"     => "hanxiao.gif",
-    "/haqian"      => "haqian.gif",
-    "/huaixiao"    => "huaixiao.gif",
-    "/jie"         => "jie.gif",
-    "/jingkong"    => "jingkong.gif",
-    "/jingxi"      => "jingxi.gif",
-    "/jingya"      => "jingya.gif",
-    "/keai"        => "keai.gif",
-    "/kelian"      => "kelian.gif",
-    "/koubi"       => "koubi.gif",
-    "/ku"          => "ku.gif",
-    "/kuaikule"    => "kuaikule.gif",
-    "/kulou"       => "kulou.gif",
-    "/kun"         => "kun.gif",
-    "/leiben"      => "leiben.gif",
-    "/lenghan"     => "lenghan.gif",
-    "/liuhan"      => "liuhan.gif",
-    "/liulei"      => "liulei.gif",
-    "/qiaoda"      => "qiaoda.gif",
-    "/qinqin"      => "qinqin.gif",
-    "/saorao"      => "saorao.gif",
-    "/se"          => "se.gif",
-    "/shuai"       => "shuai.gif",
-    "/shui"        => "shui.gif",
-    "/tiaopi"      => "tiaopi.gif",
-    "/touxiao"     => "touxiao.gif",
-    "/tu"          => "tu.gif",
-    "/tuosai"      => "tuosai.gif",
-    "/weiqu"       => "weiqu.gif",
-    "/wozuimei"    => "wozuimei.gif",
-    "/wunai"       => "wunai.gif",
-    "/xia"         => "xia.gif",
-    "/xiaojiujie"  => "xiaojiujie.gif",
-    "/xiaoku"      => "xiaoku.gif",
-    "/xieyanxiao"  => "xieyanxiao.gif",
-    "/xu"          => "xu.gif",
-    "/yinxian"     => "yinxian.gif",
-    "/yiwen"       => "yiwen.gif",
+    "/weixiao" => "weixiao.gif",
+    "/nanguo" => "nanguo.gif",
+    "/qiudale" => "qiudale.gif",
+    "/penxue" => "penxue.gif",
+    "/piezui" => "piezui.gif",
+    "/aoman" => "aoman.gif",
+    "/baiyan" => "baiyan.gif",
+    "/bishi" => "bishi.gif",
+    "/bizui" => "bizui.gif",
+    "/cahan" => "cahan.gif",
+    "/ciya" => "ciya.gif",
+    "/dabing" => "dabing.gif",
+    "/daku" => "daku.gif",
+    "/deyi" => "deyi.gif",
+    "/doge" => "doge.gif",
+    "/fadai" => "fadai.gif",
+    "/fanu" => "fanu.gif",
+    "/fendou" => "fendou.gif",
+    "/ganga" => "ganga.gif",
+    "/guzhang" => "guzhang.gif",
+    "/haixiu" => "haixiu.gif",
+    "/hanxiao" => "hanxiao.gif",
+    "/haqian" => "haqian.gif",
+    "/huaixiao" => "huaixiao.gif",
+    "/jie" => "jie.gif",
+    "/jingkong" => "jingkong.gif",
+    "/jingxi" => "jingxi.gif",
+    "/jingya" => "jingya.gif",
+    "/keai" => "keai.gif",
+    "/kelian" => "kelian.gif",
+    "/koubi" => "koubi.gif",
+    "/ku" => "ku.gif",
+    "/kuaikule" => "kuaikule.gif",
+    "/kulou" => "kulou.gif",
+    "/kun" => "kun.gif",
+    "/leiben" => "leiben.gif",
+    "/lenghan" => "lenghan.gif",
+    "/liuhan" => "liuhan.gif",
+    "/liulei" => "liulei.gif",
+    "/qiaoda" => "qiaoda.gif",
+    "/qinqin" => "qinqin.gif",
+    "/saorao" => "saorao.gif",
+    "/se" => "se.gif",
+    "/shuai" => "shuai.gif",
+    "/shui" => "shui.gif",
+    "/tiaopi" => "tiaopi.gif",
+    "/touxiao" => "touxiao.gif",
+    "/tu" => "tu.gif",
+    "/tuosai" => "tuosai.gif",
+    "/weiqu" => "weiqu.gif",
+    "/wozuimei" => "wozuimei.gif",
+    "/wunai" => "wunai.gif",
+    "/xia" => "xia.gif",
+    "/xiaojiujie" => "xiaojiujie.gif",
+    "/xiaoku" => "xiaoku.gif",
+    "/xieyanxiao" => "xieyanxiao.gif",
+    "/xu" => "xu.gif",
+    "/yinxian" => "yinxian.gif",
+    "/yiwen" => "yiwen.gif",
     "/zuohengheng" => "zuohengheng.gif",
     "/youhengheng" => "youhengheng.gif",
-    "/yun"         => "yun.gif",
-    "/zaijian"     => "zaijian.gif",
-    "/zhayanjian"  => "zhayanjian.gif",
-    "/zhemo"       => "zhemo.gif",
-    "/zhouma"      => "zhouma.gif",
-    "/zhuakuang"   => "zhuakuang.gif",
-    "/aini"        => "aini.gif",
-    "/baoquan"     => "baoquan.gif",
-    "/gouyin"      => "gouyin.gif",
-    "/qiang"       => "qiang.gif",
-    "OK"           => "OK.gif",
-    "/woshou"      => "woshou.gif",
-    "/quantou"     => "quantou.gif",
-    "/shengli"     => "shengli.gif",
-    "/aixin"       => "aixin.gif",
-    "/bangbangtang"=> "bangbangtang.gif",
-    "/baojin"      => "baojin.gif",
-    "/caidao"      => "caidao.gif",
-    "/lanqiu"      => "lanqiu.gif",
-    "/chi"         => "chi.gif",
-    "/dan"         => "dan.gif",
-    "/haobang"     => "haobang.gif",
-    "/hecai"       => "hecai.gif",
-    "/hexie"       => "hexie.gif",
-    "/juhua"       => "juhua.gif",
-    "/pijiu"       => "pijiu.gif",
-    "/shouqiang"   => "shouqiang.gif",
-    "/xiaoyanger"  => "xiaoyanger.gif",
-    "/xigua"       => "xigua.gif",
-    "/yangtuo"     => "yangtuo.gif",
-    "/youling"     => "youling.gif",
-    '/色'           => 'icon_razz.gif',
-    '/难过'         => 'icon_sad.gif',
-    '/闭嘴'         => 'icon_evil.gif',
-    '/吐舌头'       => 'icon_exclaim.gif',
-    '/微笑'         => 'icon_smile.gif',
-    '/可爱'         => 'icon_redface.gif',
-    '/kiss'        => 'icon_biggrin.gif',
-    '/惊讶'         => 'icon_surprised.gif',
-    '/饥饿'         => 'icon_eek.gif',
-    '/晕'           => 'icon_confused.gif',
-    '/酷'           => 'icon_cool.gif',
-    '/坏笑'         => 'icon_lol.gif',
-    '/发怒'         => 'icon_mad.gif',
-    '/憨笑'         => 'icon_twisted.gif',
-    '/萌萌哒'       => 'icon_rolleyes.gif',
-    '/吃东西'       => 'icon_wink.gif',
-    '/色咪咪'       => 'icon_idea.gif',
-    '/囧'          => 'icon_arrow.gif',
-    '/害羞'        => 'icon_neutral.gif',
-    '/流泪'        => 'icon_cry.gif',
-    '/流汗'        => 'icon_question.gif',
-    '/你懂的'      => 'icon_mrgreen.gif'
+    "/yun" => "yun.gif",
+    "/zaijian" => "zaijian.gif",
+    "/zhayanjian" => "zhayanjian.gif",
+    "/zhemo" => "zhemo.gif",
+    "/zhouma" => "zhouma.gif",
+    "/zhuakuang" => "zhuakuang.gif",
+    "/aini" => "aini.gif",
+    "/baoquan" => "baoquan.gif",
+    "/gouyin" => "gouyin.gif",
+    "/qiang" => "qiang.gif",
+    "OK" => "OK.gif",
+    "/woshou" => "woshou.gif",
+    "/quantou" => "quantou.gif",
+    "/shengli" => "shengli.gif",
+    "/aixin" => "aixin.gif",
+    "/bangbangtang" => "bangbangtang.gif",
+    "/baojin" => "baojin.gif",
+    "/caidao" => "caidao.gif",
+    "/lanqiu" => "lanqiu.gif",
+    "/chi" => "chi.gif",
+    "/dan" => "dan.gif",
+    "/haobang" => "haobang.gif",
+    "/hecai" => "hecai.gif",
+    "/hexie" => "hexie.gif",
+    "/juhua" => "juhua.gif",
+    "/pijiu" => "pijiu.gif",
+    "/shouqiang" => "shouqiang.gif",
+    "/xiaoyanger" => "xiaoyanger.gif",
+    "/xigua" => "xigua.gif",
+    "/yangtuo" => "yangtuo.gif",
+    "/youling" => "youling.gif",
+    '/色' => 'icon_razz.gif',
+    '/难过' => 'icon_sad.gif',
+    '/闭嘴' => 'icon_evil.gif',
+    '/吐舌头' => 'icon_exclaim.gif',
+    '/微笑' => 'icon_smile.gif',
+    '/可爱' => 'icon_redface.gif',
+    '/kiss' => 'icon_biggrin.gif',
+    '/惊讶' => 'icon_surprised.gif',
+    '/饥饿' => 'icon_eek.gif',
+    '/晕' => 'icon_confused.gif',
+    '/酷' => 'icon_cool.gif',
+    '/坏笑' => 'icon_lol.gif',
+    '/发怒' => 'icon_mad.gif',
+    '/憨笑' => 'icon_twisted.gif',
+    '/萌萌哒' => 'icon_rolleyes.gif',
+    '/吃东西' => 'icon_wink.gif',
+    '/色咪咪' => 'icon_idea.gif',
+    '/囧' => 'icon_arrow.gif',
+    '/害羞' => 'icon_neutral.gif',
+    '/流泪' => 'icon_cry.gif',
+    '/流汗' => 'icon_question.gif',
+    '/你懂的' => 'icon_mrgreen.gif'
   );
 }
 
 /*
  * 评论区@功能
  */
-function comment_add_at( $comment_text, $comment = '') {
-  if( $comment->comment_parent > 0) {
-    $comment_text = '@<a href="#comment-' . $comment->comment_parent . '" style="color: #16C0F8;">' . get_comment_author( $comment->comment_parent ) . '</a> ' . $comment_text;
+function comment_add_at($comment_text, $comment = '')
+{
+  if ($comment->comment_parent > 0) {
+    $comment_text = '@<a href="#comment-' . $comment->comment_parent . '" style="color: #16C0F8;">' . get_comment_author($comment->comment_parent) . '</a> ' . $comment_text;
   }
   return $comment_text;
 }
-add_filter( 'comment_text' , 'comment_add_at', 20, 2);
+
+add_filter('comment_text', 'comment_add_at', 20, 2);
 
 /**
  * 禁止emoji表情
@@ -359,23 +373,27 @@ function disable_emojis()
   remove_filter('wp_mail', 'wp_staticize_emoji_for_email');
   add_filter('tiny_mce_plugins', 'disable_emojis_tinymce');
 }
+
 function disable_emojis_tinymce($plugins)
 {
   if (is_array($plugins)) {
-    return array_diff($plugins, array( 'wpemoji' ));
+    return array_diff($plugins, array('wpemoji'));
   } else {
     return array();
   }
 }
+
 add_action('init', 'disable_emojis');
 
 /**
  * 非管理员上传图片
  */
-function comments_embed_img($comment) {
-  $comment = preg_replace('/(\[img\](\S+)\[\/img\])+/','<img src="$2" style="vertical-align: bottom; max-width: 40%; max-height: 250px;" />', $comment);
+function comments_embed_img($comment)
+{
+  $comment = preg_replace('/(\[img\](\S+)\[\/img\])+/', '<img src="$2" style="vertical-align: bottom; max-width: 40%; max-height: 250px;" />', $comment);
   return $comment;
 }
+
 add_action('comment_text', 'comments_embed_img');
 
 /**
@@ -406,8 +424,8 @@ function ludou_comment_mail_notify($comment_id, $comment_status)
           <p>这是你的评论:</p>
           <p style="margin: 15px 0; padding: 20px; border-radius: 5px; background-color: #eee;">' . $parent_comment->comment_content . '</p>
           <p><strong>' . trim($comment->comment_author) . '</strong> 给你的回复是:<br />
-          <p style="margin: 15px 0; padding: 20px; border-radius: 5px; background-color: #eee;">'. trim($comment->comment_content) . '</p>
-          <p>您也可移步到文章<a style="text-decoration:none; color:#2ebef3" href="' . get_bloginfo('home') . '/single/' . $comment->comment_post_ID . '"> 《'. get_the_title($comment->comment_post_ID) .'》 </a>查看完整回复内容</p>
+          <p style="margin: 15px 0; padding: 20px; border-radius: 5px; background-color: #eee;">' . trim($comment->comment_content) . '</p>
+          <p>您也可移步到文章<a style="text-decoration:none; color:#2ebef3" href="' . get_bloginfo('home') . '/single/' . $comment->comment_post_ID . '"> 《' . get_the_title($comment->comment_post_ID) . '》 </a>查看完整回复内容</p>
           <p style="padding-bottom: 10px; border-bottom: 1px dashed #ccc;">欢迎再次光临 <a style="text-decoration:none; color:#2ebef3" href="' . get_option('home') . '">' . get_option('blogname') . '</a></p>
           <p>(此邮件由系统自动发出, 请勿回复。)</p>
           <p style="text-align: right;">如果您想更深入的和博主交流的话，欢迎回复哦^-^</p>
@@ -420,6 +438,7 @@ function ludou_comment_mail_notify($comment_id, $comment_status)
     }
   }
 }
+
 // 编辑和管理员的回复直接发送提醒邮件，因为编辑和管理员的评论不需要审核
 add_action('comment_post', 'ludou_comment_mail_notify', 20, 2);
 // 普通访客发表的评论，等博主审核后再发送提醒邮件

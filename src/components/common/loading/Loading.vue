@@ -25,6 +25,7 @@ export default {
   width: 100%;
   height: 100%;
   background: rgba(255, 255, 255, 0.8);
+  text-align: center;
 
   .box{
     position: absolute;

@@ -76,12 +76,12 @@ export default {
     },
     // 隐藏上传控件
     hideUpload () {
-      // 如果本次上传的图片为发表就从服务器删除此图片
       let data = new FormData()
       data.append('mark', 'close')
       data.append('url', this.contentUrl)
       data.append('postID', this.$route.params.id)
       data.append('fileName', this.resFileName)
+      // 如果本次上传的图片未发表就从服务器删除此图片
       window.axios.post(`/wp-content/themes/xm-vue-theme/xm_upload.php`, data).catch(err => console.log(err))
       // 关闭控件
       this.$emit('showChart', {
