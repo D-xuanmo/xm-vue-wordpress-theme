@@ -85,7 +85,7 @@ export default {
     bFloatTopHead: false,
     bShowSearch: false,
     bNavShow: false,
-    navMarginLeft: 200
+    navMarginLeft: 0
   }),
   methods: {
     // 搜索
@@ -100,14 +100,19 @@ export default {
       this.searchRes = ''
       this.bShowSearch = false
     },
+
     // 移动端显示菜单
     showMenu () {
       this.bNavShow = true
+      document.body.style.overflow = 'hidden'
     },
+
     // 移动端关闭菜单
     closeMenu () {
       this.bNavShow = false
+      document.body.style.overflow = 'visible'
     },
+
     // 显示二级菜单
     showSubMenu (event) {
       let oChildren = event.currentTarget.querySelector('ul')
@@ -120,12 +125,15 @@ export default {
         })
       }
     },
+
     closeSubMenu () {
       document.querySelectorAll('.sub-nav-wrap').forEach(item => (item.style.display = 'none'))
     },
+
     showSearch () {
       this.bShowSearch = true
     },
+
     closeSearch () {
       this.bShowSearch = false
     }
@@ -143,12 +151,20 @@ export default {
     let that = this
     window.addEventListener('scroll', function () {
       if (this.scrollY > 500) {
-        // 计算浮动菜单margin-left到logo的距离
-        that.navMarginLeft = that.$refs.floatLogoText.$el.offsetWidth + 15
-        this.innerWidth > 767 ? that.bFloatHead = true : that.bFloatTopHead = true
+        if (this.innerWidth > 767) {
+          that.bFloatHead = true
+          // 计算浮动菜单margin-left到logo的距离
+          that.navMarginLeft = that.$refs.floatLogoText.$el.offsetWidth + 15
+        } else {
+          that.bFloatTopHead = true
+        }
       } else {
-        that.navMarginLeft = 200
-        this.innerWidth > 767 ? that.bFloatHead = false : that.bFloatTopHead = false
+        if (this.innerWidth > 767) {
+          that.bFloatHead = false
+          that.navMarginLeft = 200
+        } else {
+          that.bFloatTopHead = false
+        }
       }
     }, false)
   }
@@ -404,6 +420,7 @@ export default {
   }
   .nav-wrap{
     overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
     position: fixed;
     top: 0;
     left: 0;
