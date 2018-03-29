@@ -2,15 +2,15 @@
   <header class="header-wrap">
     <div class="hd-top wrap clearfix" :class="{ active: bFloatTopHead }">
       <div class="fl logo">
-        <h1><router-link :to="{ name: 'index' }">{{ blogInfo.blogName }}</router-link></h1>
+        <h1><router-link ref="floatLogoText" :to="{ name: 'index' }" v-html="blogInfo.blogName"></router-link></h1>
       </div>
       <ul class="fl other-link hide-1023px">
         <li class="list" v-for="item in topNavList" :key="item.key">
           <router-link :to="{ name: 'page', params: { id: item.object_id }}"><i :class="`iconfont ${item.attr_title}`"></i>{{ item.title }}</router-link>
         </li>
       </ul>
-      <div class="fl search-wrap" :class="{ show: bShowSearch }" @click="closeSearch()">
-        <input type="text" name="" v-model="searchRes" placeholder="搜索..." @keyup.prevent.enter="search()" @click.stop>
+      <div class="fl search-wrap" :class="{ show: bShowSearch }" @click="closeSearch">
+        <input type="text" name="" v-model="searchRes" placeholder="搜索..." @keyup.prevent.enter="search" @click.stop>
       </div>
       <div class="fr contact-wrap">
         <div class="contact-btn"><i class="iconfont icon-github1"></i> 联系我</div>
@@ -22,14 +22,14 @@
         <a href="#"><i class="iconfont icon-email2"></i></a> -->
       </div>
       <div class="icon-wrap clearfix">
-        <i class="fl iconfont icon-search hide" @click="showSearch()"></i>
-        <i class="fl iconfont icon-menu hide" @click="showMenu()"></i>
+        <i class="fl iconfont icon-search hide" @click="showSearch"></i>
+        <i class="fl iconfont icon-menu hide" @click="showMenu"></i>
       </div>
     </div>
 
     <!-- banner -->
     <div class="banner-wrap">
-      <img :src="blogInfo.setExtend.big_banner" alt="banner">
+      <img :src="blogInfo.setExtend.big_banner ? blogInfo.setExtend.big_banner : `${templeteUrl}/static/images/default_banner.png`" alt="banner">
     </div>
 
     <!-- 导航容器 -->
@@ -37,30 +37,30 @@
       <div class="wrap">
         <!-- 头像 -->
         <div class="head-portrait">
-          <img v-show="!bFloatHead" :src="blogInfo.adminPic.full" width="150" height="150" alt="">
+          <img v-show="!bFloatHead" :src="blogInfo.adminPic.full ? blogInfo.adminPic.full : `${templeteUrl}/static/images/default_thumbnail.png`" width="150" height="150" alt="">
           <router-link v-show="bFloatHead" class="float-title" :to="{ name: 'index' }">{{ blogInfo.blogName }}</router-link>
         </div>
         <!-- 导航 -->
-        <nav class="nav-list-wrap" @mouseleave="closeSubMenu()">
-          <i class="hide block iconfont icon-close" @click="closeMenu()"></i>
+        <nav class="nav-list-wrap" :style="`margin-left: ${navMarginLeft}px`" @mouseleave="closeSubMenu">
+          <i class="hide block iconfont icon-close" @click="closeMenu"></i>
           <ul class="list-wrap">
-            <li class="nav-list" @mouseenter="showSubMenu($event)" @touchend="closeMenu()">
+            <li class="nav-list" @mouseenter="showSubMenu($event)" @touchend="closeMenu">
               <router-link :to="{ name: 'index' }"><i v-show="bShowNavIcon" class="iconfont icon-home2"></i>首页</router-link>
             </li>
             <li class="nav-list" v-for="item in navList" :key="item.key" @mouseenter="showSubMenu($event)" @touchend="showSubMenu($event)">
               <router-link
                 v-if="item.type === 'page'"
                 :to="{ name: 'page', params: { id: item.ID } }"
-                @click.native.stop="closeMenu()"
+                @click.native.stop="closeMenu"
               ><i class="iconfont" :class="item.icon"></i>{{ item.title }}</router-link>
               <router-link
                 v-else-if="item.children.length === 0"
                 :to="{ name: 'category', params: { id: item.ID, title: item.title } }"
-                @click.native.stop="closeMenu()"
+                @click.native.stop="closeMenu"
               ><i class="iconfont" :class="item.icon"></i>{{ item.title }}</router-link>
               <a v-else href="javascript:;"><i class="iconfont" :class="item.icon"></i>{{ item.title }}</a>
               <ul class="sub-nav-wrap" v-if="item.children.length !== 0">
-                <li class="sub-nav-list" v-for="subNav in item.children" :key="subNav.key" @click.stop="closeMenu()">
+                <li class="sub-nav-list" v-for="subNav in item.children" :key="subNav.key" @click.stop="closeMenu">
                   <router-link v-if="subNav.type === 'page'" :to="{ name: 'page', params: { id: subNav.ID } }"><i class="iconfont" :class="subNav.icon"></i>{{ subNav.title }}</router-link>
                   <router-link v-else :to="{ name: 'category', params: { id: subNav.ID, title: subNav.title } }"><i class="iconfont" :class="subNav.icon"></i>{{ subNav.title }}</router-link>
                 </li>
@@ -84,7 +84,8 @@ export default {
     bFloatHead: false,
     bFloatTopHead: false,
     bShowSearch: false,
-    bNavShow: false
+    bNavShow: false,
+    navMarginLeft: 200
   }),
   methods: {
     // 搜索
@@ -134,15 +135,19 @@ export default {
       blogInfo: state => state.info.blogInfo,
       navList: state => state.info.navList,
       topNavList: state => state.info.topNavList,
-      bShowNavIcon: state => state.info.bShowNavIcon
+      bShowNavIcon: state => state.info.bShowNavIcon,
+      templeteUrl: state => state.info.blogInfo.templeteUrl
     })
   },
   mounted () {
     let that = this
     window.addEventListener('scroll', function () {
       if (this.scrollY > 500) {
+        // 计算浮动菜单margin-left到logo的距离
+        that.navMarginLeft = that.$refs.floatLogoText.$el.offsetWidth + 15
         this.innerWidth > 767 ? that.bFloatHead = true : that.bFloatTopHead = true
       } else {
+        that.navMarginLeft = 200
         this.innerWidth > 767 ? that.bFloatHead = false : that.bFloatTopHead = false
       }
     }, false)
@@ -160,7 +165,8 @@ export default {
     line-height: 60px;
 
     h1{
-      font-size: 20px;
+      font-size: 24px;
+      font-weight: 400;
     }
   }
 

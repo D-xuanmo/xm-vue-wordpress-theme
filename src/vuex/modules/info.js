@@ -14,7 +14,7 @@ const mutations = {
         state.blogInfo = res.data
         state.bLoading = false
         resolve()
-      }).catch(err => console.log(err))
+      }).catch(err => console.log(err.response))
     }).then(resolve => {
       // 获取置顶菜单
       window.axios.get('/wp-json/xm-blog/v1/top-menu').then(res => (state.topNavList = res.data)).catch(err => console.log(err.response))
