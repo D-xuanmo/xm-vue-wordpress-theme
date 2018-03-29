@@ -94,14 +94,14 @@
           <a :href="item.author_url" target="_blank" class="author">{{ item.author_name }}</a>
           <!-- 评论者等级 -->
           <p class="inline-block">
-            <span class="icon-vip icon-level" :class="[item.userAgentImg.vipStyle.style, item.userAgentImg.vipStyle.level]" :style="`
-            background-image: url(${templeteUrl}/static/images/vip.png);`"></span>
+            <span class="icon-vip icon-level" :class="[item.userAgentImg.vipStyle.style, item.userAgentImg.vipStyle.level]" :style="`background-image: url(${templeteUrl}/static/images/vip.png);`" :title="item.userAgentImg.vipStyle.title"></span>
           </p>
-          <img :src="item.userAgentImg.systemLogo" class="browser-logo" width="20" alt="">
-          <img :src="item.userAgentImg.browserLogo" class="browser-logo" width="20" alt="">
+          <!-- 浏览器logo -->
+          <img :src="item.userAgentImg.systemLogo" class="browser-logo" width="16" alt="">
+          <!-- 系统logo -->
+          <img :src="item.userAgentImg.browserLogo" class="browser-logo" width="16" alt="">
           <time>{{ item.date.replace('T', ' ') }}</time>
           <span v-if="item.status === 'hold'">您的评论正在审核中...</span>
-          <!-- <span>{{ item.meta.userAnget }}</span> -->
         </div>
         <div class="list-content" v-html="item.content.rendered" v-replace-img></div>
         <!-- <div class="list-btn-wrap">
@@ -582,7 +582,7 @@ export default {
     }
 
     .browser-logo{
-      vertical-align: bottom;
+      vertical-align: baseline;
     }
 
     .list-content{
@@ -591,7 +591,15 @@ export default {
 
     // 评论者等级
     .icon-vip{
-      display: block;
+      display: inline-block;
+
+      // 博主
+      &.icon-admin{
+        width: 20px;
+        height: 20px;
+        background-position: -172px -70px;
+      }
+
       &.vip-style-1{
         width: 16px;
         height: 14px;
@@ -613,6 +621,7 @@ export default {
             background-position-X: -#{$i * 59}px;
           }
         }
+
         &:hover{
           background-position-Y: -23px;
         }
@@ -641,19 +650,29 @@ export default {
       .box{
         display: block;
       }
+
       .comment-inp{
         width: 100%;
       }
+
       .comment-from-url{
         margin-bottom: 20px;
       }
+
       .submit-btn{
         width: 100%;
       }
     }
+
+    // 评论列表
     .comment-list{
       .list-gravatar{
         left: -15px;
+      }
+
+      time{
+        display: block;
+        margin-top: 5px;
       }
     }
   }
