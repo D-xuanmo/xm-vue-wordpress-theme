@@ -10,7 +10,7 @@
 # 安装依赖
 npm install
 
-# 启动项目，本地访问： localhost:5200
+# 启动项目，本地访问：localhost:5200，WordPress端口为：8888
 npm run dev
 
 # 打包项目命令
