@@ -37,9 +37,9 @@
             @click.prevent="addOpinion(key)"
           >
             <a href="#">
-              <span class="block">{{ articleInfor.xmLink[key] }}人</span>
+              <span class="block text"><i v-if="item.showLoading" class="iconfont icon-loading"></i>{{ articleInfor.xmLink[key] }}人</span>
               <img :src="item.pic" alt="">
-              <span class="block">{{ item.title }}</span>
+              <span class="block text">{{ item.title }}</span>
             </a>
           </li>
         </ul>
@@ -146,23 +146,28 @@ export default {
     opinion: {
       very_good: {
         pic: require('./images/like_love.png'),
-        title: 'Love'
+        title: 'Love',
+        showLoading: false
       },
       good: {
         pic: require('./images/like_haha.png'),
-        title: 'Haha'
+        title: 'Haha',
+        showLoading: false
       },
       commonly: {
         pic: require('./images/like_wow.png'),
-        title: 'Wow'
+        title: 'Wow',
+        showLoading: false
       },
       bad: {
         pic: require('./images/like_sad.png'),
-        title: 'Sad'
+        title: 'Sad',
+        showLoading: false
       },
       very_bad: {
         pic: require('./images/link_angry.png'),
-        title: 'Angry'
+        title: 'Angry',
+        showLoading: false
       }
     }
   }),
@@ -181,12 +186,14 @@ export default {
           type: 'warning'
         })
       } else {
+        this.opinion[key].showLoading = true
         window.axios.post('/wp-json/xm-blog/v1/link/', {
           params: {
             id: this.$route.params.id,
             key
           }
         }).then((res) => {
+          this.opinion[key].showLoading = false
           this.articleInfor.xmLink[key] = res.data
           // 设置点赞状态
           localStorage.setItem(`xm_link_${this.$route.params.id}`, true)
@@ -277,7 +284,11 @@ export default {
     .list{
       text-align: center;
 
-      span{
+      a{
+        display: block;
+      }
+
+      .text{
         &:first-of-type{
           font-size: 12px;
         }

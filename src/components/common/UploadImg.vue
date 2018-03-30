@@ -60,7 +60,10 @@ export default {
         }
         let data = new FormData()
         if (_file.files[0].size / 1024 > 2048) {
-          alert('请上传小于2M的图片！')
+          this.$message({
+            title: '请上传小于2M的图片！',
+            type: 'error'
+          })
         } else {
           data.append('postID', this.$route.params.id)
           data.append('file', _file.files[0])
@@ -70,7 +73,14 @@ export default {
             this.resultImgUrl = res.data.path
             this.resFileName = res.data.name
             _file.value = ''
-          }).catch(err => console.log(err))
+          }).catch(err => {
+            if (err.response.status === 404) {
+              this.$message({
+                title: '上传失败(404)！',
+                type: 'error'
+              })
+            }
+          })
         }
       }
     },

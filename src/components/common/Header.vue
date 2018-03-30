@@ -104,13 +104,11 @@ export default {
     // 移动端显示菜单
     showMenu () {
       this.bNavShow = true
-      document.body.style.overflow = 'hidden'
     },
 
     // 移动端关闭菜单
     closeMenu () {
       this.bNavShow = false
-      document.body.style.overflow = 'visible'
     },
 
     // 显示二级菜单
@@ -157,6 +155,7 @@ export default {
           that.navMarginLeft = that.$refs.floatLogoText.$el.offsetWidth + 15
         } else {
           that.bFloatTopHead = true
+          that.navMarginLeft = 0
         }
       } else {
         if (this.innerWidth > 767) {
@@ -164,9 +163,11 @@ export default {
           that.navMarginLeft = 200
         } else {
           that.bFloatTopHead = false
+          that.navMarginLeft = 0
         }
       }
     }, false)
+    if (window.innerWidth > 767) that.navMarginLeft = 200
   }
 }
 </script>

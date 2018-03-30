@@ -1,10 +1,10 @@
 <template>
   <div class="fr sidebar-wrap hide-1200px">
-    <div class="sidebar-list" v-if="blogInfo.setExtend.sidebar_notice" :class="{ float: bFloat }">
+    <div class="sidebar-list" v-if="blogInfo.setExtend.sidebar_notice" :class="{ 'float': bFloat }">
       <h2 class="title"><i class="iconfont icon-notice1"></i>公告</h2>
-      <div class="list content">{{ blogInfo.setExtend.sidebar_notice }}</div>
+      <div class="list content" v-html="blogInfo.setExtend.sidebar_notice"></div>
     </div>
-    <div class="sidebar-list">
+    <div class="sidebar-list sidebar-new-comment" :class="{ 'float': !blogInfo.setExtend.sidebar_notice && bFloat }">
       <h2 class="title"><i class="iconfont icon-hot1"></i>最新评论</h2>
       <ul class="list-wrap new-comment">
         <li class="list clearfix" v-for="item in blogInfo.newComment" :key="item.key">
@@ -29,17 +29,6 @@
       <h2 class="title"><i class="iconfont icon-link2"></i>友情链接</h2>
       <div class="content sidebar-count" v-html="blogInfo.link"></div>
     </div>
-    <!-- <div class="sidebar-list">
-      <h2 class="title">浏览排行</h2>
-      <ul class="list-wrap">
-        <li class="list" v-for="item in sidebarHotArticle" :key="item.key">
-          <a :href="item.link" class="clearfix">
-            <span class="fl ellipsis"># {{ item.title }}</span>
-            <span class="fr"><i class="iconfont icon-hot"></i> {{ item.viewCount }}</span>
-          </a>
-        </li>
-      </ul>
-    </div> -->
   </div>
 </template>
 <script>
@@ -49,29 +38,7 @@ export default {
   name: 'sidebar',
   store,
   data: () => ({
-    bFloat: false,
-    sidebarHotArticle: [
-      {
-        title: 'before伪类与阿里图标做的图标库before伪类与阿里图标做的图标库',
-        link: 'https://www.xuanmo.xin',
-        viewCount: 10
-      },
-      {
-        title: 'before伪类与阿里图标做的图标库before伪类与阿里图标做的图标库',
-        link: 'https://www.xuanmo.xin',
-        viewCount: 10
-      },
-      {
-        title: 'before伪类与阿里图标做的图标库before伪类与阿里图标做的图标库',
-        link: 'https://www.xuanmo.xin',
-        viewCount: 10
-      },
-      {
-        title: 'before伪类与阿里图标做的图标库before伪类与阿里图标做的图标库',
-        link: 'https://www.xuanmo.xin',
-        viewCount: 10
-      }
-    ]
+    bFloat: false
   }),
   computed: {
     ...mapState({
@@ -105,6 +72,11 @@ export default {
       position: fixed;
       top: 80px;
       width: 300px;
+
+      &.sidebar-new-comment{
+        overflow: hidden;
+        height: 350px;
+      }
     }
 
     .list{

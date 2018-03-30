@@ -145,6 +145,7 @@ export default {
       overflow: hidden;
       float: left;
       margin-right: 10px;
+
       img{
         transition: .5s;
       }
