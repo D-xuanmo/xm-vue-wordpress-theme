@@ -4,7 +4,7 @@
   <meta charset="<?php bloginfo( 'charset' ); ?>">
   <meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0">
   <title><?php bloginfo( 'name' ); ?></title>
-  <meta name="key" content="<?php echo get_option('xm_vue_options')['keywords']; ?>">
+  <meta name="keywords" content="<?php echo get_option('xm_vue_options')['keywords']; ?>">
   <meta name="description" content="<?php echo get_option('xm_vue_options')['description']; ?>">
   <meta name="format-detection" content="telephone=no">
   <?php
