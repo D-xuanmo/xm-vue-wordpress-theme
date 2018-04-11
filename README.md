@@ -4,7 +4,7 @@
 
 > 主题介绍：[https://www.xuanmo.xin/single/2317](https://www.xuanmo.xin/single/2317)
 
-## Build Setup
+## 本地启动、打包
 
 ``` bash
 # 安装依赖
