@@ -9,13 +9,13 @@ import NotFound from '@/views/404'
 Vue.use(Router)
 
 export default new Router({
-  mode: 'history',
+  // mode: 'history',
   routes: [
     {
       path: '/',
       name: 'index',
       component: Index,
-      meta: { keepAlive: false }
+      meta: { keepAlive: true }
     },
     {
       path: '/cat/:id?/:title?',

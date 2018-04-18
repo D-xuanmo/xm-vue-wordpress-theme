@@ -34,17 +34,17 @@ const actions = {
         params: {
           id: _params.id
         }
-      }).then((res) => {
+      }).then(res => {
         oResult = Object.assign(oResult, {
           id: _params.id,
           viewCount: res.data
         })
         resolve()
-      }).catch((err) => console.log(err))
+      }).catch(err => console.log(err))
     }).then((resolve, reject) => {
       // 获取文章数据
       window.axios.get(`/wp-json/wp/v2/posts/${_params.id}`)
-        .then((res) => {
+        .then(res => {
           let _res = res.data
           oResult = Object.assign(oResult, {
             articleContent: _res,
@@ -59,7 +59,7 @@ const actions = {
           for (let key in state.authorOtherInfo) {
             state.authorOtherInfo[key].url = _res.articleInfor.other[key]
           }
-        }).catch((err) => console.log(err))
+        }).catch(err => console.log(err))
     })
   }
 }

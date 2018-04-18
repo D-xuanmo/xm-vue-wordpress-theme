@@ -9,7 +9,7 @@ const actions = {
   getPage ({ commit, state }, _params) {
     let oResult = {}
     window.axios.get(`/wp-json/wp/v2/pages/${_params.id}`)
-      .then((res) => {
+      .then(res => {
         let _res = res.data
         oResult = Object.assign(oResult, {
           articleContent: _res,
@@ -18,7 +18,7 @@ const actions = {
           bShowLoading: false
         })
         commit('getPage', oResult)
-      }).catch((err) => console.log(err))
+      }).catch(err => console.log(err))
   }
 }
 

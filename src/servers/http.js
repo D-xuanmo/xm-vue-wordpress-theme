@@ -18,7 +18,8 @@ Axios.interceptors.response.use(response => {
   return {
     data: response.data,
     status: response.status,
-    statusText: response.statusText
+    statusText: response.statusText,
+    header: response.headers
   }
 }, error => {
   return Promise.reject(error)

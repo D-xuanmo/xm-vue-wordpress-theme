@@ -14,7 +14,7 @@ const actions = {
     let url = _params.key === '' ? `/wp-json/wp/v2/posts?page=${_params.currentNum}&per_page=5&_embed=true` : `/wp-json/wp/v2/posts?${_params.key}=${_params.val}&page=${_params.currentNum}&per_page=5&_embed=true`
     // 获取列表文章
     window.axios.get(url)
-      .then((res) => {
+      .then(res => {
         let _res = {}
         oResult = {
           articleList: [...state.articleList, ...res.data],
@@ -23,14 +23,15 @@ const actions = {
           bGlobalRequest: false,
           bMoreList: false
         }
-        if (res.data.length === 0 && state.articleList.length === 0) {
+        if (+res.header['x-wp-total'] === 0) {
           _res = {
             bClick: false,
             sMoreBtnText: '我是有底线的^_^',
             articleList: '暂无数据！'
           }
           oResult = {...oResult, ..._res}
-        } else if (res.data.length < 5) {
+        }
+        if (_params.currentNum === +res.header['x-wp-totalpages']) {
           _res = {
             bClick: false,
             sMoreBtnText: '我是有底线的^_^'

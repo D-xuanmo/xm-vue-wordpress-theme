@@ -11,7 +11,7 @@ export default {
   name: 'loading',
   data () {
     return {
-      msg: '加载中...'
+      msg: '加载中'
     }
   }
 }
