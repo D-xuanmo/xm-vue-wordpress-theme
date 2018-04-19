@@ -1,10 +1,10 @@
-# xm-vue-wordpress-theme
+### xm-vue-wordpress-theme ![apm](https://img.shields.io/apm/l/vim-mode.svg)
 
 > 一款基于vue开发的wordpress主题
 
 > 主题介绍：[https://www.xuanmo.xin/single/2317](https://www.xuanmo.xin/single/2317)
 
-## 本地启动、打包
+### 本地启动、打包
 
 ``` bash
 # 安装依赖
