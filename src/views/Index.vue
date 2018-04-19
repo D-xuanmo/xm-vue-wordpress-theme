@@ -37,8 +37,8 @@
 </template>
 
 <script>
-import sidebar from '@/components/common/Sidebar'
-import loading from '@/components/common/loading/Loading'
+import sidebar from '@/components/Sidebar'
+import loading from '@/components/loading/Loading'
 import store from '@/vuex/store'
 import { mapState } from 'vuex'
 export default {

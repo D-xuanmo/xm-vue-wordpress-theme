@@ -200,25 +200,81 @@ add_action('rest_api_init', 'add_api_user_meta_field');
 // 判断浏览器型号
 function get_browser_name ($str)
 {
-  if (preg_match('/QQBrowser/', $str)) {
-    return get_bloginfo('template_directory') . '/static/images/QQBrowser.png';
-  } else if (preg_match('/MetaSr/', $str)) {
-    return get_bloginfo('template_directory') . '/static/images/sougou_logo.png';
-  } else if (preg_match('/Edge/', $str)) {
-    return get_bloginfo('template_directory') . '/static/images/ie_logo.png';
-  } else if (preg_match('/OPR/', $str)) {
-    return get_bloginfo('template_directory') . '/static/images/opera_logo.png';
-  } else if (preg_match('/Chrome/', $str)) {
-    return get_bloginfo('template_directory') . '/static/images/chrome_logo.png';
-  } else if (preg_match('/Safari/', $str)) {
-    return get_bloginfo('template_directory') . '/static/images/safari_logo.png';
-  } else if (preg_match('/Firefox/', $str)) {
-    return get_bloginfo('template_directory') . '/static/images/firefox_logo.png';
-  } else if (preg_match('/Trident/', $str)) {
-    return get_bloginfo('template_directory') . '/static/images/ie_logo.png';
-  } else if (preg_match('/Quark/', $str)) {
-    return get_bloginfo('template_directory') . '/static/images/quark_logo.png';
+  $result = array();
+  $matches[1]['z'] = $str;
+  // 判断系统
+  if (preg_match('/Maci/', $str)) {
+    preg_match_all('/(?P<system>(Mac(\s\w+)+\s.)\w+)/i', $str, $match[0], PREG_SET_ORDER);
+    $matches['system'] = str_replace(' OS X', '', str_replace('_', '.', $match[0][0]['system']));
+    $result = $matches;
+  } else if (preg_match('/iPhone/', $str)) {
+    preg_match_all('/(?P<system>(iPhone\s\w+\s.)\w+)/i', $str, $match[0], PREG_SET_ORDER);
+    $matches['system'] = str_replace(' OS', '', str_replace('_', '.', $match[0][0]['system']));
+    $result = $matches;
+  } else if (preg_match('/Android/', $str)) {
+    preg_match_all('/(?P<system>Android\s\d+\.\d+)/i', $str, $match[0], PREG_SET_ORDER);
+    $matches['system'] = $match[0][0]['system'];
+    $result = $matches;
+  } else if (preg_match('/Wind/', $str)) {
+    preg_match_all('/(?P<system>Windows\sNT\s\d+\.\d+)/i', $str, $match[0], PREG_SET_ORDER);
+    if (strpos($match[0][0]['system'], 'NT 6.1')) {
+      $matches['system'] = str_replace(' NT 6.1', ' 7', $match[0][0]['system']);
+    } else {
+      $matches['system'] = str_replace(' NT 10.0', ' 10', $match[0][0]['system']);
+    }
+    $result = $matches;
   }
+  // 判断浏览器信息
+  if (preg_match('/QQBrowser/', $str)) {
+    // QQ浏览器
+    preg_match_all('/(?P<name>QQBrowser\/\d+\.\d+)/i', $str, $match, PREG_SET_ORDER);
+    $matches['browserVersion'] = str_replace('QQBrowser/', '', $match[0]['name']);
+    $matches['browserName'] = 'QQBrowser';
+    $result = $matches;
+  } else if (preg_match('/MicroMessenger/', $str)) {
+    // 微信内置浏览器
+    preg_match_all('/(?P<name>MicroMessenger\/\d+\.\d+)/i', $str, $match, PREG_SET_ORDER);
+    $matches['browserVersion'] = str_replace('MicroMessenger/', '', $match[0]['name']);
+    $matches['browserName'] = 'wechat';
+    $result = $matches;
+  } else if (preg_match('/Edge/', $str)) {
+    // edge
+    preg_match_all('/(?P<name>Edge\/\d+\.\d+)/i', $str, $match, PREG_SET_ORDER);
+    $matches['browserVersion'] = str_replace('Edge/', '', $match[0]['name']);
+    $matches['browserName'] = 'Edge';
+    $result = $matches;
+  } else if (preg_match('/OPR/', $str)) {
+    // opera
+    preg_match_all('/(?P<name>OPR\/\d+\.\d+)/i', $str, $match, PREG_SET_ORDER);
+    $matches['browserVersion'] = str_replace('OPR/', '', $match[0]['name']);
+    $matches['browserName'] = 'Opera';
+    $result = $matches;
+  } else if (preg_match('/Chrome|MetaSr/', $str)) {
+    // chrome
+    preg_match_all('/(?P<name>Chrome\/\d+\.\d+)/i', $str, $match, PREG_SET_ORDER);
+    $matches['browserVersion'] = str_replace('Chrome/', '', $match[0]['name']);
+    $matches['browserName'] = 'Chrome';
+    $result = $matches;
+  } else if (preg_match('/Safari/', $str)) {
+    // safari
+    preg_match_all('/(?P<name>Version\/\d+\.\d+)/i', $str, $match, PREG_SET_ORDER);
+    $matches['browserVersion'] = str_replace('Version/', '', $match[0]['name']);
+    $matches['browserName'] = 'Safari';
+    $result = $matches;
+  } else if (preg_match('/Firefox/', $str)) {
+    // Firefox
+    preg_match_all('/(?P<name>Firefox\/\d+\.\d+)/i', $str, $match, PREG_SET_ORDER);
+    $matches['browserVersion'] = str_replace('Firefox/', '', $match[0]['name']);
+    $matches['browserName'] = 'Firefox';
+    $result = $matches;
+  } else if (preg_match('/Trident/', $str)) {
+    // IE
+    preg_match_all('/(?P<name>Trident\/\d+\.\d+)/i', $str, $match, PREG_SET_ORDER);
+    $matches['browserVersion'] = str_replace('Trident/', '', $match[0]['name']);
+    $matches['browserName'] = 'Internet-Explorer';
+    $result = $matches;
+  }
+  return $result;
 }
 
 // 判断系统
@@ -262,11 +318,10 @@ function get_author_class ($comment_author_email)
 
 function add_api_comment_meta_field ()
 {
-  register_rest_field('comment', 'userAgentImg', array(
+  register_rest_field('comment', 'userAgentInfo', array(
     'get_callback' => function ($object) {
       $array = array(
-        'browserLogo' => get_browser_name($object[author_user_agent]),
-        'systemLogo' => get_system_name($object[author_user_agent]),
+        'userAgent' => get_browser_name($object[author_user_agent]),
         'vipStyle' => get_author_class($object[author_email])
       );
       return $array;

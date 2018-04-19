@@ -14,9 +14,9 @@
   </section>
 </template>
 <script>
-import sidebar from '@/components/common/Sidebar'
-import comments from '@/components/common/comment/Comments'
-import loading from '@/components/common/loading/Loading'
+import sidebar from '@/components/Sidebar'
+import comments from '@/components/comment/Comments'
+import loading from '@/components/loading/Loading'
 import store from '@/vuex/store'
 import { mapState } from 'vuex'
 export default {

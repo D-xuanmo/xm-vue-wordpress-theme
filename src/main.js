@@ -5,7 +5,7 @@ import App from './App'
 import router from './router'
 import Prism from '../static/js/prism'
 import Axios from './servers/http'
-import Message from './components/common/message/index'
+import Message from './components/message/index'
 import '../static/css/prism.css'
 
 Vue.config.productionTip = false
