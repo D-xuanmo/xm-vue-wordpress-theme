@@ -260,7 +260,6 @@ function get_author_class ($comment_author_email)
   }
 }
 
-
 function add_api_comment_meta_field ()
 {
   register_rest_field('comment', 'userAgentImg', array(
