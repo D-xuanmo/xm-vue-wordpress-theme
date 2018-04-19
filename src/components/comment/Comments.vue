@@ -80,9 +80,9 @@
             <span v-show="imgCode.validate" class="comment-tips">{{ imgCode.msg }}</span>
           </div>
         </div>
-        <div class="submit-wrap">
+        <div class="submit-wrap" @click.prevent="bSubmit && postComment()">
           <i v-show="!bSubmit" class="iconfont icon-loading"></i>
-          <input type="submit" class="submit-btn" @click.prevent="bSubmit && postComment()" :value="submitText">
+          <input type="submit" class="submit-btn" :value="submitText">
         </div>
       </div>
     </form>
@@ -97,9 +97,9 @@
             <span class="icon-vip icon-level" :class="[item.userAgentInfo.vipStyle.style, item.userAgentInfo.vipStyle.level]" :style="`background-image: url(${templeteUrl}/static/images/vip.png);`" :title="item.userAgentInfo.vipStyle.title"></span>
           </p>
           <!-- 浏览器logo -->
-          <span class="browser-info" :class="item.userAgentInfo.userAgent.browserName.toLowerCase()">{{ item.userAgentInfo.userAgent.browserName }}|{{ item.userAgentInfo.userAgent.browserVersion }}</span>
+          <span class="browser-info" :class="item.userAgentInfo.userAgent.browserName.toLowerCase()">{{ item.userAgentInfo.userAgent.browserName.replace('-', ' ') }}|{{ item.userAgentInfo.userAgent.browserVersion }}</span>
           <!-- 系统logo -->
-          <span class="system-info">{{ item.userAgentInfo.userAgent.system }}</span>
+          <span class="system-info">{{ item.userAgentInfo.userAgent.system.replace(/_/g, '.') }}</span>
           <time>{{ item.date.replace('T', ' ') }}</time>
           <span v-if="item.status === 'hold'">您的评论正在审核中...</span>
         </div>
@@ -628,7 +628,6 @@ export default {
       padding: 2px 4px;
       background: #fc5c7d;
       background: linear-gradient(to right, #fc5c7d, #6a82fb);
-      // background: linear-gradient(to right, #3a7bd5, #00d2ff);
       border-radius: 3px;
       color: #fff;
     }

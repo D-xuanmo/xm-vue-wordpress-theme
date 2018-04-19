@@ -13,13 +13,13 @@ add_action('init', 'remove_redirects');
 // Load scripts
 function load_vue_scripts()
 {
-  wp_enqueue_style('app.css', get_template_directory_uri() . '/static/css/app.0b2ddf237e25e5ad4b717e06fdf204fa.css', false, null);
+  wp_enqueue_style('app.css', get_template_directory_uri() . '/static/css/app.46d29daaab34e0238ce6ade7e2592657.css', false, null);
 
   wp_enqueue_script('manifest.js', get_template_directory_uri() . '/static/js/manifest.37a2ecbb1d1b7e6c9ada.js', null, null, true);
 
   wp_enqueue_script('vendor.js', get_template_directory_uri() . '/static/js/vendor.16b0e68c4ef67f74555d.js', null, null, true);
 
-  wp_enqueue_script('app.js', get_template_directory_uri() . '/static/js/app.8a9ac7c570e605afc94c.js', null, null, true);
+  wp_enqueue_script('app.js', get_template_directory_uri() . '/static/js/app.5a0e34759de4a1d1a993.js', null, null, true);
 }
 
 add_action('wp_enqueue_scripts', 'load_vue_scripts', 100);
@@ -425,7 +425,7 @@ function ludou_comment_mail_notify($comment_id, $comment_status)
           <p style="margin: 15px 0; padding: 20px; border-radius: 5px; background-color: #eee;">' . $parent_comment->comment_content . '</p>
           <p><strong>' . trim($comment->comment_author) . '</strong> 给你的回复是:<br />
           <p style="margin: 15px 0; padding: 20px; border-radius: 5px; background-color: #eee;">' . trim($comment->comment_content) . '</p>
-          <p>您也可移步到文章<a style="text-decoration:none; color:#2ebef3" href="' . get_bloginfo('home') . '/single/' . $comment->comment_post_ID . '"> 《' . get_the_title($comment->comment_post_ID) . '》 </a>查看完整回复内容</p>
+          <p>您也可移步到文章<a style="text-decoration:none; color:#2ebef3" href="' . get_bloginfo('home') . '/#/single/' . $comment->comment_post_ID . '"> 《' . get_the_title($comment->comment_post_ID) . '》 </a>查看完整回复内容</p>
           <p style="padding-bottom: 10px; border-bottom: 1px dashed #ccc;">欢迎再次光临 <a style="text-decoration:none; color:#2ebef3" href="' . get_option('home') . '">' . get_option('blogname') . '</a></p>
           <p>(此邮件由系统自动发出, 请勿回复。)</p>
           <p style="text-align: right;">如果您想更深入的和博主交流的话，欢迎回复哦^-^</p>
