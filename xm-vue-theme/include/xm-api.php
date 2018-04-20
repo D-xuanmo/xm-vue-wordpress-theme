@@ -203,25 +203,28 @@ function get_browser_name ($str)
   $matches['ua'] = $str;
   // 判断系统
   if (preg_match('/Maci/', $str)) {
-    // Mac OS X 10.13
+    // mac
     preg_match_all('/(?P<system>Mac(\s\w+)+\s(?P<version>(\d+\.\d+)|\d+(_\d+){2}))/i', $str, $match, PREG_SET_ORDER);
     $matches['system'] = 'Mac ' . $match[0]['version'];
-  } else if (preg_match('/iPhone/', $str)) {
-    preg_match_all('/(?P<system>(iPhone\s\w+\s.)\w+)/i', $str, $match[0], PREG_SET_ORDER);
-    $matches['system'] = str_replace(' OS', '', str_replace('_', '.', $match[0][0]['system']));
+  } else if (preg_match('/iPad|iPhone/', $str)) {
+    // iPad or iphone
+    preg_match_all('/(?P<system>\w+);(\s[a-zA-Z]+)+\s(?P<version>\d+_\d+)/i', $str, $match, PREG_SET_ORDER);
+    $matches['system'] = $match[0]['system'] . ' ' . $match[0]['version'];
   } else if (preg_match('/Android/', $str)) {
-    preg_match_all('/(?P<system>Android\s\d+\.\d+)/i', $str, $match[0], PREG_SET_ORDER);
-    $matches['system'] = $match[0][0]['system'];
+    // Android
+    preg_match_all('/(?P<system>Android\s\d+\.\d+)/i', $str, $match, PREG_SET_ORDER);
+    $matches['system'] = $match[0]['system'];
   } else if (preg_match('/Wind/', $str)) {
-    preg_match_all('/(?P<system>Windows\sNT\s\d+\.\d+)/i', $str, $match[0], PREG_SET_ORDER);
-    if (strpos($match[0][0]['system'], '6.1')) {
-      $matches['system'] = str_replace(' NT 6.1', ' 7', $match[0][0]['system']);
-    } else if (strpos($match[0][0]['system'], '6.2')) {
-      $matches['system'] = str_replace(' NT 6.2', ' 8', $match[0][0]['system']);
-    } else if (strpos($match[0][0]['system'], '6.3')) {
-      $matches['system'] = str_replace(' NT 6.3', ' 8.1', $match[0][0]['system']);
-    } else if (strpos($match[0][0]['system'], '10.0')) {
-      $matches['system'] = str_replace(' NT 10.0', ' 10', $match[0][0]['system']);
+    // windows
+    preg_match_all('/(?P<system>Windows\sNT\s\d+\.\d+)/i', $str, $match, PREG_SET_ORDER);
+    if (strpos($match[0]['system'], '6.1')) {
+      $matches['system'] = str_replace(' NT 6.1', ' 7', $match[0]['system']);
+    } else if (strpos($match[0]['system'], '6.2')) {
+      $matches['system'] = str_replace(' NT 6.2', ' 8', $match[0]['system']);
+    } else if (strpos($match[0]['system'], '6.3')) {
+      $matches['system'] = str_replace(' NT 6.3', ' 8.1', $match[0]['system']);
+    } else if (strpos($match[0]['system'], '10.0')) {
+      $matches['system'] = str_replace(' NT 10.0', ' 10', $match[0]['system']);
     }
   } else {
     $matches['system'] = 'Unknown';
@@ -237,6 +240,16 @@ function get_browser_name ($str)
     // 微信内置浏览器
     preg_match_all('/(?P<name>MicroMessenger)\/(?P<version>(\d+\.\d+))/i', $str, $match, PREG_SET_ORDER);
     $matches['browserVersion'] = $match[0]['version'];
+    $matches['browserName'] = 'wechat';
+  } else if (preg_match('/QQ\/\d/', $str)) {
+    // QQ
+    preg_match_all('/(?P<name>QQ)\/(?P<version>(\d+\.\d+))/i', $str, $match, PREG_SET_ORDER);
+    $matches['browserVersion'] = $match[0]['version'];
+    $matches['browserName'] = $match[0]['name'];
+  } else if (preg_match('/UCBrowser/', $str)) {
+    // UC
+    preg_match_all('/(?P<name>UCBrowser)\/(?P<version>(\d+\.\d+))/i', $str, $match, PREG_SET_ORDER);
+    $matches['browserVersion'] = $match[0]['version'];
     $matches['browserName'] = $match[0]['name'];
   } else if (preg_match('/Edge/', $str)) {
     // edge
@@ -247,7 +260,7 @@ function get_browser_name ($str)
     // opera
     preg_match_all('/(?P<name>OPR)\/(?P<version>(\d+\.\d+))/i', $str, $match, PREG_SET_ORDER);
     $matches['browserVersion'] = $match[0]['version'];
-    $matches['browserName'] = $match[0]['name'];
+    $matches['browserName'] = 'Opera';
   } else if (preg_match('/Chrome|MetaSr/', $str)) {
     // chrome
     preg_match_all('/(?P<name>(Chrome))\/(?P<version>(\d+\.\d+))/i', $str, $match, PREG_SET_ORDER);
@@ -265,7 +278,7 @@ function get_browser_name ($str)
     $matches['browserName'] = $match[0]['name'];
   } else if (preg_match('/Trident/', $str)) {
     // IE
-    preg_match_all('/(?P<name>Trident)\/(?P<version>(\d+\.\d+))/i', $str, $match, PREG_SET_ORDER);
+    preg_match_all('/MSIE\s(?P<version>(\d+\.\d+))/i', $str, $match, PREG_SET_ORDER);
     $matches['browserVersion'] = $match[0]['version'];
     $matches['browserName'] = 'Internet-Explorer';
   } else {

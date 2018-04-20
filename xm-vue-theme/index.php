@@ -13,7 +13,7 @@
   ?>
   <link rel="icon" href="<?php echo get_option('xm_vue_options')['favicon']; ?>">
   <?php wp_head(); ?>
-  <script src=//at.alicdn.com/t/font_556506_02zrofvxcsug14i.js></script>
+  <script src=//at.alicdn.com/t/font_556506_fosg14c49ehtzkt9.js></script>
 </head>
 <body>
   <div id="app"></div>

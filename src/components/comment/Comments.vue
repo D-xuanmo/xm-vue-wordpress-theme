@@ -95,11 +95,16 @@
           <!-- 评论者等级 -->
           <p class="inline-block">
             <span class="icon-vip icon-level" :class="[item.userAgentInfo.vipStyle.style, item.userAgentInfo.vipStyle.level]" :style="`background-image: url(${templeteUrl}/static/images/vip.png);`" :title="item.userAgentInfo.vipStyle.title"></span>
+            <svg v-if="item.userAgentInfo.vipStyle.title === '博主'" class="iconfont-colour admin" aria-hidden="true">
+              <use xlink:href="#icon-vip"></use>
+            </svg>
           </p>
-          <!-- 浏览器logo -->
-          <span class="browser-info" :class="item.userAgentInfo.userAgent.browserName.toLowerCase()">{{ item.userAgentInfo.userAgent.browserName.replace('-', ' ') }}|{{ item.userAgentInfo.userAgent.browserVersion }}</span>
-          <!-- 系统logo -->
-          <span class="system-info">{{ item.userAgentInfo.userAgent.system.replace(/_/g, '.') }}</span>
+          <p class="inline-block system-wrap">
+            <!-- 浏览器logo -->
+            <span class="browser-info" :class="item.userAgentInfo.userAgent.browserName.toLowerCase()">{{ item.userAgentInfo.userAgent.browserName.replace('-', ' ') }}|{{ item.userAgentInfo.userAgent.browserVersion }}</span>
+            <!-- 系统logo -->
+            <span class="system-info">{{ item.userAgentInfo.userAgent.system.replace(/_/g, '.') }}</span>
+          </p>
           <time>{{ item.date.replace('T', ' ') }}</time>
           <span v-if="item.status === 'hold'">您的评论正在审核中...</span>
         </div>
@@ -109,9 +114,9 @@
         </div> -->
       </li>
     </ul>
-    <div class="more-btn" v-show="commentList.length">
-      <img v-if="bMoreList" src="./images/bars.svg" alt="" width="40">
-      <span v-else @click="bClick && getMoreList()">{{ sMoreBtnText }}</span>
+    <div class="more-btn" @click="bClick && getMoreList()">
+      <!-- <img v-if="bMoreList" src="./images/bars.svg" alt="" width="40"> -->
+      <span><i v-show="bMoreList" class="iconfont icon-loading"></i>{{ sMoreBtnText }}</span>
     </div>
   </div>
 </template>
@@ -159,10 +164,10 @@ export default {
       },
       currentNum: 1,
       bClick: true,
-      bMoreList: false,
+      bMoreList: true,
       bSubmit: true,
       showChart: false,
-      sMoreBtnText: '下一页',
+      sMoreBtnText: '加载中',
       submitText: '提交评论'
     }
   },
@@ -191,11 +196,13 @@ export default {
         page: this.currentNum
       }
     }).then(res => {
+      this.bMoreList = false
+      this.sMoreBtnText = '下一页'
+      this.commentList = res.data
       if (this.currentNum === +res.header['x-wp-totalpages']) {
         this.sMoreBtnText = '最后一页！'
         this.bClick = false
       }
-      this.commentList = res.data
     }).catch(err => console.log(err))
   },
   computed: {
@@ -207,6 +214,8 @@ export default {
     // 评论列表下一页
     getMoreList () {
       this.bMoreList = true
+      this.bClick = false
+      this.sMoreBtnText = '加载中'
       this.currentNum++
       window.axios.get('/wp-json/wp/v2/comments/', {
         params: {
@@ -214,12 +223,14 @@ export default {
           page: this.currentNum
         }
       }).then(res => {
+        this.bMoreList = false
+        this.bClick = true
+        this.sMoreBtnText = '下一页'
+        this.commentList = [...this.commentList, ...res.data]
         if (this.currentNum === +res.header['x-wp-totalpages']) {
           this.sMoreBtnText = '最后一页！'
           this.bClick = false
         }
-        this.bMoreList = false
-        this.commentList = [...this.commentList, ...res.data]
       }).catch(err => console.log(err))
     },
     // 提交评论
@@ -604,7 +615,7 @@ export default {
         background: linear-gradient(to right, #dd3a45, #fcea67);
       }
 
-      &.qqbrowser{
+      &[class*="qq"]{
         background: linear-gradient(to right, #3072d1, #4ea8f3);
       }
 
@@ -618,6 +629,14 @@ export default {
 
       &.wechat{
         background: #94d258;
+      }
+
+      &.ucbrowser{
+        background: linear-gradient(to right, #ed5e31, #f8cd46);
+      }
+
+      &.opera{
+        background: #eb3b3a;
       }
     }
 
@@ -675,6 +694,13 @@ export default {
       }
     }
 
+    // 博主
+    .admin{
+      vertical-align: bottom;
+      width: 20px;
+      height: 20px;
+    }
+
     time,
     span{
       font-size: 12px;
@@ -717,9 +743,9 @@ export default {
         left: -15px;
       }
 
-      time{
+      .system-wrap{
         display: block;
-        margin-top: 5px;
+        margin: 5px 0;
       }
     }
   }
