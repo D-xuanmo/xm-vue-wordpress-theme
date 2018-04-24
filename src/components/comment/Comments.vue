@@ -9,7 +9,7 @@
         <div class="comment-other">
           <ul class="list-wrap">
             <li class="list" @click="showChartlet()">
-              <i class="iconfont icon-picture"></i>贴图
+              <i class="iconfont icon-upload-img2"></i>贴图
             </li>
             <li class="list" @click.stop="getExpression()">
               <i class="iconfont icon-expression"></i>表情
@@ -201,6 +201,10 @@ export default {
       this.commentList = res.data
       if (this.currentNum === +res.header['x-wp-totalpages']) {
         this.sMoreBtnText = '最后一页！'
+        this.bClick = false
+      }
+      if (+res.header['x-wp-totalpages'] === 0) {
+        this.sMoreBtnText = '暂无数据！'
         this.bClick = false
       }
     }).catch(err => console.log(err))

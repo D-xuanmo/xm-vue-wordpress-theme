@@ -17,10 +17,8 @@
               :to="{ name: 'category', params: { id: item.cat_ID, title: item.cat_name } }"
               v-html="`${item.name}${index == singleRes.classify.length - 1 ? '' : '、'}`"
             ></router-link>
-            <i class="iconfont icon-message"></i>
-            <span class="text">{{ articleInfor.commentCount }}</span>
-            <i class="iconfont icon-hot"></i>
-            <span class="text">{{ singleRes.viewCount }}</span>
+            <span class="text"><i class="iconfont icon-message"></i>{{ articleInfor.commentCount }}</span>
+            <span class="text"><i class="iconfont icon-hot"></i>{{ singleRes.viewCount }}</span>
             <a v-if="edit" :href="`/wp-admin/post.php?post=${$route.params.id}&action=edit`" target="_blank">编辑</a>
           </div>
         </header>
@@ -92,7 +90,7 @@
           <!-- 昵称 -->
           <div class="header">
             <p class="inline-block name">
-              作者简介：<i class="iconfont icon-about2"></i><span class="f-s-14px">{{ articleInfor.author }}</span>
+              作者简介：<i class="iconfont icon-about-f"></i><span class="f-s-14px">{{ articleInfor.author }}</span>
             </p>
             <p class="inline-block leave"></p>
           </div>

@@ -12,7 +12,6 @@
   },
   "dependencies": {
     "axios": "^0.17.1",
-    "babel-polyfill": "^6.26.0",
     "html2canvas-proxy": "^1.0.0",
     "vue": "^2.5.2",
     "vue-prism-component": "^1.0.1",

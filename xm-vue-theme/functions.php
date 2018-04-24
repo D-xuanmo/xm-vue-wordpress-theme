@@ -13,13 +13,13 @@ add_action('init', 'remove_redirects');
 // Load scripts
 function load_vue_scripts()
 {
-  wp_enqueue_style('app.css', get_template_directory_uri() . '/static/css/app.1b313ab3dffd4d31bd5cca25aa90ccad.css', false, null);
+  wp_enqueue_style('app.css', get_template_directory_uri() . '/static/css/app.4340370a8604a01efbab95f7d772564a.css', false, null);
 
   wp_enqueue_script('manifest.js', get_template_directory_uri() . '/static/js/manifest.37a2ecbb1d1b7e6c9ada.js', null, null, true);
 
-  wp_enqueue_script('vendor.js', get_template_directory_uri() . '/static/js/vendor.16b0e68c4ef67f74555d.js', null, null, true);
+  wp_enqueue_script('vendor.js', get_template_directory_uri() . '/static/js/vendor.31dfc4653415b7d981f5.js', null, null, true);
 
-  wp_enqueue_script('app.js', get_template_directory_uri() . '/static/js/app.dc5a349d6ebbf4c294b3.js', null, null, true);
+  wp_enqueue_script('app.js', get_template_directory_uri() . '/static/js/app.e63920ac9a06baf06b67.js', null, null, true);
 }
 
 add_action('wp_enqueue_scripts', 'load_vue_scripts', 100);
@@ -146,6 +146,8 @@ function appthemes_add_quicktags()
         }
         QTags.addButton('c-code', 'c-code', '<span class="code">', '</span>');
         QTags.addButton('h2', 'h2', '<h2>', '</h2>');
+        QTags.addButton('red-star', 'red-star', '<i class="iconfont icon-star" style="color: #f00;">', '</i>');
+        QTags.addButton('blue-star', 'blue-star', '<i class="iconfont icon-star" style="color: #06aaff;">', '</i>');
         // 添加html转换容器
         jQuery(function () {
             jQuery('#html-transform').click(function () {

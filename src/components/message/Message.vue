@@ -14,19 +14,21 @@
 <script>
 export default {
   name: 'message',
-  data: () => ({
-    msg: '',
-    icon: '',
-    type: '',
-    center: false,
-    wrapCenter: '',
-    isShow: false,
-    showClose: false,
-    showImg: false,
-    closeTime: 0,
-    width: 380,
-    imgUrl: ''
-  }),
+  data () {
+    return {
+      msg: '',
+      icon: '',
+      type: '',
+      center: false,
+      wrapCenter: '',
+      isShow: false,
+      showClose: false,
+      showImg: false,
+      closeTime: 0,
+      width: 380,
+      imgUrl: ''
+    }
+  },
   methods: {
     leave (event) {
       this.isShow = false
@@ -54,16 +56,16 @@ export default {
           this.imgUrl = opt.imgUrl
           switch (opt.type) {
             case 'success':
-              this.icon = 'icon-success'
+              this.icon = 'icon-success-f'
               break
             case 'warning':
-              this.icon = 'icon-tips'
+              this.icon = 'icon-info-f'
               break
             case 'error':
-              this.icon = 'icon-close1'
+              this.icon = 'icon-close-f'
               break
             default:
-              this.icon = 'icon-tips1'
+              this.icon = 'icon-tips-f'
           }
           break
       }
