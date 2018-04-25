@@ -1,28 +1,35 @@
 <template>
   <div class="upload-img-wrap">
     <div class="sub-upload-wrap text-center">
-      <h2 class="title">插入图片</h2>
-      <i class="iconfont icon-close" @click.stop="hideUpload()"></i>
-      <div class="progress-wrap">
-        <p class="text">上传进度：</p>
-        <div class="current-pro">
-          <div class="current" :style="`width:${currentProgress}%`"></div>
+      <template v-if="!bShowDragWrap">
+        <h2 class="title">插入图片</h2>
+        <i class="iconfont icon-close" @click.stop="hideUpload()"></i>
+        <div class="progress-wrap">
+          <p class="text">上传进度：</p>
+          <div class="current-pro">
+            <div class="current" :style="`width:${currentProgress}%`"></div>
+          </div>
+          <div>{{ currentProgress }}%</div>
         </div>
-        <div>{{ currentProgress }}%</div>
-      </div>
-      <div class="select-img">
-        <input type="file" name="file" value="" ref="inpFile" accept="image/png,image/gif,image/jpeg" @change.stop="showImgName($event)">
-        <p class="mask">
-          <span v-if="bFileMark"><i class="iconfont icon-upload-img2"></i>点击选择图片</span>
-          <span v-else>已选择：{{ fileName }}</span>
-        </p>
-      </div>
-      <div class="result-img">
-        <img :src="resultImgUrl">
-      </div>
-      <div class="btn-wrap">
-        <div class="btn btn-upload" @click.stop="uploadImg()">上传文件</div>
-        <div class="btn btn-insert" @click.stop="insertImg()">插入到文章</div>
+        <div class="select-img">
+          <input type="file" name="file" value="" ref="inpFile" accept="image/png,image/gif,image/jpeg" @change.stop="showImgName($event)">
+          <p class="mask">
+            <span v-if="bFileMark"><i class="iconfont icon-upload-img2"></i>点击选择图片或者拖动图片到此窗口内</span>
+            <template v-else>
+              已选择：<img :src="previewUrl" alt="">
+            </template>
+          </p>
+        </div>
+        <div class="btn-wrap">
+          <div v-if="bFileMark" class="btn btn-upload" @click.stop="uploadImg()">上传文件</div>
+          <div class="btn btn-insert" @click.stop="insertImg()">插入到文章</div>
+        </div>
+        <div class="result-img">
+          <img :src="resultImgUrl">
+        </div>
+      </template>
+      <div v-else class="drag-wrap">
+        <h2 class="title">松开鼠标完成上传</h2>
       </div>
     </div>
   </div>
@@ -35,8 +42,9 @@ export default {
     currentProgress: 0,
     resultImgUrl: '',
     bFileMark: true,
-    fileName: '',
-    resFileName: ''
+    resFileName: '',
+    bShowDragWrap: false,
+    previewUrl: ''
   }),
   props: ['showChart'],
   computed: {
@@ -48,7 +56,6 @@ export default {
   methods: {
     showImgName (event) {
       this.bFileMark = false
-      this.fileName = event.currentTarget.files[0].name
     },
     // 上传图片
     uploadImg () {
@@ -117,6 +124,55 @@ export default {
     }
   },
   mounted () {
+    // 拖拽上传文件
+    let oUploadWrap = document.querySelector('.sub-upload-wrap')
+    oUploadWrap.ondragenter = (e) => {
+      e.preventDefault()
+      this.bShowDragWrap = true
+    }
+    oUploadWrap.ondragover = (e) => {
+      e.preventDefault()
+    }
+    oUploadWrap.ondrop = (e) => {
+      e.preventDefault()
+      let oReader = new FileReader()
+      let oFile = e.dataTransfer.files[0]
+      this.bShowDragWrap = false
+      // 判断文件是会否为图片格式
+      if (oFile.type.indexOf('image') === -1) {
+        this.$message({
+          title: '请上传正确的图片格式',
+          type: 'warning'
+        })
+        this.bFileMark = true
+      } else {
+        oReader.readAsDataURL(oFile)
+        oReader.onload = () => {
+          // 上传实时进度
+          let config = {
+            onUploadProgress: progressEvent => (this.currentProgress = parseInt(progressEvent.loaded / progressEvent.total * 100))
+          }
+          let data = new FormData()
+          this.previewUrl = oReader.result
+          this.bFileMark = false
+          data.append('postID', this.$route.params.id)
+          data.append('file', oReader.result)
+          data.append('url', this.contentUrl)
+          data.append('mark', 'upload')
+          window.axios.post('/wp-content/themes/xm-vue-theme/xm_upload.php', data, config).then(res => {
+            this.resultImgUrl = res.data.path
+            this.resFileName = res.data.name
+          }).catch(err => {
+            if (err.response.status === 404) {
+              this.$message({
+                title: '上传失败(404)！',
+                type: 'error'
+              })
+            }
+          })
+        }
+      }
+    }
   }
 }
 </script>
@@ -137,10 +193,18 @@ export default {
     top: 50%;
     left: 50%;
     width: 70%;
+    min-height: 220px;
     padding: 10px;
     border-radius: 5px;
     background: #fff;
     transform: translate(-50%,-50%);
+  }
+
+  // 拖拽上传容器
+  .drag-wrap{
+    height: 200px;
+    border: 2px dashed $colorGay1;
+    line-height: 200px;
   }
 
   .title{
@@ -168,8 +232,8 @@ export default {
       width: 0px;
       height: 5px;
       border-radius: 5px;
-      background-color: #0ae;
-      background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, .2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%, transparent 75%, transparent);
+      background-color: $color-blue;
+      background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, .3) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .3) 50%, rgba(255, 255, 255, .3) 75%, transparent 75%, transparent);
     }
   }
 
@@ -192,6 +256,16 @@ export default {
         display: block;
         text-overflow: ellipsis;
         white-space: nowrap;
+
+        &.inline-block{
+          display: inline-block;
+          vertical-align: middle;
+        }
+      }
+
+      img{
+        max-width: 70px;
+        vertical-align: middle;
       }
     }
 
