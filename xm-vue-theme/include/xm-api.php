@@ -106,18 +106,6 @@ add_action('rest_api_init', function () {
 });
 
 /**
- * 获取顶部置顶菜单
- */
-add_action('rest_api_init', function () {
-  register_rest_route('xm-blog/v1', '/top-menu', array(
-    'methods' => 'GET',
-    'callback' => function () {
-      return wp_get_nav_menu_items('Top');
-    },
-  ));
-});
-
-/**
  * 获取主菜单
  */
 function xm_get_menu ()
@@ -147,7 +135,10 @@ function xm_get_menu ()
       $menu[$m -> menu_item_parent]['children'][$m -> ID] = $submenu[$m -> ID];
     }
   }
-  return $menu;
+  return array(
+    'menu' => $menu,
+    'topMenu' => wp_get_nav_menu_items('Top')
+  );
 }
 
 add_action('rest_api_init', function () {

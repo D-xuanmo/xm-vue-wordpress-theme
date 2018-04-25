@@ -14,16 +14,15 @@ const mutations = {
         state.blogInfo = res.data
         state.bLoading = false
         resolve()
-      }).catch(err => console.log(err.response))
-    }).then(resolve => {
-      // 获取置顶菜单
-      window.axios.get('/wp-json/xm-blog/v1/top-menu').then(res => (state.topNavList = res.data)).catch(err => console.log(err.response))
+      }).catch(err => console.log(err))
     }).then(resolve => {
       // 获取主菜单
       window.axios.get('/wp-json/xm-blog/v1/menu').then(res => {
-        state.navList = res.data
-        res.data[Object.keys(res.data)[0]].icon === '' ? state.bShowNavIcon = false : state.bShowNavIcon = true
-      }).catch(err => console.log(err.response))
+        let _res = res.data
+        state.topNavList = _res.topMenu
+        state.navList = _res.menu
+        _res.menu[Object.keys(_res.menu)[0]].icon === '' ? state.bShowNavIcon = false : state.bShowNavIcon = true
+      }).catch(err => console.log(err))
     })
   }
 }
