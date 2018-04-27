@@ -325,6 +325,7 @@ export default {
       left: 50%;
       width: 200px;
       background: #fff;
+      box-shadow: 0 4px 10px #ccc;
       text-indent: 28px;
       line-height: 40px;
       transform: translateX(-50%);
@@ -453,6 +454,7 @@ export default {
       .sub-nav-wrap{
         position: static;
         width: 100%;
+        box-shadow: none;
         text-align: left;
         text-indent: 28px;
         transform: translateX(0px);

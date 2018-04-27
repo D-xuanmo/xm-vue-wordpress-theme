@@ -1,11 +1,11 @@
 // 字体图标
 @font-face {
   font-family: 'iconfont';  /* project id 552040 */
-  src: url('//at.alicdn.com/t/font_552040_955dnbzy1sckgldi.eot');
-  src: url('//at.alicdn.com/t/font_552040_955dnbzy1sckgldi.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_552040_955dnbzy1sckgldi.woff') format('woff'),
-  url('//at.alicdn.com/t/font_552040_955dnbzy1sckgldi.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_552040_955dnbzy1sckgldi.svg#iconfont') format('svg');
+  src: url('//at.alicdn.com/t/font_552040_c1cflpoy4f7mbo6r.eot');
+  src: url('//at.alicdn.com/t/font_552040_c1cflpoy4f7mbo6r.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_552040_c1cflpoy4f7mbo6r.woff') format('woff'),
+  url('//at.alicdn.com/t/font_552040_c1cflpoy4f7mbo6r.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_552040_c1cflpoy4f7mbo6r.svg#iconfont') format('svg');
 }
 
 .iconfont{
@@ -68,6 +68,11 @@ $iconMap: (
   "html5-f":          "\e602",
   "css3":             "\e7c9",
   "css3-f":           "\e7c8",
+  "vue":              "\e690",
+  "react":            "\e64d",
+  "angular-f":        "\e615",
+  "bootstrap-f":      "\e608",
+  "javascript-f":     "\e635",
   "wordpress":        "\e65b",
   "aliyun":           "\e625",
   "twitter-f":        "\e603",

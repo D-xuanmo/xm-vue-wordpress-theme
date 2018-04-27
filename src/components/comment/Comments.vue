@@ -103,7 +103,7 @@
             <!-- 浏览器logo -->
             <span class="browser-info" :class="item.userAgentInfo.userAgent.browserName.toLowerCase()">{{ item.userAgentInfo.userAgent.browserName.replace('-', ' ') }}|{{ item.userAgentInfo.userAgent.browserVersion }}</span>
             <!-- 系统logo -->
-            <span class="system-info">{{ item.userAgentInfo.userAgent.system.replace(/_/g, '.') }}</span>
+            <span class="system-info">{{ item.userAgentInfo.userAgent.system && item.userAgentInfo.userAgent.system.replace(/_/g, '.') }}</span>
           </p>
           <time>{{ item.date.replace('T', ' ') }}</time>
           <span v-if="item.status === 'hold'">您的评论正在审核中...</span>

@@ -66,6 +66,7 @@ export default {
     color: $colorGay3;
     &:first-of-type{
       margin-top: 0;
+      line-height: 2;
     }
 
     &.float{

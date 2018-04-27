@@ -216,6 +216,8 @@ function get_browser_name ($str)
       $matches['system'] = str_replace(' NT 6.3', ' 8.1', $match[0]['system']);
     } else if (strpos($match[0]['system'], '10.0')) {
       $matches['system'] = str_replace(' NT 10.0', ' 10', $match[0]['system']);
+    } else if (strpos($match[0]['system'], '5.1')) {
+      $matches['system'] = str_replace(' NT 5.1', ' XP', $match[0]['system']);
     }
   } else {
     $matches['system'] = 'Unknown';
