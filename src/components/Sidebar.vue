@@ -133,3 +133,24 @@ export default {
   }
 }
 </style>
+<style lang="scss">
+// 侧边栏
+.sidebar-wrap{
+  // 友情链接
+  .link{
+    a{
+      display: block;
+      width: 49%;
+      margin-top: 10px;
+      text-align: center;
+    }
+  }
+  // 最新评论
+  .new-comment{
+    img{
+      margin-right: 10px;
+      border-radius: 5px;
+    }
+  }
+}
+</style>

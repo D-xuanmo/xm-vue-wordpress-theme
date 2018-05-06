@@ -755,3 +755,14 @@ export default {
   }
 }
 </style>
+<style lang="scss">
+.comments-wrap{
+  .comment-list{
+    .list-content{
+      img{
+        vertical-align: bottom;
+      }
+    }
+  }
+}
+</style>

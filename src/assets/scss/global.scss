@@ -38,36 +38,6 @@ body {
   margin: 50px auto 0;
 }
 
-.single{
-  .content{
-    img{
-      max-width: 100%;
-      margin: 10px 0;
-      box-shadow: 0 0 10px #d2d2d2;
-    }
-  }
-}
-
-// 侧边栏
-.sidebar-wrap{
-  // 友情链接
-  .link{
-    a{
-      display: block;
-      width: 49%;
-      margin-top: 10px;
-      text-align: center;
-    }
-  }
-  // 最新评论
-  .new-comment{
-    img{
-      margin-right: 10px;
-      border-radius: 5px;
-    }
-  }
-}
-
 @media screen and (max-width: 1200px) {
   .hide-1200px{
     display: none;

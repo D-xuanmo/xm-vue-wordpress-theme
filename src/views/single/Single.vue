@@ -395,3 +395,14 @@ export default {
   }
 }
 </style>
+<style lang="scss">
+.single{
+  .content{
+    img{
+      max-width: 100%;
+      margin: 10px 0;
+      box-shadow: 0 0 10px #d2d2d2;
+    }
+  }
+}
+</style>
