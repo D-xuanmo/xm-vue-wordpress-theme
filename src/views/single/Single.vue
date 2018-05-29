@@ -252,6 +252,13 @@ export default {
 
     .content{
       line-height: 2;
+
+      /deep/ img{
+        max-width: 100%;
+        margin: 10px 0;
+        box-shadow: 0 0 10px #d2d2d2;
+        vertical-align: bottom;
+      }
     }
   }
 
@@ -391,17 +398,6 @@ export default {
       img{
         display: none;
       }
-    }
-  }
-}
-</style>
-<style lang="scss">
-.single{
-  .content{
-    img{
-      max-width: 100%;
-      margin: 10px 0;
-      box-shadow: 0 0 10px #d2d2d2;
     }
   }
 }

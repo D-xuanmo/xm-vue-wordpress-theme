@@ -11,18 +11,11 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/wp-json': {
+      '/api': {
         target: 'http://localhost:8888',
         changeOrigin: true,
         pathRewrite: {
-          '^/wp-json': 'http://localhost:8888/wp-json'
-        }
-      },
-      '/wp-content': {
-        target: 'http://localhost:8888',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/wp-content': 'http://localhost:8888/wp-content'
+          '^/api': ''
         }
       }
     },
