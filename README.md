@@ -8,9 +8,9 @@
 
 ``` bash
 # 安装依赖
-npm install
+yarn
 
-# 启动项目，本地访问：localhost:5200，WordPress端口为：8888
+# 启动项目，本地访问：localhost:5200，WordPress端口为：8888，可自行修改config/index.js
 npm run dev
 
 # 打包项目命令
