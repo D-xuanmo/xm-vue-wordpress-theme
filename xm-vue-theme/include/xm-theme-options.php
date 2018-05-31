@@ -85,6 +85,13 @@ function themeoptions_page() {
             <textarea id="footer-txt" name="footer-txt" rows="8" cols="100"><?php echo $a_options['footer_text'] ?></textarea>
           </div>
         </div>
+
+        <div class="row clearfix">
+					<label for="not-found" class="fl left-wrap">404页面：</label>
+          <div class="fr right-wrap">
+            <textarea id="not-found" name="not-found" rows="8" cols="100"><?php echo $a_options['not_found'] ?></textarea>
+          </div>
+        </div>
       </div>
       <!-- 内容二 SEO -->
       <div class="content-wrap content2">
@@ -192,29 +199,6 @@ function themeoptions_page() {
             </div>
           </div>
         </div>
-        <div class="row">
-          <div class="margin-top-15 clearfix">
-            <label class="fl left-wrap" for="">404页面图片：</label>
-            <div class="fr right-wrap">
-              <input
-                type="text"
-                class="url-inp"
-                name="not-found"
-                id="not-found"
-                value="<?php echo $a_options['not_found']; ?>"
-              >
-              <input type="button" name="img-upload" value="选择文件">
-            </div>
-          </div>
-          <div class="margin-top-15 clearfix">
-            <div class="fl left-wrap">
-              404图片预览：
-            </div>
-            <div class="fr right-wrap">
-              <img src="<?php echo $a_options['not_found']; ?>" class="preview-img" style="max-width: 400px;" alt="">
-            </div>
-          </div>
-        </div>
       </div>
       <!-- 内容四 社交 -->
       <div class="content-wrap content4">
@@ -263,7 +247,7 @@ function themeoptions_page() {
 	function themeoptions_update() {
 		// 数据提交
     $options = array(
-        'update_themeoptions' => 'true',
+      'update_themeoptions' => 'true',
       'login_logo'          => $_POST['login-logo'],
       'aside_count'         => $_POST['aside-count'],
       'text_pic'            => $_POST['text-pic'],

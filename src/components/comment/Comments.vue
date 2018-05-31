@@ -108,14 +108,13 @@
           <time>{{ item.date.replace('T', ' ') }}</time>
           <span v-if="item.status === 'hold'">您的评论正在审核中...</span>
         </div>
-        <div class="list-content" v-html="item.content.rendered" v-replace-img v-highlight></div>
+        <div class="list-content" v-html="item.content.rendered" v-highlight></div>
         <!-- <div class="list-btn-wrap">
           <a href="#">回复</a>
         </div> -->
       </li>
     </ul>
     <div class="more-btn" @click="bClick && getMoreList()">
-      <!-- <img v-if="bMoreList" src="./images/bars.svg" alt="" width="40"> -->
       <span><i v-show="bMoreList" class="iconfont icon-loading"></i>{{ sMoreBtnText }}</span>
     </div>
   </div>
@@ -169,16 +168,6 @@ export default {
       showChart: false,
       sMoreBtnText: '加载中',
       submitText: '提交评论'
-    }
-  },
-  directives: {
-    // 替换表情的默认样式
-    'replace-img': {
-      inserted (el) {
-        el.querySelectorAll('img').forEach(item => {
-          if (item.className.indexOf('wp-smiley') !== -1) item.style = 'max-width: 30px; vertical-align: bottom;'
-        })
-      }
     }
   },
   props: ['commentCount'],
@@ -657,6 +646,13 @@ export default {
 
     .list-content{
       margin: 10px 0;
+
+      /deep/ img{
+        max-width: 30px;
+        height: initial !important;
+        max-height: initial !important;
+        vertical-align: bottom;
+      }
     }
 
     // 评论者等级
@@ -750,17 +746,6 @@ export default {
       .system-wrap{
         display: block;
         margin: 5px 0;
-      }
-    }
-  }
-}
-</style>
-<style lang="scss">
-.comments-wrap{
-  .comment-list{
-    .list-content{
-      img{
-        vertical-align: bottom;
       }
     }
   }

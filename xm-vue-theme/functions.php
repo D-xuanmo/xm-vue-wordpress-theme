@@ -13,13 +13,13 @@ add_action('init', 'remove_redirects');
 // Load scripts
 function load_vue_scripts()
 {
-  wp_enqueue_style('app.css', get_template_directory_uri() . '/static/css/app.1e6f5d0ccd2cd13dd48de90dcf07589c.css', false, null);
+  wp_enqueue_style('app.css', get_template_directory_uri() . '/static/css/app.d63b8ad6044ede694cea607f89adf9e4.css', false, null);
 
   wp_enqueue_script('manifest.js', get_template_directory_uri() . '/static/js/manifest.37a2ecbb1d1b7e6c9ada.js', null, null, true);
 
-  wp_enqueue_script('vendor.js', get_template_directory_uri() . '/static/js/vendor.31dfc4653415b7d981f5.js', null, null, true);
+  wp_enqueue_script('vendor.js', get_template_directory_uri() . '/static/js/vendor.f79b7e4483f06a1b4dda.js', null, null, true);
 
-  wp_enqueue_script('app.js', get_template_directory_uri() . '/static/js/app.634066258fd61d30f746.js', null, null, true);
+  wp_enqueue_script('app.js', get_template_directory_uri() . '/static/js/app.04196960288c02e61214.js', null, null, true);
 }
 
 add_action('wp_enqueue_scripts', 'load_vue_scripts', 100);
@@ -424,7 +424,7 @@ function ludou_comment_mail_notify($comment_id, $comment_status)
           <p><strong>' . $parent_comment->comment_author . '</strong> 您好!</p>
           <p>您在 [' . get_option('blogname') . '] 的文章<strong style="color:#2ebef3;">《' . get_the_title($comment->comment_post_ID) . '》</strong>上发表的评论有新回复啦，快来看看吧 ^_^:</p>
           <p>这是你的评论:</p>
-          <p style="margin: 15px 0; padding: 20px; border-radius: 5px; background-color: #eee;">' . $parent_comment->comment_content . '</p>
+          <p style="margin: 15px 0; padding: 20px; border-radius: 5px; background-color: #eee;">' . comments_embed_img($parent_comment->comment_content) . '</p>
           <p><strong>' . trim($comment->comment_author) . '</strong> 给你的回复是:<br />
           <p style="margin: 15px 0; padding: 20px; border-radius: 5px; background-color: #eee;">' . trim($comment->comment_content) . '</p>
           <p>您也可移步到文章<a style="text-decoration:none; color:#2ebef3" href="' . get_bloginfo('home') . '/#/single/' . $comment->comment_post_ID . '"> 《' . get_the_title($comment->comment_post_ID) . '》 </a>查看完整回复内容</p>
