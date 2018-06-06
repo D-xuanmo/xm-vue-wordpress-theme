@@ -13,13 +13,13 @@ add_action('init', 'remove_redirects');
 // Load scripts
 function load_vue_scripts()
 {
-  wp_enqueue_style('app.css', get_template_directory_uri() . '/static/css/app.d63b8ad6044ede694cea607f89adf9e4.css', false, null);
+  wp_enqueue_style('app.css', get_template_directory_uri() . '/static/css/app.7a04b5362ff86f88be4533f680809d31.css', false, null);
 
   wp_enqueue_script('manifest.js', get_template_directory_uri() . '/static/js/manifest.37a2ecbb1d1b7e6c9ada.js', null, null, true);
 
   wp_enqueue_script('vendor.js', get_template_directory_uri() . '/static/js/vendor.f79b7e4483f06a1b4dda.js', null, null, true);
 
-  wp_enqueue_script('app.js', get_template_directory_uri() . '/static/js/app.04196960288c02e61214.js', null, null, true);
+  wp_enqueue_script('app.js', get_template_directory_uri() . '/static/js/app.45b4dcf20fdca9530a23.js', null, null, true);
 }
 
 add_action('wp_enqueue_scripts', 'load_vue_scripts', 100);
@@ -430,7 +430,6 @@ function ludou_comment_mail_notify($comment_id, $comment_status)
           <p>您也可移步到文章<a style="text-decoration:none; color:#2ebef3" href="' . get_bloginfo('home') . '/#/single/' . $comment->comment_post_ID . '"> 《' . get_the_title($comment->comment_post_ID) . '》 </a>查看完整回复内容</p>
           <p style="padding-bottom: 10px; border-bottom: 1px dashed #ccc;">欢迎再次光临 <a style="text-decoration:none; color:#2ebef3" href="' . get_option('home') . '">' . get_option('blogname') . '</a></p>
           <p>(此邮件由系统自动发出, 请勿回复。)</p>
-          <p style="text-align: right;">如果您想更深入的和博主交流的话，欢迎回复哦^-^</p>
         </div>
       </div>';
     $message_headers = "Content-Type: text/html; charset=\"" . get_option('blog_charset') . "\"\n";

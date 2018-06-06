@@ -12,7 +12,7 @@
           <div>{{ currentProgress }}%</div>
         </div>
         <div class="select-img">
-          <input type="file" name="file" value="" ref="inpFile" accept="image/png,image/gif,image/jpeg" @change.stop="showImgName($event)">
+          <input type="file" name="file" value="" ref="inpFile" accept="image/png,image/gif,image/jpeg" @change.stop="preview($event)">
           <p class="mask">
             <span v-if="bFileMark"><i class="iconfont icon-upload-img2"></i>点击选择图片或者拖动图片到此窗口内</span>
             <template v-else>
@@ -21,7 +21,7 @@
           </p>
         </div>
         <div class="btn-wrap">
-          <div v-if="bFileMark" class="btn btn-upload" @click.stop="uploadImg()">上传文件</div>
+          <div v-show="!bFileMark" class="btn btn-upload" @click.stop="uploadImg()">上传文件</div>
           <div class="btn btn-insert" @click.stop="insertImg()">插入到文章</div>
         </div>
         <div class="result-img">
@@ -54,9 +54,13 @@ export default {
     })
   },
   methods: {
-    showImgName (event) {
+    preview (event) {
+      let oReader = new FileReader()
+      oReader.readAsDataURL(event.target.files[0])
+      oReader.onload = () => (this.previewUrl = oReader.result)
       this.bFileMark = false
     },
+
     // 上传图片
     uploadImg () {
       let _file = this.$refs.inpFile
@@ -76,7 +80,7 @@ export default {
           data.append('file', _file.files[0])
           data.append('url', this.contentUrl)
           data.append('mark', 'upload')
-          window.axios.post(`/wp-content/themes/xm-vue-theme/xm_upload.php`, data, config).then(res => {
+          window.axios.post('/wp-content/themes/xm-vue-theme/xm_upload.php', data, config).then(res => {
             this.resultImgUrl = res.data.path
             this.resFileName = res.data.name
             _file.value = ''
@@ -91,6 +95,7 @@ export default {
         }
       }
     },
+
     // 隐藏上传控件
     hideUpload () {
       let data = new FormData()
@@ -99,7 +104,7 @@ export default {
       data.append('postID', this.$route.params.id)
       data.append('fileName', this.resFileName)
       // 如果本次上传的图片未发表就从服务器删除此图片
-      window.axios.post(`/wp-content/themes/xm-vue-theme/xm_upload.php`, data).catch(err => console.log(err))
+      window.axios.post('/wp-content/themes/xm-vue-theme/xm_upload.php', data).catch(err => console.log(err))
       // 关闭控件
       this.$emit('showChart', {
         close: false,
@@ -110,6 +115,7 @@ export default {
       this.bFileMark = true
       window.XM.removeClass(document.body, 'o-hide')
     },
+
     // 插入到文章
     insertImg () {
       this.$emit('updateContent', ` [img]${this.resultImgUrl}[/img] `)
@@ -265,6 +271,7 @@ export default {
 
       img{
         max-width: 70px;
+        max-height: 50px;
         vertical-align: middle;
       }
     }
