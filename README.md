@@ -2,7 +2,7 @@
 
 > 一款基于vue开发的wordpress主题
 
-> 主题介绍：[https://www.xuanmo.xin/#/single/2317](https://www.xuanmo.xin/#/single/2317)
+> 主题介绍：[https://www.xuanmo.xin/details/2317](https://www.xuanmo.xin/details/2317)
 
 ### 本地启动、打包
 
