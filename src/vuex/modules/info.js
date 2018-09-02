@@ -20,8 +20,8 @@ const mutations = {
       window.axios.get('/wp-json/xm-blog/v1/menu').then(res => {
         let _res = res.data
         state.topNavList = _res.topMenu
-        state.navList = _res.menu
-        _res.menu[Object.keys(_res.menu)[0]].icon === '' ? state.bShowNavIcon = false : state.bShowNavIcon = true
+        state.navList = _res.mainMenu
+        _res.mainMenu[Object.keys(_res.mainMenu)[0]].icon === '' ? state.bShowNavIcon = false : state.bShowNavIcon = true
       }).catch(err => console.log(err))
     })
   }

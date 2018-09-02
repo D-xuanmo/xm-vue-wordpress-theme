@@ -176,6 +176,28 @@ function themeoptions_page() {
             </div>
           </div>
         </div>
+				<div class="row">
+          <div class="margin-top-15 clearfix">
+            <label class="fl left-wrap" for="">默认缩略图：</label>
+            <div class="fr right-wrap">
+              <input
+                type="text"
+                class="url-inp"
+								name="thumbnail-img"
+                id="thumbnail-img"
+                value="<?php echo $a_options['thumbnail']; ?>">
+              <input type="button" name="img-upload" value="选择文件">
+            </div>
+          </div>
+          <div class="margin-top-15 clearfix">
+            <div class="fl left-wrap">
+              默认缩略图预览：
+            </div>
+            <div class="fr right-wrap">
+              <img src="<?php echo $a_options['thumbnail']; ?>" class="preview-img" style="max-width: 100px;" alt="">
+            </div>
+          </div>
+        </div>
         <div class="row">
           <div class="margin-top-15 clearfix">
             <label class="fl left-wrap" for="">页面大图：</label>
@@ -252,6 +274,7 @@ function themeoptions_page() {
       'aside_count'         => $_POST['aside-count'],
       'text_pic'            => $_POST['text-pic'],
       'favicon'             => $_POST['favicon-img'],
+      'thumbnail'           => $_POST['thumbnail-img'],
       'big_banner'          => $_POST['big-banner'],
       'not_found'           => $_POST['not-found'],
       'sidebar_notice'      => $_POST['sidebar-notice'],

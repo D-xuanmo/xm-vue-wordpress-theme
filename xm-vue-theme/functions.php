@@ -13,13 +13,13 @@ add_action('init', 'remove_redirects');
 // Load scripts
 function load_vue_scripts()
 {
-  wp_enqueue_style('app.css', get_template_directory_uri() . '/static/css/app.7a04b5362ff86f88be4533f680809d31.css', false, null);
+  wp_enqueue_style('app.css', get_template_directory_uri() . '/static/css/app.df5a3ca18137edd2e614139f4cd5db06.css', false, null);
 
   wp_enqueue_script('manifest.js', get_template_directory_uri() . '/static/js/manifest.37a2ecbb1d1b7e6c9ada.js', null, null, true);
 
   wp_enqueue_script('vendor.js', get_template_directory_uri() . '/static/js/vendor.f79b7e4483f06a1b4dda.js', null, null, true);
 
-  wp_enqueue_script('app.js', get_template_directory_uri() . '/static/js/app.45b4dcf20fdca9530a23.js', null, null, true);
+  wp_enqueue_script('app.js', get_template_directory_uri() . '/static/js/app.c39e2558f8854a48be3e.js', null, null, true);
 }
 
 add_action('wp_enqueue_scripts', 'load_vue_scripts', 100);
@@ -225,7 +225,7 @@ add_action('admin_print_footer_scripts', 'appthemes_add_quicktags');
  */
 function custom_smilies_src($src, $img)
 {
-  return get_bloginfo('template_directory') . '/static/images/smilies/' . $img;
+  return 'https://upyun.xuanmo.xin/images/smilies/' . $img;
 }
 
 add_filter('smilies_src', 'custom_smilies_src', 10, 2);

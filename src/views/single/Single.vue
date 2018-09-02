@@ -35,7 +35,7 @@
             @click.prevent="addOpinion(key)"
           >
             <a href="#">
-              <span class="block text"><i v-if="item.showLoading" class="iconfont icon-loading"></i>{{ articleInfor.xmLink[key] }}人</span>
+              <span class="block text"><i v-if="item.showLoading" class="iconfont icon-loading"></i>{{ articleInfor.xmLike[key] }}人</span>
               <img :src="item.pic" alt="">
               <span class="block text">{{ item.title }}</span>
             </a>
@@ -192,7 +192,7 @@ export default {
           }
         }).then((res) => {
           this.opinion[key].showLoading = false
-          this.articleInfor.xmLink[key] = res.data
+          this.articleInfor.xmLike[key] = res.data
           // 设置点赞状态
           localStorage.setItem(`xm_link_${this.$route.params.id}`, true)
         }).catch((err) => console.log(err))

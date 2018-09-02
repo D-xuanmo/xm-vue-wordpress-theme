@@ -33,7 +33,7 @@ function add_get_blog_info ()
     'post_type' => 'post'
   ));
   for ($i = 0; $i < count($newComment); $i++) {
-    $newComment[$i] -> avatar = get_avatar($newComment[$i] -> comment_author_email, 50);
+    $newComment[$i] -> avatar = 'https://www.gravatar.com/avatar/' . md5(strtolower(trim($newComment[$i] -> comment_author_email))) . '?s=200';
     $newComment[$i] -> countCom = get_comments_number($newComment[$i] -> comment_post_ID);
     $newComment[$i] -> link = get_post_meta($newComment[$i] -> comment_post_ID, 'xm_post_link', true)['very_good'];
     $newComment[$i] -> title = get_the_title($newComment[$i] -> comment_post_ID);
@@ -41,9 +41,10 @@ function add_get_blog_info ()
   $array = array(
     'baseUrl' => get_bloginfo('home'),
     'adminAjax' => admin_url('admin-ajax.php'),
-    'templeteUrl' => get_template_directory_uri(),
-    'contentUrl' => content_url(),
+    'templeteUrl' => get_bloginfo('home') . '/wp-content/themes/' . get_option('template'),
+    'contentUrl' => get_bloginfo('home') . '/wp-content',
     'blogName' => get_bloginfo('name'),
+    'blogDescription' => get_bloginfo('description'),
     'adminPic' => get_the_author_meta('simple_local_avatar', 1),
     'setExtend' => get_option('xm_vue_options'),
     'getAllCountArticle' => wp_count_posts() -> publish,
@@ -136,8 +137,10 @@ function xm_get_menu ()
     }
   }
   return array(
-    'menu' => $menu,
-    'topMenu' => wp_get_nav_menu_items('Top')
+    'mainMenu' => $menu,
+    'topMenu' => wp_get_nav_menu_items('Top'),
+    'aa' => wp_get_nav_menu_object('Home'),
+    'b' => wp_using_ext_object_cache()
   );
 }
 
@@ -314,7 +317,8 @@ function add_api_comment_meta_field ()
     'get_callback' => function ($object) {
       $array = array(
         'userAgent' => get_browser_name($object[author_user_agent]),
-        'vipStyle' => get_author_class($object[author_email])
+        'vipStyle' => get_author_class($object[author_email]),
+        'author_avatar_urls' => 'https://www.gravatar.com/avatar/' . md5(strtolower(trim($object[author_email]))) . '?s=200'
       );
       return $array;
     },
@@ -362,7 +366,7 @@ function xm_get_article_infor ($object)
     'thumbnail' => wp_get_attachment_image_src(get_post_thumbnail_id($postID), 'Full')[0],
     'viewCount' => get_post_meta($postID, 'post_views_count', true) === '' ? 0 : get_post_meta($postID, 'post_views_count', true),
     'commentCount' => get_comments_number(),
-    'xmLink' => get_post_meta($postID, 'xm_post_link', true),
+    'xmLike' => get_post_meta($postID, 'xm_post_link', true),
     'summary' => xm_get_post_excerpt(300, ''),
     'classify' => get_the_category(),
     'tags' => get_the_tags($postID),

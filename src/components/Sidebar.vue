@@ -8,7 +8,9 @@
       <h2 class="title"><i class="iconfont icon-hot1"></i>最新评论</h2>
       <ul class="list-wrap new-comment">
         <li class="list clearfix" v-for="item in blogInfo.newComment" :key="item.key">
-          <div class="fl" v-html="item.avatar"></div>
+          <div class="fl">
+            <img :src="item.avatar" width="50" height="50" alt="">
+          </div>
           <router-link :to="{ name: 'single', params: { id: item.comment_post_ID } }" :title="item.title" v-html="item.title"></router-link>
           <p class="link-text f-s-12px">{{ item.countCom }}人发表意见，{{ item.link }}人喜欢</p>
         </li>

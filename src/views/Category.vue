@@ -22,7 +22,7 @@
             <span><i class="iconfont icon-time1"></i>{{ item.date.replace('T', ' ') }}</span>
             <span><i class="iconfont icon-hot"></i>{{ item.articleInfor.viewCount }}</span>
             <span><i class="iconfont icon-message"></i>{{ item.articleInfor.commentCount }}</span>
-            <span><i class="iconfont icon-zan"></i>{{ item.articleInfor.xmLink.very_good }}</span>
+            <span><i class="iconfont icon-zan"></i>{{ item.articleInfor.xmLike.very_good }}</span>
           </div>
           <p class="summary">{{ item.articleInfor.summary }} <router-link :to="{ name: 'single', params: { id: item.id } }" class="c-blue">阅读详情&gt;&gt;</router-link></p>
         </div>
