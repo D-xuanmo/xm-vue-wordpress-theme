@@ -11,8 +11,8 @@
 yarn
 
 # 启动项目，本地访问：localhost:5200，WordPress端口为：8888，可自行修改config/index.js
-npm run dev
+yarn start
 
 # 打包项目命令
-npm run build
+yarn build
 ```
